@@ -5,7 +5,7 @@
 }
 
 .bg-image {
-  background-image: url('../picturs/pict.jpg');
+  background-image: url('../../assets/pict.jpg');
   background-size: cover;
   background-position: center center;
 }
@@ -129,13 +129,13 @@
 
 #button-11 .knobs:before
 {
-    content: 'OUI';
+    content: 'NON';
     left: 4px;
 }
 
 #button-11 .knobs:after
 {
-    content: 'NON';
+    content: 'OUI';
     right: 15px;
 }
 
