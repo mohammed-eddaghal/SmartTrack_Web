@@ -19,7 +19,13 @@
                 <!--<h3 class="display-4">Split page!</h3>
                 <p class="text-muted mb-4">Create a login split page using Bootstrap 4.</p>-->
                 
+
+
+
+                <!-- la formulaire -->
                 <form>
+
+                  <!-- input d username -->
                   <div class="form-group mb-3">
                     <input 
                       id="UserName" 
@@ -31,6 +37,8 @@
                       #uername_Admin="ngModel"
                       >
                   </div>
+
+                  <!-- inpute d subUser -->
                   <div class="form-group mb-3" [hidden]="!is_subUser">
                     <input 
                     id="subusername" 
@@ -44,6 +52,8 @@
                     name="subusername">
 
                   </div>
+
+                  <!-- inpute d password -->
                   <div class="form-group mb-3">
                     <input 
                     id="inputPassword" 
@@ -60,6 +70,8 @@
                     <label for="customCheck1" class="custom-control-label">Remember password</label>
                   </div>-->
                   <br>
+
+                    <!-- input d toggle button (switch) -->
                     <div class="container">
                         <div class="row">
                             <div class="col-4">
@@ -86,6 +98,8 @@
                         </div>
                     </div>
                     <br><br>
+
+                  <!-- button login -->
                   <button 
                   type="submit" 
                   class="btn btn-warning btn-block text-uppercase mb-2 rounded-pill shadow-sm"
