@@ -1,3 +1,4 @@
+import { InvalidInfo } from './../commen/invalid-info';
 import { InvalidInput } from './../commen/invalid-input';
 import { NotFoundError } from './../commen/not-found-error';
 import { AppError } from './../commen/app-error';
@@ -69,7 +70,11 @@ export class DataService {
     else if(error.status === 400){
       console.log("2)" + error.statusText)
       return throwError(new InvalidInput);
+    }else if(error.status === 500){
+      console.log("4)" + JSON.stringify(error))
+      return throwError(new InvalidInfo);
     }
+
     console.log("3)" + error.statusText)
     return throwError(new AppError);
   }

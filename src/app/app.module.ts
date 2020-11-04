@@ -1,3 +1,7 @@
+import { AuthGuard } from './guards/auth.guard';
+import { AuthService } from './services/auth.service';
+import { IsAdminService } from './services/is-admin.service';
+import { RouterModule } from '@angular/router';
 import { DataService } from './services/data.service';
 import { UserService } from './services/user.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -9,23 +13,27 @@ import { LoginComponent } from './login/login.component';
 import { FormsModule } from '@angular/forms';
 import { PositionComponent } from './position/position.component';
 import { HttpClientModule } from '@angular/common/http';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     LoginComponent,
     PositionComponent,
+    NavbarComponent,
     
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     FormsModule,
-    HttpClientModule,
-    //HttpClient
+    HttpClientModule
   ],
   providers: [UserService,
-              DataService
+              DataService,
+              IsAdminService,
+              AuthService,
+              AuthGuard
   ],
   bootstrap: [AppComponent]
 })

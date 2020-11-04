@@ -1,5 +1,9 @@
+import { AuthService } from './../services/auth.service';
+import { IsAdminService } from './../services/is-admin.service';
+
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -51,10 +55,14 @@ userRep:any={
   "isActive": false
 }
 
-  constructor(private userservice:UserService) { }
+  constructor(private userservice:UserService,
+              private router :Router,
+              private isAdmin:IsAdminService,
+              private authService:AuthService) { }
 
  
   ngOnInit(): void {
+    this.isAdmin.is_subUser=this.is_subUser;
   }
 
   //la function li katlensa mli katbrak 3la button sing in
@@ -71,23 +79,29 @@ userRep:any={
       .subscribe(responce => {
         //normalement x ghtafficta liha return d api
         this.x = responce
-        //console.log(this.x);
-        /*this.adminRep.accountID = this.x.id
-        this.vad.push(this.post)
-        this.post = {
-          id: 0,
-          title: '',
-          body: '',
-          userId: 1
-        }
-        this.tst = true;
-        this.form = false;*/
+        console.log(this.x);
+
+        if(this.x.isActive){
+        this.authService.is_loged=true;  
+        this.router.navigate(["position"]);}
+        else{console.log("maakinch")}
       }, error => {
-        alert(error.message)
+        alert("erreur verifier les données inserer")
+
+        
       })
     }else{
       this.admin.accountID=this.userName;
       this.admin.password=this.passowrd;
+      this.userservice.postFnc(this.admin,this.is_subUser)
+      .subscribe(responce => {
+        //normalement x ghtafficta liha return d api
+        this.x = responce
+        console.log(this.x);
+        
+      }, error => {
+        alert(error.message)
+      })
     }
 
     //console.log(this.userName," / ",this.passowrd," / ",this.subuser," / ",this.is_subUser);
@@ -96,6 +110,8 @@ userRep:any={
   //function bach katsuwitchi bin subUser o admin
   showInput(){
     this.is_subUser=!this.is_subUser;
+    this.isAdmin.is_subUser=this.is_subUser;
+    console.log(this.isAdmin.is_subUser)
   }
 
 }

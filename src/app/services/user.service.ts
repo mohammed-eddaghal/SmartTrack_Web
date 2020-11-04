@@ -1,7 +1,6 @@
 /**
  * hada service li kat3yat fih l api
  *  service DataService hwa fin kinin les methodes d manipulation d api (put,post,get,...)
- *  madoch 3la ga3 les methodes tma pour l'instant chof ghi post
  */
 
 

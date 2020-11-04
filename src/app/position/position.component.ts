@@ -1,3 +1,4 @@
+import { IsAdminService } from './../services/is-admin.service';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
@@ -6,10 +7,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./position.component.css']
 })
 export class PositionComponent implements OnInit {
-
-  constructor() { }
+  isadm:boolean;
+  constructor(private isAdmin:IsAdminService) { }
 
   ngOnInit(): void {
+    this.isadm=this.isAdmin.is_subUser;
   }
 
 }
