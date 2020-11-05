@@ -1,3 +1,4 @@
+import { DeauthGuard } from './guards/deauth.guard';
 import { PositionComponent } from './position/position.component';
 
 import { NgModule } from '@angular/core';
@@ -7,10 +8,8 @@ import { AuthGuard } from './guards/auth.guard';
 
 
 const routes: Routes = [
-  {path:"",component:LoginComponent},
-  {path:"position",component:PositionComponent,canActivate:[AuthGuard]},
-
-
+  {path:"",component:LoginComponent,canActivate:[DeauthGuard]},
+  {path:"position",component:PositionComponent,canActivate:[AuthGuard]}
 ];
 
 @NgModule({

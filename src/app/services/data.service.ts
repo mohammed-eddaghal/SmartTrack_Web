@@ -72,6 +72,7 @@ export class DataService {
       return throwError(new InvalidInput);
     }else if(error.status === 500){
       console.log("4)" + JSON.stringify(error))
+      alert("error de seveur")
       return throwError(new InvalidInfo);
     }
 

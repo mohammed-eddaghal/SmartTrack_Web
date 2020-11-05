@@ -34,6 +34,10 @@
                       class="form-control rounded-pill border-0 shadow-sm px-4"
                       [(ngModel)]="userName"
                       name="username"
+                      required minlength="3" 
+                             [ngClass]="{
+                                'is-invalid':uername_Admin.errors && uername_Admin.touched,
+                                'is-valid':!uername_Admin.errors && uername_Admin.touched}"
                       #uername_Admin="ngModel"
                       >
                   </div>
@@ -49,6 +53,10 @@
                     class="form-control rounded-pill border-0 shadow-sm px-4"
                     [(ngModel)]="subuser"
                     #subusername="ngModel"
+                    required minlength="3" 
+                             [ngClass]="{
+                                'is-invalid':subusername.errors && subusername.touched,
+                                'is-valid':!subusername.errors && subusername.touched}"
                     name="subusername">
 
                   </div>
@@ -63,6 +71,10 @@
                     [(ngModel)]="passowrd"
                     name="password"
                     #passwd="ngModel"
+                    required minlength="3" 
+                             [ngClass]="{
+                                'is-invalid':passwd.errors && passwd.touched,
+                                'is-valid':!passwd.errors && passwd.touched}"
                     >
                   </div>
                  <!-- <div class="custom-control custom-checkbox mb-3">
@@ -100,14 +112,29 @@
                     <br><br>
 
                   <!-- button login -->
+                  <!--button check cas sub-user-->
+                  <div *ngIf="check.value"> 
                   <button 
                   type="submit" 
                   class="btn btn-warning btn-block text-uppercase mb-2 rounded-pill shadow-sm"
                   (click)="signIn()"
+                  [disabled]="uername_Admin.invalid||subusername.invalid||passwd.invalid"
+                    
                   >Sign in</button>
+                </div>
+                <!--button check cas admin-->
+                <div *ngIf="!check.value"> 
+                  <button 
+                  type="submit" 
+                  class="btn btn-warning btn-block text-uppercase mb-2 rounded-pill shadow-sm"
+                  (click)="signIn()"
+                  [disabled]="uername_Admin.invalid||passwd.invalid"
+                    
+                  >Sign in</button>
+                </div>
                 </form>
 
-               
+                
               </div>
             </div>
           </div><!-- End -->

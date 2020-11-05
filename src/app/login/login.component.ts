@@ -83,7 +83,8 @@ userRep:any={
 
         if(this.x.isActive){
         this.authService.is_loged=true;  
-        this.router.navigate(["position"]);}
+        this.router.navigate(["position"]);
+        this.authService.is_loged=true;}
         else{console.log("maakinch")}
       }, error => {
         alert("erreur verifier les données inserer")
@@ -98,9 +99,14 @@ userRep:any={
         //normalement x ghtafficta liha return d api
         this.x = responce
         console.log(this.x);
+
+        if(this.x.isActive){
+          this.authService.is_loged=true;  
+          this.router.navigate(["position"]);}
+          else{console.log("maakinch")}
         
       }, error => {
-        alert(error.message)
+        alert("erreur verifier les données inserer")
       })
     }
 

@@ -1,7 +1,7 @@
 import { AuthGuard } from './guards/auth.guard';
+import { DeauthGuard } from './guards/deauth.guard';
 import { AuthService } from './services/auth.service';
 import { IsAdminService } from './services/is-admin.service';
-import { RouterModule } from '@angular/router';
 import { DataService } from './services/data.service';
 import { UserService } from './services/user.service';
 import { BrowserModule } from '@angular/platform-browser';
@@ -33,7 +33,8 @@ import { NavbarComponent } from './navbar/navbar.component';
               DataService,
               IsAdminService,
               AuthService,
-              AuthGuard
+              AuthGuard,
+              DeauthGuard
   ],
   bootstrap: [AppComponent]
 })

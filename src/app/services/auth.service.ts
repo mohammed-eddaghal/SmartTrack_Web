@@ -1,3 +1,4 @@
+import { AuthGuard } from './../guards/auth.guard';
 import { Injectable } from '@angular/core';
 
 @Injectable({
@@ -5,5 +6,7 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
   is_loged:boolean=false;
+  //private authService : AuthService
   constructor() { }
+
 }
