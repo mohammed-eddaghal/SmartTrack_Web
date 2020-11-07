@@ -9,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 export class NavbarComponent implements OnInit {
   
   constructor(private authService:AuthService) { }
-
+  isShow:boolean=false;
+  isNavbarCollapsed:boolean=true;
   ngOnInit(): void {
     
+  }
+  onIsShow(){
+    this.isShow=!this.isShow;
   }
 
 }

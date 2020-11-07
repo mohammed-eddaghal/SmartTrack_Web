@@ -120,17 +120,17 @@
                   (click)="signIn()"
                   [disabled]="uername_Admin.invalid||subusername.invalid||passwd.invalid"
                     
-                  >Sign in</button>
+                  >Sign in as sub-user</button>
                 </div>
                 <!--button check cas admin-->
                 <div *ngIf="!check.value"> 
                   <button 
                   type="submit" 
                   class="btn btn-warning btn-block text-uppercase mb-2 rounded-pill shadow-sm"
-                  (click)="signIn()"
+                  (click)="signInAdmin()"
                   [disabled]="uername_Admin.invalid||passwd.invalid"
                     
-                  >Sign in</button>
+                  >Sign in as admin</button>
                 </div>
                 </form>
 

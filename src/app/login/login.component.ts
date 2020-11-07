@@ -63,13 +63,15 @@ userRep:any={
  
   ngOnInit(): void {
     this.isAdmin.is_subUser=this.is_subUser;
+    if(this.authService.is_loged){
+      this.router.navigate(['position'])
+    }
   }
 
   //la function li katlensa mli katbrak 3la button sing in
   signIn(){
     //ila kan is_subUser =true => rah subuser
     //sinon rah admin
-    if(this.is_subUser){
       this.subUser.userID.accountID=this.userName;
       this.subUser.userID.userID=this.subuser;
       this.subUser.password=this.passowrd;
@@ -91,27 +93,28 @@ userRep:any={
 
         
       })
-    }else{
-      this.admin.accountID=this.userName;
-      this.admin.password=this.passowrd;
-      this.userservice.postFnc(this.admin,this.is_subUser)
-      .subscribe(responce => {
-        //normalement x ghtafficta liha return d api
-        this.x = responce
-        console.log(this.x);
-
-        if(this.x.isActive){
-          this.authService.is_loged=true;  
-          this.router.navigate(["position"]);}
-          else{console.log("maakinch")}
-        
-      }, error => {
-        alert("erreur verifier les données inserer")
-      })
-    }
-
     //console.log(this.userName," / ",this.passowrd," / ",this.subuser," / ",this.is_subUser);
   }
+
+  signInAdmin(){
+    this.admin.accountID=this.userName;
+    this.admin.password=this.passowrd;
+    this.userservice.postFnc(this.admin,this.is_subUser)
+    .subscribe(responce => {
+      //normalement x ghtafficta liha return d api
+      this.x = responce
+      console.log(this.x);
+
+      if(this.x.isActive){
+        this.authService.is_loged=true;  
+        this.router.navigate(["position"]);}
+        else{console.log("maakinch")}
+      
+    }, error => {
+      alert("erreur verifier les données inserer")
+    })
+  }
+
 
   //function bach katsuwitchi bin subUser o admin
   showInput(){
