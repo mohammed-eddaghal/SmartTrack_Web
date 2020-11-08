@@ -19,8 +19,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 //import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,
@@ -36,8 +34,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     FormsModule,
     HttpClientModule,
     NgbModule,
-
-
   ],
   providers: [
     UserService,
