@@ -1,5 +1,5 @@
 import { AuthService } from './../services/auth.service';
-import { IsAdminService } from './../services/is-admin.service';
+import { AdminService } from "./../services/admin.service";
 
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../services/user.service';
@@ -13,114 +13,114 @@ import { Router } from '@angular/router';
 export class LoginComponent implements OnInit {
 
   //les variables li kijiw mn formulaire kit7ato f had les variables
-  is_subUser:boolean=false;
-  userName:any;
-  subuser:any;
-  passowrd:any;
+  isAdmin: boolean = true;
+  userName: any;
+  subuser: any;
+  passowrd: any;
 
-  x:any;
-  checkuser:any;
+  x: any;
+  checkuser: any;
 
-  chemain:any="../../assets/logo_photoshop.png";
+  logoPath: any = "../../assets/logo_photoshop.png";
 
   //var li katsifat l serveur bnsba l admin
-  admin:any={
-    accountID: '',
-    password: ''
+  admin: any = {
+    "accountID": "",
+    "password": ""
   }
 
   //var li katsift l serveur bnsba l sub user
-  subUser:any={
+  subUser: any = {
     "userID": {
-        "accountID": "",
-        "userID": ""
-    },
-    "password": ""
- }
-
- //reponce de rutern d api login admin
- adminRep:any={
-  accountID: "",
-  password: "",
-  isActive: false
-}
-
-//reponce de rutern d api login subUser
-userRep:any={
-  "userID": {
       "accountID": "",
       "userID": ""
-  },
-  "password": "",
-  "isActive": false
-}
+    },
+    "password": ""
+  }
 
-  constructor(private userservice:UserService,
-              private router :Router,
-              private isAdmin:IsAdminService,
-              private authService:AuthService) { }
+  //reponce de rutern d api login admin
+  adminRep: any = {
+    accountID: "",
+    password: "",
+    isActive: false
+  }
 
- 
+  //reponce de rutern d api login subUser
+  userRep: any = {
+    "userID": {
+      "accountID": "",
+      "userID": ""
+    },
+    "password": "",
+    "isActive": false
+  }
+
+  constructor(private userService: UserService,
+    private router: Router,
+    private adminService: AdminService,
+    private authService: AuthService) { }
+
+
   ngOnInit(): void {
-    this.isAdmin.is_subUser=this.is_subUser;
-    if(this.authService.is_loged){
+    this.adminService.isAdmin = this.isAdmin;
+    if (this.authService.isLoggedIn) {
       this.router.navigate(['position'])
     }
   }
 
   //la function li katlensa mli katbrak 3la button sing in
-  signIn(){
+  signIn() {
     //ila kan is_subUser =true => rah subuser
     //sinon rah admin
-      this.subUser.userID.accountID=this.userName;
-      this.subUser.userID.userID=this.subuser;
-      this.subUser.password=this.passowrd;
+    this.subUser.userID.accountID = this.userName;
+    this.subUser.userID.userID = this.subuser;
+    this.subUser.password = this.passowrd;
 
-      console.log(this.subUser)
-      this.userservice.postFnc(this.subUser,this.is_subUser)
-      .subscribe(responce => {
+    this.userService.login(this.subUser)
+      .subscribe(response => {
         //normalement x ghtafficta liha return d api
-        this.x = responce
-        console.log(this.x);
+        this.x = response
 
-        if(this.x.isActive){
-        this.authService.is_loged=true;  
-        this.router.navigate(["position"]);
-        this.authService.is_loged=true;}
-        else{console.log("maakinch")}
+        if (this.x.isActive) {
+          this.authService.isLoggedIn = true;
+          this.router.navigate(["position"]);
+          this.authService.isLoggedIn = true;
+        }
+        else { console.log("your account is deactivated") }
       }, error => {
         alert("erreur verifier les données inserer")
-
-        
       })
     //console.log(this.userName," / ",this.passowrd," / ",this.subuser," / ",this.is_subUser);
   }
 
-  signInAdmin(){
-    this.admin.accountID=this.userName;
-    this.admin.password=this.passowrd;
-    this.userservice.postFnc(this.admin,this.is_subUser)
-    .subscribe(responce => {
-      //normalement x ghtafficta liha return d api
-      this.x = responce
-      console.log(this.x);
+  signInAsAdmin() {
+    console.log(this.passowrd, " / ", this.userName);
+    this.admin.accountID = this.userName;
+    this.admin.password = this.passowrd;
 
-      if(this.x.isActive){
-        this.authService.is_loged=true;  
-        this.router.navigate(["position"]);}
-        else{console.log("maakinch")}
-      
-    }, error => {
-      alert("erreur verifier les données inserer")
-    })
+    this.adminService.login(this.admin)
+      .subscribe(response => {
+        //normalement x ghtafficta liha return d api
+        this.x = response
+        console.log('response: ', this.x);
+
+        if (this.x.isActive) {
+          this.authService.isLoggedIn = true;
+          this.router.navigate(["position"]);
+        }
+        else { console.log("maakinch") }
+
+      }, error => {
+        console.log('error: ', error);
+        alert("erreur verifier les données inserer")
+      })
   }
 
 
   //function bach katsuwitchi bin subUser o admin
-  showInput(){
-    this.is_subUser=!this.is_subUser;
-    this.isAdmin.is_subUser=this.is_subUser;
-    console.log(this.isAdmin.is_subUser)
+  showInput() {
+    this.isAdmin = !this.isAdmin;
+    this.adminService.isAdmin = this.isAdmin;
   }
 
 }

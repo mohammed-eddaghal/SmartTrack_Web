@@ -15,11 +15,11 @@ export class DeauthGuard implements CanActivate {
   canActivate(
     next: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean > | Promise<boolean | UrlTree> | boolean | UrlTree {
-      if(this.authService.is_loged)
+      if(this.authService.isLoggedIn)
       {
         this.route.navigate(['/position']);
       }
-    return !this.authService.is_loged;
+    return !this.authService.isLoggedIn;
   }
   
 }
