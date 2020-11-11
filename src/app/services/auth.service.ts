@@ -5,8 +5,17 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class AuthService {
-  is_loged:boolean=false;
-  //private authService : AuthService
-  constructor() { }
+
+  private _isLoggedIn:boolean = false;
+
+  get isLoggedIn() : boolean {
+    return this._isLoggedIn;
+  }
+
+  set isLoggedIn(newStatus : boolean) {
+    this._isLoggedIn = newStatus;
+  }
+
+  constructor() {}
 
 }

@@ -12,7 +12,15 @@ import { DataService } from './data.service';
   providedIn: 'root'
 })
 export class UserService extends DataService {
+
+  // body:any;
+
   constructor(http: HttpClient) { 
-    super('http://91.234.195.124:9090/api/',http)
+    super(http);
   }
+  
+  login(body) {
+    return this.postFnc(this.apiPath + 'user/login', body);
+  }
+
 }

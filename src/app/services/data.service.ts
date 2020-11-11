@@ -14,10 +14,13 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
-  constructor(private path:string, private http: HttpClient) { }
+
+  protected apiPath: string = 'http://localhost:9090/api/';
+
+  constructor(private http: HttpClient) { }
 
   getFnc() {
-    return this.http.get(this.path).pipe(
+    return this.http.get(this.apiPath).pipe(
       // eg. "map" without a dot before
       retry(1),
       // "catchError" instead "catch"
@@ -25,27 +28,17 @@ export class DataService {
     );
   }
 
-  postFnc(p,subuser:boolean) {
-    if(subuser){
-      return this.http.post(this.path+'user/login', p).pipe(
+  postFnc(apiPath : string, body) {
+      return this.http.post(apiPath, body).pipe(
         // eg. "map" without a dot before
         retry(1),
         // "catchError" instead "catch"
         catchError(this.handelErrors)
       );
-    }else{
-      return this.http.post(this.path+'account/login', p).pipe(
-        // eg. "map" without a dot before
-        retry(1),
-        // "catchError" instead "catch"
-        catchError(this.handelErrors)
-      );
-    }
-    
   }
 
-  putFnc(post) {
-    return this.http.put(this.path + post.id, post).pipe(
+  putFnc(apiPath : string, item) {
+    return this.http.put(apiPath + item.id, item).pipe(
       // eg. "map" without a dot before
       retry(1),
       // "catchError" instead "catch"
@@ -53,8 +46,8 @@ export class DataService {
     );
   }
 
-  deleteFnc(v: number) {
-    return this.http.delete(this.path + v).pipe(
+  deleteFnc(apiPath : string, itemID: number) {
+    return this.http.delete(apiPath + itemID).pipe(
       // eg. "map" without a dot before
       retry(1),
       // "catchError" instead "catch"
