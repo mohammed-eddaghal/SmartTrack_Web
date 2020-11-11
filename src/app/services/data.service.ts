@@ -28,16 +28,16 @@ export class DataService {
     );
   }
 
-  postFnc(apiPath : string, body) {
-      return this.http.post(apiPath, body).pipe(
-        // eg. "map" without a dot before
-        retry(1),
-        // "catchError" instead "catch"
-        catchError(this.handelErrors)
-      );
+  postFnc(apiPath: string, body) {
+    return this.http.post(apiPath, body).pipe(
+      // eg. "map" without a dot before
+      retry(1),
+      // "catchError" instead "catch"
+      catchError(this.handelErrors)
+    );
   }
 
-  putFnc(apiPath : string, item) {
+  putFnc(apiPath: string, item) {
     return this.http.put(apiPath + item.id, item).pipe(
       // eg. "map" without a dot before
       retry(1),
@@ -46,7 +46,7 @@ export class DataService {
     );
   }
 
-  deleteFnc(apiPath : string, itemID: number) {
+  deleteFnc(apiPath: string, itemID: number) {
     return this.http.delete(apiPath + itemID).pipe(
       // eg. "map" without a dot before
       retry(1),
@@ -55,22 +55,18 @@ export class DataService {
     );
   }
 
-  handelErrors(error:Response){
-    if (error.status === 404) {
-      console.log("1)" + error.statusText)
-      return throwError(new NotFoundError);
+  handelErrors(error) {
+    let errorMessage = '';
+    if (error.error instanceof ErrorEvent) {
+      // client-side error
+      errorMessage = `Error: ${error.error.message}`;
+    } else {
+      // server-side error
+      errorMessage = `${error.error.message}`;
     }
-    else if(error.status === 400){
-      console.log("2)" + error.statusText)
-      return throwError(new InvalidInput);
-    }else if(error.status === 500){
-      console.log("4)" + JSON.stringify(error))
-      alert("error de seveur")
-      return throwError(new InvalidInfo);
-    }
-
-    console.log("3)" + error.statusText)
-    return throwError(new AppError);
+    console.log(error.status === 404); //in not found case will print true 
+    console.log(errorMessage); // for example message will be "le compte n'est pas trouvé"
+    return throwError(errorMessage);
   }
 }
 

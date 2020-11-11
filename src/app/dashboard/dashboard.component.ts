@@ -1,11 +1,18 @@
 import { Component, Inject, NgZone, PLATFORM_ID, OnInit } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
-
 // amCharts imports
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
+import { AdminService } from '../services/admin.service';
 
+//gmaps imports
+import { MapsAPILoader, AgmMap, GoogleMapsAPIWrapper } from '@agm/core';
+
+import { map } from 'rxjs/operators';
+import { Device } from '../models/device.model';
+
+declare var google: any;
 
 @Component({
   selector: 'app-dashboard',
@@ -17,13 +24,47 @@ export class DashboardComponent implements OnInit {
   startDate: Date;
   endDate: Date;
   private chart: am4charts.XYChart;
+  devices: any = [];
+  geocoder: any;
+
+  constructor(
+    @Inject(PLATFORM_ID) private platformId,
+    private zone: NgZone,
+    private adminService: AdminService,
+    private mapsApiLoader: MapsAPILoader) { }
+
+  ngOnInit() {
+    this.adminService.getDevices("demo", "").pipe(
+      map((data: Device[]) => data.map(device => new Device().deserialize(device)))
+    )
+      .subscribe(
+        response => {
+          console.log('good', response);
+          this.devices = response;
+        },
+        error => {
+          console.log('bad', error);
+        }
+      );
+      //for address just wait
+    /*for (var i = 0; i < this.devices.length; i++) {
+      this.devices[i].address = "testing some addresses here";
+      console.log('address', this.devices[i].address);
+      // this.mapsApiLoader.load().then(() => {
+      //   this.geocoder = new google.maps.Geocoder();
+      //   let latlng = { lat: this.devices[i]['latitude'], lng: this.devices[i]['longitude'] };
+      //   this.geocoder?.geocode({ 'location': latlng }, (results, status) => {
+      //     this.devices[i].address = "testing some addresses here";
+      //     console.log('address', this.devices[i].address);
+      //   });
+      // });
+    }*/
+  }
 
   printDate() {
     console.log('start date is: ', new Date(this.startDate).getTime() / 1000);
     console.log('end date is: ', new Date(this.endDate).getTime() / 1000);
   }
-
-  constructor(@Inject(PLATFORM_ID) private platformId, private zone: NgZone) { }
 
   // Run the function only in the browser
   browserOnly(f: () => void) {
@@ -87,7 +128,7 @@ export class DashboardComponent implements OnInit {
       //tooltip bg color
       series.tooltip.getFillFromObject = false;
       series.tooltip.background.fill = am4core.color("#FFFFFF");
-      
+
       //tooltip text color
       series.tooltip.autoTextColor = false;
       series.tooltip.label.fill = am4core.color("#000000");
@@ -120,7 +161,5 @@ export class DashboardComponent implements OnInit {
       }
     });
   }
-
-  ngOnInit() { }
 
 }

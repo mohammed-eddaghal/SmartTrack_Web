@@ -16,6 +16,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 //import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -34,6 +35,9 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     FormsModule,
     HttpClientModule,
     NgbModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyCHVQYBlEDRUG-832fnRV9mzMcavXR84Kg',
+    })
   ],
   providers: [
     UserService,
@@ -41,7 +45,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     AdminService,
     AuthService,
     AuthGuard,
-    DeauthGuard
+    DeauthGuard,
+    GoogleMapsAPIWrapper
   ],
   bootstrap: [AppComponent]
 })

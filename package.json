@@ -11,6 +11,7 @@
   },
   "private": true,
   "dependencies": {
+    "@agm/core": "^3.0.0-beta.0",
     "@amcharts/amcharts4": "^4.10.10",
     "@angular/animations": "~10.0.0",
     "@angular/common": "~10.0.0",
@@ -22,6 +23,7 @@
     "@angular/platform-browser-dynamic": "~10.0.0",
     "@angular/router": "~10.0.0",
     "@ng-bootstrap/ng-bootstrap": "^8.0.0",
+    "@types/googlemaps": "^3.39.12",
     "bootstrap": "^4.5.3",
     "chart.js": "^2.9.4",
     "popper.js": "^1.16.1",

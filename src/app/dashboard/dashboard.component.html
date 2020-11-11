@@ -2,209 +2,76 @@
     <form class="form-inline form-report ng-pristine ng-valid mt-2 shadow-sm" action="" method="get">
         <div class="form-group ml-2 mb-2">
             <label>Date debut</label>
-            <input type="datetime-local" autocomplete="off" class="form-control ml-2" value="08/11/2020 00:00" name="date_begin"
-                id="report_date_begin" placeholder="Date debut" [(ngModel)] = "startDate">
-    
+            <input type="datetime-local" autocomplete="off" class="form-control ml-2" value="08/11/2020 00:00"
+                name="date_begin" id="report_date_begin" placeholder="Date debut" [(ngModel)]="startDate">
+
         </div>
         <div class="form-group ml-2 mb-2">
             <label>Date fin</label>
-            <input type="datetime-local" autocomplete="off" class="form-control ml-2" value="08/11/2020 23:59" name="date_end"
-                id="report_date_end" placeholder="Date fin" [(ngModel)] = "endDate">
+            <input type="datetime-local" autocomplete="off" class="form-control ml-2" value="08/11/2020 23:59"
+                name="date_end" id="report_date_end" placeholder="Date fin" [(ngModel)]="endDate">
         </div>
-        <button (click)="printDate()" class="btn btn-sm btn-success ml-2 mb-2"><i class="fa fa-refresh"></i> Actualiser</button>
+        <button (click)="printDate()" class="btn btn-sm btn-success ml-2 mb-2"><i class="fa fa-refresh"></i>
+            Actualiser</button>
     </form>
     <div class="row">
         <div class="col-md-4 ml-0 mt-2 shadow-sm">
             <div class="panel panel-default panel-stats">
                 <div class="panel-heading">Liste des vehicules</div>
                 <div class="panel-body">
-                    <div class="device-line-rich">
+                    <div class="device-line-rich" *ngFor="let device of devices">
                         <div class="name">
-                            <b>Isuzu 75711-D-1</b> <a href="http://s4.gps-facile.com/#/d/359633101511090"><i
+                            <b>{{device['vehicleModel']}}</b> <a href="http://s4.gps-facile.com/#/d/359633101511090"><i
                                     class="fa fa-map-o"></i></a>
                         </div>
                         <div class="line">
-                            <span class="date"><i class="fa fa-clock-o"></i> 08/11/2020 13:35</span>
-                            <span class="odometer-today"><i class="fa fa-dashboard"></i> 0
+                            <span class="date"><i class="fa fa-clock-o"></i>{{device['timestamp'] * 1000 | date: 'short' }}</span>
+                            <span class="odometer-today"><i class="fa fa-dashboard"></i> {{device['distanceKM'] | number:'1.0-2'}}
                                 Km</span>
                             <span class="fuel-level-consumption"><i class="fa fa-cube"></i> 0.0L</span>
                         </div>
                         <div class="line">
-                            <span class="address"><span class="render-latlng event_line_address_34_94054__2_73339">Zaïo
-                                    ⵣⴰⵢⵢⵓ زايو, Pachalik de Zaio, Province de Nador إقليم الناظور, Oriental ⵜⴰⵏⴳⵎⵓⴹⵜ
-                                    الشرقية, 62903, Maroc(O)(C)</span></span>
+                            <span class="address"><span class="render-latlng event_line_address_34_94054__2_73339">{{device['address']}}</span></span>
                         </div>
                         <div class="line">
-                            <span class="fuel-level"><i class="fa fa-cube"></i>Niveau carburant <b>0.00L</b></span>
+                            <span class="fuel-level"><i class="fa fa-cube"></i>Niveau carburant <b>{{device['fuelLevel']}}</b></span>
                             <span class="odometer"><i class="fa fa-dashboard"></i>Kilométrage actuel
-                                <b>13,369.95Km</b></span>
+                                <b>{{device['odometerKM'] | number:'1.0-2'}}</b></span>
                         </div>
                         <i class="marker-signal">
                             <img src="/bundles/app/assets/images/markers/pin30_blue_dot.png" alt="">
                         </i>
-                    </div>
-                    <div class="device-line-rich">
-                        <div class="name">
-                            <b>Isuzu 76277-H-1</b> <a href="http://s4.gps-facile.com/#/d/359633101169683"><i
-                                    class="fa fa-map-o"></i></a>
-                        </div>
-                        <div class="line">
-                            <span class="date"><i class="fa fa-clock-o"></i> 08/11/2020 14:08</span>
-                            <span class="odometer-today"><i class="fa fa-dashboard"></i> 73.557
-                                Km</span>
-                            <span class="fuel-level-consumption"><i class="fa fa-cube"></i> 0.0L</span>
-                        </div>
-                        <div class="line">
-                            <span class="address"><span
-                                    class="render-latlng event_line_address_34_92797__5_01262">RP4102,
-                                    Oued Malha واد ملحة, Caïdat de Bab Berred, cercle de Bni Ahmed, Province de
-                                    Chefchaouen
-                                    ⵜⵛⴻⴼⵜⵛⴰⵡⴻⵏ إقليم شفشاون, Tanger-Tétouan-Al Hoceima ⵟⴰⵏⵊ-ⵟⵉⵜⴰⵡⵉⵏ-ⵍⵃⵓⵙⵉⵎⴰ طنجة تطوان
-                                    الحسيمة, 91052, Maroc(O)(C)</span></span>
-                        </div>
-                        <div class="line">
-                            <span class="fuel-level"><i class="fa fa-cube"></i>Niveau carburant <b>0.00L</b></span>
-                            <span class="odometer"><i class="fa fa-dashboard"></i>Kilométrage actuel
-                                <b>12,263.81Km</b></span>
-                        </div>
-                        <i class="marker-signal">
-                            <img src="/bundles/app/assets/images/markers/pin30_blue_dot.png" alt="">
-                        </i>
-                    </div>
-                    <div class="device-line-rich">
-                        <div class="name">
-                            <b>Isuzu 76280-H-1</b> <a href="http://s4.gps-facile.com/#/d/359633101251945"><i
-                                    class="fa fa-map-o"></i></a>
-                        </div>
-                        <div class="line">
-                            <span class="date"><i class="fa fa-clock-o"></i> 08/11/2020 13:33</span>
-                            <span class="odometer-today"><i class="fa fa-dashboard"></i> 125.049
-                                Km</span>
-                            <span class="fuel-level-consumption"><i class="fa fa-cube"></i> 0.0L</span>
-                        </div>
-                        <div class="line">
-                            <span class="address"><span class="render-latlng event_line_address_33_95894__5_02257">Ain
-                                    Chkef
-                                    عين الشقف, caïdat de Ain Chkef, cercle de Moulay Yacoub دائرة مولاي يعقوب, Province
-                                    de
-                                    Moulay Yacoub إقليم مولاي يعقوب, Fès-Meknès ⴼⴰⵙ-ⵎⴽⵏⴰⵙ فاس-مكناس, 30042,
-                                    Maroc(O)(C)</span></span>
-                        </div>
-                        <div class="line">
-                            <span class="fuel-level"><i class="fa fa-cube"></i>Niveau carburant <b>0.00L</b></span>
-                            <span class="odometer"><i class="fa fa-dashboard"></i>Kilométrage actuel
-                                <b>7,910.05Km</b></span>
-                        </div>
-                        <i class="marker-signal">
-                            <img src="/bundles/app/assets/images/markers/pin30_blue_dot.png" alt="">
-                        </i>
-                    </div>
-                    <div class="device-line-rich">
-                        <div class="name">
-                            <b>ISUZU 95156 H 1</b> <a href="http://s4.gps-facile.com/#/d/358480082369614"><i
-                                    class="fa fa-map-o"></i></a>
-                        </div>
-                        <div class="line">
-                            <span class="date"><i class="fa fa-clock-o"></i> 03/10/2020 11:10</span>
-                            <span class="odometer-today"><i class="fa fa-dashboard"></i> 26.08
-                                Km</span>
-                            <span class="fuel-level-consumption"><i class="fa fa-cube"></i> 0.0L</span>
-                        </div>
-                        <div class="line">
-                            <span class="address"><span class="render-latlng event_line_address_33_98131__6_81398">Douar
-                                    Hajja, El Youssoufia ⵍⵢⵓⵙⵓⴼⵉⵢⴰ اليوسفية, El Youssoufia اليوسفية, Rabat ⵔⴱⴰⵟ الرباط,
-                                    pachalik de Rabat, Préfecture de Rabat عمالة الرباط, Rabat-Salé-Kénitra
-                                    ⵔⴱⴰⵟ-ⵙⵍⴰ-ⵇⵏⵉⵟⵔⴰ
-                                    الرباط-سلا-القنيطرة, 10103, Maroc(O)(C)</span></span>
-                        </div>
-                        <div class="line">
-                            <span class="fuel-level"><i class="fa fa-cube"></i>Niveau carburant <b>0.00L</b></span>
-                            <span class="odometer"><i class="fa fa-dashboard"></i>Kilométrage actuel
-                                <b>4,491.25Km</b></span>
-                        </div>
-                        <i class="marker-signal">
-                            <img src="/bundles/app/assets/images/markers/error/pin30_blue_dot.png" alt="">
-                        </i>
-                    </div>
-                    <div class="device-line-rich">
-                        <div class="name">
-                            <b>Isuzu 95156-H-1</b> <a href="http://s4.gps-facile.com/#/d/135790246811200"><i
-                                    class="fa fa-map-o"></i></a>
-                        </div>
-                        <div class="line">
-                            <span class="date"><i class="fa fa-clock-o"></i> 08/11/2020 14:13</span>
-                            <span class="odometer-today"><i class="fa fa-dashboard"></i> 0
-                                Km</span>
-                            <span class="fuel-level-consumption"><i class="fa fa-cube"></i> 0.0L</span>
-                        </div>
-                        <div class="line">
-                            <span class="address"><span class="render-latlng event_line_address_">,0</span></span>
-                        </div>
-                        <div class="line">
-                            <span class="fuel-level"><i class="fa fa-cube"></i>Niveau carburant <b>L</b></span>
-                            <span class="odometer"><i class="fa fa-dashboard"></i>Kilométrage actuel <b></b></span>
-                        </div>
-                        <i class="marker-signal">
-                            <img src="/bundles/app/assets/images/markers/disconnected.png" alt="">
-                        </i>
-                    </div>
-                    <div class="device-line-rich">
-                        <div class="name">
-                            <b>Isuzu 95157-H-1</b> <a href="http://s4.gps-facile.com/#/d/359633101251960"><i
-                                    class="fa fa-map-o"></i></a>
-                        </div>
-                        <div class="line">
-                            <span class="date"><i class="fa fa-clock-o"></i> 08/11/2020 14:06</span>
-                            <span class="odometer-today"><i class="fa fa-dashboard"></i> 31.892
-                                Km</span>
-                            <span class="fuel-level-consumption"><i class="fa fa-cube"></i> 0.0L</span>
-                        </div>
-                        <div class="line">
-                            <span class="address"><span class="render-latlng event_line_address_33_95744__4_99033">Oulad
-                                    Tayeb أولاد الطيب, caïdat d'Oulad Tayeb, cercle de Fes Banlieue, Préfecture de Fès
-                                    عمالة
-                                    فاس, Fès-Meknès ⴼⴰⵙ-ⵎⴽⵏⴰⵙ فاس-مكناس, 30042, Maroc(O)(C)</span></span>
-                        </div>
-                        <div class="line">
-                            <span class="fuel-level"><i class="fa fa-cube"></i>Niveau carburant <b>0.00L</b></span>
-                            <span class="odometer"><i class="fa fa-dashboard"></i>Kilométrage actuel
-                                <b>13,364.94Km</b></span>
-                        </div>
-                        <i class="marker-signal">
-                            <img src="/bundles/app/assets/images/markers/pin30_blue_dot.png" alt="">
-                        </i>
-                    </div>
-
-
-                </div>
-            </div>
-        </div>
-
-        <div class="col-md-8 ml-0 mt-2">
-            <div class="shadow-sm panel-stats">
-                <div class="panel-heading">Kilométrage | Du 08/11/2020 00:00 Au 08/11/2020 23:59 </div>
-                <div class="panel-body">
-                    <table class="table table-hover">
-                        <tbody>
-                            <tr>
-                                <td>Kilométrage du jour</td>
-                                <td>229.59 Km</td>
-                            </tr>
-                            <tr>
-                                <td>Durée total</td>
-                                <td>6.48 h</td>
-                            </tr>
-                            <tr>
-                                <td>Kilométrage moyen</td>
-                                <td>
-                                    35.43 Km / H
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                    <div id="odometerChart" class = "chart"></div>
+                    <!-- </div> -->
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="col-md-8 ml-0 mt-2">
+        <div class="shadow-sm panel-stats">
+            <div class="panel-heading">Kilométrage | Du 08/11/2020 00:00 Au 08/11/2020 23:59 </div>
+            <div class="panel-body">
+                <table class="table table-hover">
+                    <tbody>
+                        <tr>
+                            <td>Kilométrage du jour</td>
+                            <td>229.59 Km</td>
+                        </tr>
+                        <tr>
+                            <td>Durée total</td>
+                            <td>6.48 h</td>
+                        </tr>
+                        <tr>
+                            <td>Kilométrage moyen</td>
+                            <td>
+                                35.43 Km / H
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div id="odometerChart" class="chart"></div>
+            </div>
+        </div>
+    </div>
+</div>
 </div>
