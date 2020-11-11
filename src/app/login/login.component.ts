@@ -1,9 +1,9 @@
-import { AuthService } from './../services/auth.service';
 import { AdminService } from "./../services/admin.service";
 
 import { Component, OnInit } from '@angular/core';
-import { UserService } from '../services/user.service';
 import { Router } from '@angular/router';
+import { SubUserService } from '../services/subuser.service';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -38,31 +38,15 @@ export class LoginComponent implements OnInit {
     "password": ""
   }
 
-  //reponce de rutern d api login admin
-  adminRep: any = {
-    accountID: "",
-    password: "",
-    isActive: false
-  }
-
-  //reponce de rutern d api login subUser
-  userRep: any = {
-    "userID": {
-      "accountID": "",
-      "userID": ""
-    },
-    "password": "",
-    "isActive": false
-  }
-
-  constructor(private userService: UserService,
+  constructor(private subUserService: SubUserService,
     private router: Router,
     private adminService: AdminService,
     private authService: AuthService) { }
 
 
   ngOnInit(): void {
-    this.adminService.isAdmin = this.isAdmin;
+    //kandon hadchi ghitbadal
+    this.authService.isAdmin = this.isAdmin;
     if (this.authService.isLoggedIn) {
       this.router.navigate(['position'])
     }
@@ -72,11 +56,11 @@ export class LoginComponent implements OnInit {
   signIn() {
     //ila kan is_subUser =true => rah subuser
     //sinon rah admin
-    this.subUser.userID.accountID = this.userName;
-    this.subUser.userID.userID = this.subuser;
+    this.subUser.userID.accountID= this.authService.user.accountID = this.userName;
+    this.subUser.userID.userID = this.authService.user.userID = this.subuser;
     this.subUser.password = this.passowrd;
-
-    this.userService.login(this.subUser)
+    this.authService.isAdmin=false;
+    this.subUserService.login(this.subUser)
       .subscribe(response => {
         //normalement x ghtafficta liha return d api
         this.x = response
@@ -84,20 +68,18 @@ export class LoginComponent implements OnInit {
         if (this.x.isActive) {
           this.authService.isLoggedIn = true;
           this.router.navigate(["position"]);
-          this.authService.isLoggedIn = true;
         }
         else { console.log("your account is deactivated") }
       }, error => {
         alert("erreur verifier les données inserer")
       })
-    //console.log(this.userName," / ",this.passowrd," / ",this.subuser," / ",this.is_subUser);
   }
 
   signInAsAdmin() {
     console.log(this.passowrd, " / ", this.userName);
-    this.admin.accountID = this.userName;
+    this.admin.accountID=this.authService.user.accountID = this.userName;
     this.admin.password = this.passowrd;
-
+    this.authService.isAdmin=true;
     this.adminService.login(this.admin)
       .subscribe(response => {
         //normalement x ghtafficta liha return d api

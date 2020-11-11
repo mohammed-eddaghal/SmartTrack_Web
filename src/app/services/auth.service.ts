@@ -6,6 +6,14 @@ import { Injectable } from '@angular/core';
 })
 export class AuthService {
 
+  isAdmin:boolean;
+  user={
+    
+      "accountID": "",
+      "userID": "",
+      "search": ""
+  }
+
   private _isLoggedIn:boolean = false;
 
   get isLoggedIn() : boolean {

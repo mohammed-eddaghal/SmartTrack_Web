@@ -11,9 +11,7 @@ import { DataService } from './data.service';
 @Injectable({
   providedIn: 'root'
 })
-export class UserService extends DataService {
-
-  // body:any;
+export class SubUserService extends DataService {
 
   constructor(http: HttpClient) { 
     super(http);
@@ -23,4 +21,9 @@ export class UserService extends DataService {
     return this.postFnc(this.apiPath + 'user/login', body);
   }
 
+  etatUser(body:any){
+    return this.postFnc(this.apiPath+'user/devices',body)
+  }
+
+  
 }

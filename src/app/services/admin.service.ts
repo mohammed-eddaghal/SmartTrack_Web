@@ -17,4 +17,8 @@ export class AdminService extends DataService{
   login(body: any) {
     return this.postFnc(this.apiPath + 'account/login', body);
   }
+
+  etatAdmin(body:any){
+    return this.postFnc(this.apiPath+'account/devices',body)
+  }
 }
