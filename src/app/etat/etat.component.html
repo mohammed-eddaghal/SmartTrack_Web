@@ -38,10 +38,10 @@
             <tr *ngFor="let etat of pagedItems" >
                 <td scope="row"><img class="mx-auto d-block" [src]="carLogo"> <p class="text-center"><small>{{etat.vehicleModel}}</small></p> </td>
                 <td>{{etat.latitude}}-{{etat.longitude}}</td>
-                <td>{{etat.timestamp|date:'dd/mm/yyyy HH:mm:ss'}}</td>
+                <td>{{etat.timestamp*1000|date:'dd/mm/yyyy HH:mm:ss'}}</td>
                 <td><img [src]="signalLogo"></td>
                 <td class="text-right">
-                    <div *ngIf="checkType(etat.activity_time)==1">
+                    <div *ngIf="checkType(etat.activity_time,etat.heading,etat.speedKPH)==1">
                         <img 
                          class="mx-auto d-block" 
                          width="40" 
@@ -51,7 +51,7 @@
                                 <small>connection perdue</small>
                             </p>
                     </div>
-                    <div *ngIf="checkType(etat.activity_time)==0">
+                    <div *ngIf="checkType(etat.activity_time,etat.heading,etat.speedKPH)==0">
                         <img
                          class="mx-auto d-block" 
                          width="40" 
@@ -61,7 +61,7 @@
                                 <small>en parking</small> {{etat.speedKPH}}<b>KM/H</b>
                             </p>
                     </div>
-                    <div *ngIf="checkType(etat.activity_time)==-1">
+                    <div *ngIf="checkType(etat.activity_time,etat.heading,etat.speedKPH)==-1">
                         <img
                          class="mx-auto d-block" 
                          width="40" 
