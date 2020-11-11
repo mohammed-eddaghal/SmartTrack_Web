@@ -26,4 +26,13 @@ export class AdminService extends DataService {
     };
     return this.postFnc(this.apiPath + 'account/devices', body);
   }
+
+  getDashboardDistanceStats(accountID: string, startTime: number, endTime: number){
+    var body = {
+      "accountID" : accountID,
+      "startTime" : startTime,
+      "endTime" : endTime
+    };
+    return this.postFnc(this.apiPath + 'dashboard/distance', body);
+  }
 }

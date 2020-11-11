@@ -36,17 +36,16 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.adminService.getDevices("demo", "").pipe(
       map((data: Device[]) => data.map(device => new Device().deserialize(device)))
-    )
-      .subscribe(
-        response => {
-          console.log('good', response);
-          this.devices = response;
-        },
-        error => {
-          console.log('bad', error);
-        }
-      );
-      //for address just wait
+    ).subscribe(
+      response => {
+        console.log('good', response);
+        this.devices = response;
+      },
+      error => {
+        console.log('bad', error);
+      }
+    );
+    //for address just wait
     /*for (var i = 0; i < this.devices.length; i++) {
       this.devices[i].address = "testing some addresses here";
       console.log('address', this.devices[i].address);
@@ -81,38 +80,20 @@ export class DashboardComponent implements OnInit {
       am4core.useTheme(am4themes_animated);
 
       let chart = am4core.create("odometerChart", am4charts.XYChart);
-      chart.data = [
-        {
-          "device": "Isuzu 75711-D-1",
-          "visits": 0.00
-        },
-        {
-          "device": "Isuzu 76277-H-1",
-          "visits": 73.56
-        },
-        {
-          "device": "Isuzu 76280-H-1",
-          "visits": 124.14
-        },
-        {
-          "device": "ISUZU 95156-H-1",
-          "visits": 0.00
-        },
-        {
-          "device": "Isuzu 95156-H-1",
-          "visits": 0.00
-        },
-        {
-          "device": "Isuzu 95157-H-1",
-          "visits": 31.89
-        },
 
-      ];
+      this.adminService.getDashboardDistanceStats("demo", 1432734421, 1601751334).subscribe(
+        response => {
+          chart.data = <any[]>response;
+        },
+        error => {
+          console.log('bad', error);
+        }
+      );
 
       // Create axes
 
       var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
-      categoryAxis.dataFields.category = "device";
+      categoryAxis.dataFields.category = "vehicleModel";
       categoryAxis.renderer.grid.template.location = 0;
       categoryAxis.renderer.minGridDistance = 30;
 
@@ -120,9 +101,9 @@ export class DashboardComponent implements OnInit {
 
       // Create series
       var series = chart.series.push(new am4charts.ColumnSeries());
-      series.dataFields.valueY = "visits";
-      series.dataFields.categoryX = "device";
-      series.name = "Visits";
+      series.dataFields.valueY = "distance";
+      series.dataFields.categoryX = "vehicleModel";
+      series.name = "distance";
       series.columns.template.tooltipText = "{categoryX}: [bold]{valueY}[/]";
 
       //tooltip bg color
