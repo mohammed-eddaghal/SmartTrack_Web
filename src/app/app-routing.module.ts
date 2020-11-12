@@ -1,5 +1,6 @@
+import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 import { EtatComponent } from './etat/etat.component';
-import { DeauthGuard } from './guards/deauth.guard';
+//import { DeauthGuard } from './guards/deauth.guard';
 import { PositionComponent } from './position/position.component';
 
 import { NgModule, Component } from '@angular/core';
@@ -18,6 +19,9 @@ const routes: Routes = [
   //,canActivate:[AuthGuard]
   },
   {path:"dashboard",component:DashboardComponent
+  //,canActivate:[AuthGuard]
+},
+{path:"action/utilisateurs",component:UtilisateursComponent
   //,canActivate:[AuthGuard]
 },
 ];

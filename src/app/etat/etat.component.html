@@ -1,7 +1,8 @@
 <br>
 
 <div class="container">
-    <div>
+    <div class="row">
+        <div class="col-6">
         <nav aria-label="Page navigation example">
             <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
                 <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
@@ -21,8 +22,18 @@
                 </li>
             </ul>
     </nav>
-    mohim hna f liman kant nawi ndir recherche b modele o peut etre chi boxdown ndir fih i7dad nb ligne f kola pagination
+    <!--
+        mohim hna f liman kant nawi ndir recherche b modele o peut etre chi boxdown ndir fih i7dad nb ligne f kola pagination
+    -->
+</div>
+<div class="col-6">
+    <div class="form-group">
+      <input type="text" #query (keyup)="onSearsh(query.value)"
+        class="form-control" aria-describedby="helpId" placeholder="searsh...">
+      <small id="helpId" class="form-text text-muted">searsh by vehicule model</small>
     </div>
+</div>
+</div>
 <table id="myTable" class="table table-striped">
     <thead class="thead-black">
         <tr>

@@ -24,20 +24,22 @@ export class EtatComponent implements OnInit {
   pagedItems: any[];
 
   etats: Etat[];
+  shershEtat:Etat[];
+
   constructor(public authService: AuthService,
     private subUserService: SubUserService,
     private adminService: AdminService,
-    private ngZone: NgZone,
+    //private ngZone: NgZone,
     private pagerService: PagerService) { }
 
   ngOnInit(): void {
-    var test = { "accountID": "admin", "userID": "", "search": "" };
+    //var test = { "accountID": "admin", "userID": "", "search": "" };
     if (!this.authService.isAdmin) {
       //this.subUserService.etatUser(test).subscribe(
       this.subUserService.etatUser(this.authService.user).subscribe(
         (response: Etat[]) => {
           //normalement x ghtafficta liha return d api
-          this.etats = response
+          this.shershEtat=this.etats = response
           if (this.etats.length == 0) {
             alert("n'y a pas des etats pour vous");
           } else {
@@ -55,7 +57,7 @@ export class EtatComponent implements OnInit {
       this.adminService.etatAdmin(this.authService.user).subscribe(
         (response: Etat[]) => {
           //normalement x ghtafficta liha return d api
-          this.etats = response
+          this.shershEtat=this.etats = response
           if (this.etats.length == 0) {
             alert("n'y a pas des etats pour vous");
           } else {
@@ -79,11 +81,20 @@ export class EtatComponent implements OnInit {
 
   setPage(page: number) {
     // get pager object from service
-    this.pager = this.pagerService.getPager(this.etats.length, page, 5);
+    this.pager = this.pagerService.getPager(this.shershEtat.length, page, 5);
 
     // get current page of items
-    this.pagedItems = this.etats.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    this.pagedItems = this.shershEtat.slice(this.pager.startIndex, this.pager.endIndex + 1);
   }
+
+  onSearsh(query){
+    this.shershEtat=(query)?this.etats.filter(
+      car=>car.vehicleModel.toLowerCase().includes(query)):this.etats;
+      this.setPage(1);
+    console.log(this.shershEtat);
+  }
+
+
 
   checkType(value: any,heading:number,speed:number): number {
     if (typeof (value) === 'string') {
@@ -157,5 +168,6 @@ export class EtatComponent implements OnInit {
     }
     return -1;
   }
+
 
 }

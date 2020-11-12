@@ -107,11 +107,15 @@
     <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarsDefault">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item dropdown" ngbDropdown>
-          <a class="nav-link dropdown-toggle" id="id01" ngbDropdownToggle routerLinkActive="active">Files</a>
+          <a class="nav-link dropdown-toggle" id="id01" ngbDropdownToggle routerLinkActive="active">Actions</a>
           <div class="dropdown-menu" aria-labelledby="id01" ngbDropdownMenu>
-            <a class="dropdown-item" >HTML</a>
-            <a class="dropdown-item" >TS</a>
-            <a class="dropdown-item" href="#">JS</a>
+            <a class="dropdown-item" routerLink="/action/utilisateurs">Utilisateurs</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" >Chauffeurs</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" >Vehicules</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" >Maintenances</a>
           </div>
         </li>
       </ul>

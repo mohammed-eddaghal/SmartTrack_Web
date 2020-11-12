@@ -19,6 +19,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { EtatComponent } from './etat/etat.component';
 import { RouterModule } from '@angular/router';
+import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 //import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -32,6 +33,7 @@ import { RouterModule } from '@angular/router';
     NavbarComponent,
     DashboardComponent,
     EtatComponent,
+    UtilisateursComponent,
 
   ],
   imports: [
