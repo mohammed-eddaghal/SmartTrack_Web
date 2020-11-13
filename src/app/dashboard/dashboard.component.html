@@ -1,18 +1,25 @@
 <div class="container-fluid">
-    <form class="form-inline form-report ng-pristine ng-valid mt-2 shadow-sm" action="" method="get">
+    <form class="form-inline form-report ng-pristine ng-valid mt-2 shadow-sm" [formGroup] = "dateForm" 
+    (ngSubmit)="onSubmit()">
+
         <div class="form-group ml-2 mb-2">
             <label>Date debut</label>
-            <input type="datetime-local" autocomplete="off" class="form-control ml-2" value="08/11/2020 00:00"
-                name="date_begin" id="report_date_begin" placeholder="Date debut" [(ngModel)]="startDate">
+            <input formControlName = "startDate" type="datetime-local" autocomplete="off" class="form-control ml-2" name="date_begin" id="report_date_begin" 
+            placeholder="Date debut">
 
         </div>
         <div class="form-group ml-2 mb-2">
             <label>Date fin</label>
-            <input type="datetime-local" autocomplete="off" class="form-control ml-2" value="08/11/2020 23:59"
-                name="date_end" id="report_date_end" placeholder="Date fin" [(ngModel)]="endDate">
+            <input formControlName= "endDate" type="datetime-local" autocomplete="off" class="form-control ml-2" name="date_end" id="report_date_end" 
+            placeholder="Date fin">
         </div>
-        <button (click)="printDate()" class="btn btn-sm btn-success ml-2 mb-2"><i class="fa fa-refresh"></i>
+        <button type = "submit" class="btn btn-sm btn-success ml-2 mb-2"><i class="fa fa-refresh"></i>
             Actualiser</button>
+            <div class="col-3" [hidden] = "dateError">
+                <small class="text-danger">
+                  date fin doit être supérieur à date début
+                </small>      
+              </div>
     </form>
     <div class="row">
         <div class="col-md-4 ml-0 mt-2 shadow-sm">
@@ -38,9 +45,9 @@
                             <span class="odometer"><i class="fa fa-dashboard"></i>Kilométrage actuel
                                 <b>{{device['odometerKM'] | number:'1.0-2'}}</b></span>
                         </div>
-                        <i class="marker-signal">
+                        <!-- <i class="marker-signal">
                             <img src="/bundles/app/assets/images/markers/pin30_blue_dot.png" alt="">
-                        </i>
+                        </i> -->
                     <!-- </div> -->
                 </div>
             </div>
@@ -49,22 +56,22 @@
 
     <div class="col-md-8 ml-0 mt-2">
         <div class="shadow-sm panel-stats">
-            <div class="panel-heading">Kilométrage | Du 08/11/2020 00:00 Au 08/11/2020 23:59 </div>
+            <div class="panel-heading">Kilométrage | Du {{this.startDate | date: 'short'}} Au {{this.endDate | date: 'short'}} </div>
             <div class="panel-body">
                 <table class="table table-hover">
                     <tbody>
                         <tr>
                             <td>Kilométrage du jour</td>
-                            <td>229.59 Km</td>
+                            <td>{{ totalDistance  | number:'1.0-2' }} KM</td>
                         </tr>
                         <tr>
                             <td>Durée total</td>
-                            <td>6.48 h</td>
+                            <td>{{ totalDuration / 60  | number:'1.0-2' }} h</td>
                         </tr>
                         <tr>
                             <td>Kilométrage moyen</td>
                             <td>
-                                35.43 Km / H
+                                {{ averageDistance  | number:'1.0-2' }} Km / H
                             </td>
                         </tr>
                     </tbody>

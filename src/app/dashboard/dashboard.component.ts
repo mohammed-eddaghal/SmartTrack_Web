@@ -11,6 +11,9 @@ import { MapsAPILoader, AgmMap, GoogleMapsAPIWrapper } from '@agm/core';
 
 import { map } from 'rxjs/operators';
 import { Device } from '../models/device.model';
+import { DashboardDistance } from '../models/dahboard.distance.model';
+import { FormBuilder, FormControl } from '@angular/forms';
+import { formatDate } from '@angular/common';
 
 declare var google: any;
 
@@ -26,25 +29,50 @@ export class DashboardComponent implements OnInit {
   private chart: am4charts.XYChart;
   devices: any = [];
   geocoder: any;
+  totalDuration: number;
+  totalDistance: number;
+  averageDistance: number;
+  dashboardDistance: DashboardDistance[];
+  dateError: boolean = true;
+  dateForm;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId,
     private zone: NgZone,
     private adminService: AdminService,
-    private mapsApiLoader: MapsAPILoader) { }
+    private mapsApiLoader: MapsAPILoader,
+    private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    this.chart = am4core.create("odometerChart", am4charts.XYChart);
+
     this.adminService.getDevices("demo", "").pipe(
       map((data: Device[]) => data.map(device => new Device().deserialize(device)))
     ).subscribe(
       response => {
-        console.log('good', response);
         this.devices = response;
       },
       error => {
-        console.log('bad', error);
       }
     );
+
+    this.startDate = new Date();
+    this.endDate = new Date();
+
+    this.startDate.setHours(0, 0, 0, 0);
+    this.endDate.setHours(23, 59, 59, 999);
+
+    this.getDashboardDistanceStats("demo", Math.floor(this.startDate.getTime() / 1000), Math.floor(this.endDate.getTime() / 1000));
+
+    console.log(this.startDate);
+
+    this.dateForm = this.formBuilder.group(
+      {
+        startDate: [formatDate(this.startDate, 'yyyy-MM-ddTHH:mm', 'en')],
+        endDate: [formatDate(this.endDate, 'yyyy-MM-ddTHH:mm', 'en')]
+      }
+    );
+
     //for address just wait
     /*for (var i = 0; i < this.devices.length; i++) {
       this.devices[i].address = "testing some addresses here";
@@ -59,10 +87,42 @@ export class DashboardComponent implements OnInit {
       // });
     }*/
   }
+  onSubmit() {
+    const formValue = this.dateForm.value;
+    this.startDate = new Date(formValue['startDate']);
+    this.endDate = new Date(formValue['endDate']);
 
-  printDate() {
-    console.log('start date is: ', new Date(this.startDate).getTime() / 1000);
-    console.log('end date is: ', new Date(this.endDate).getTime() / 1000);
+    let startTimestamp = new Date(this.startDate).getTime() / 1000;
+    let endTimestamp = new Date(this.endDate).getTime() / 1000;
+    
+    if (endTimestamp <= startTimestamp) {
+      this.dateError = true;
+    } else {
+      if (this.dateError) this.dateError = !this.dateError;
+      this.getDashboardDistanceStats("demo", startTimestamp, endTimestamp);
+    }
+
+  }
+
+  getDashboardDistanceStats(accountID, startDate, endDate) {
+    this.adminService.getDashboardDistanceStats(accountID, startDate, endDate).pipe(
+      map((data: DashboardDistance[]) => data.map(dd => new DashboardDistance().deserialize(dd)))
+    ).subscribe(
+      response => {
+        this.dashboardDistance = response;
+        this.chart.data = response;
+        this.totalDuration = response.map(rt => rt.running_time).reduce(function (x, y) {
+          return x + y;
+        });
+        this.totalDistance = response.map(d => d.distance).reduce(function (x, y) {
+          return x + y;
+        });
+        this.averageDistance = this.totalDistance / (this.totalDuration / 60);
+
+      },
+      error => {
+      }
+    );
   }
 
   // Run the function only in the browser
@@ -79,28 +139,18 @@ export class DashboardComponent implements OnInit {
     this.browserOnly(() => {
       am4core.useTheme(am4themes_animated);
 
-      let chart = am4core.create("odometerChart", am4charts.XYChart);
-
-      this.adminService.getDashboardDistanceStats("demo", 1432734421, 1601751334).subscribe(
-        response => {
-          chart.data = <any[]>response;
-        },
-        error => {
-          console.log('bad', error);
-        }
-      );
-
       // Create axes
 
-      var categoryAxis = chart.xAxes.push(new am4charts.CategoryAxis());
+      var categoryAxis = this.chart.xAxes.push(new am4charts.CategoryAxis());
       categoryAxis.dataFields.category = "vehicleModel";
       categoryAxis.renderer.grid.template.location = 0;
       categoryAxis.renderer.minGridDistance = 30;
 
-      var valueAxis = chart.yAxes.push(new am4charts.ValueAxis());
+      //despite this var never used in the code it's necessay for the chart
+      var valueAxis = this.chart.yAxes.push(new am4charts.ValueAxis());
 
       // Create series
-      var series = chart.series.push(new am4charts.ColumnSeries());
+      var series = this.chart.series.push(new am4charts.ColumnSeries());
       series.dataFields.valueY = "distance";
       series.dataFields.categoryX = "vehicleModel";
       series.name = "distance";
@@ -124,13 +174,13 @@ export class DashboardComponent implements OnInit {
       columnTemplate.strokeWidth = 2;
       columnTemplate.strokeOpacity = 1
       //disable logo appearance
-      chart.logo.__disabled = true;
+      this.chart.logo.__disabled = true;
 
       //you can use these two lines below to reduce width of columns
       // categoryAxis.renderer.cellStartLocation = 0.3;
       // categoryAxis.renderer.cellEndLocation = 0.6;
 
-      this.chart = chart;
+      // this.chart = chart;
     });
   }
 
