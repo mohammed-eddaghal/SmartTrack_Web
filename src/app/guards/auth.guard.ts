@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
       if(!this.authService.isLoggedIn)
       {
         this.route.navigate(['/']);
-        alert("il faut s'identifier!!! wach nta 7ma9");
+        // alert("il faut s'identifier!!! wach nta 7ma9");
       }
     return this.authService.isLoggedIn;
   }

@@ -1,9 +1,10 @@
+import { PagerService } from './services/pager.service';
 import { AuthGuard } from './guards/auth.guard';
 import { DeauthGuard } from './guards/deauth.guard';
 import { AuthService } from './services/auth.service';
 import { DataService } from './services/data.service';
 import { AdminService } from './services/admin.service';
-import { UserService } from './services/user.service';
+import { SubUserService } from './services/subuser.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 
@@ -17,6 +18,9 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
+import { EtatComponent } from './etat/etat.component';
+import { RouterModule } from '@angular/router';
+import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 //import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -27,6 +31,8 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
     PositionComponent,
     NavbarComponent,
     DashboardComponent,
+    EtatComponent,
+    UtilisateursComponent,
 
   ],
   imports: [
@@ -41,13 +47,14 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
     })
   ],
   providers: [
-    UserService,
+    SubUserService,
     DataService,
     AdminService,
     AuthService,
     AuthGuard,
     DeauthGuard,
-    GoogleMapsAPIWrapper
+    GoogleMapsAPIWrapper,
+    PagerService
   ],
   bootstrap: [AppComponent]
 })

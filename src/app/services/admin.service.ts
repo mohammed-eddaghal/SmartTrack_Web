@@ -19,20 +19,24 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'account/login', body);
   }
 
-  getDevices(accountID: string, search: string){
+  getDevices(accountID: string, search: string) {
     var body = {
-      "accountID" : accountID,
-      "search" : search
+      "accountID": accountID,
+      "search": search
     };
     return this.postFnc(this.apiPath + 'account/devices', body);
   }
 
-  getDashboardDistanceStats(accountID: string, startTime: number, endTime: number){
+  getDashboardDistanceStats(accountID: string, startTime: number, endTime: number) {
     var body = {
-      "accountID" : accountID,
-      "startTime" : startTime,
-      "endTime" : endTime
+      "accountID": accountID,
+      "startTime": startTime,
+      "endTime": endTime
     };
     return this.postFnc(this.apiPath + 'dashboard/distance', body);
+  }
+  
+  etatAdmin(body: any) {
+    return this.postFnc(this.apiPath + 'account/devices', body)
   }
 }

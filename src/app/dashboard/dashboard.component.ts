@@ -64,8 +64,6 @@ export class DashboardComponent implements OnInit {
 
     this.getDashboardDistanceStats("demo", Math.floor(this.startDate.getTime() / 1000), Math.floor(this.endDate.getTime() / 1000));
 
-    console.log(this.startDate);
-
     this.dateForm = this.formBuilder.group(
       {
         startDate: [formatDate(this.startDate, 'yyyy-MM-ddTHH:mm', 'en')],
