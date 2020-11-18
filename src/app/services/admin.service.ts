@@ -39,4 +39,20 @@ export class AdminService extends DataService {
   etatAdmin(body: any) {
     return this.postFnc(this.apiPath + 'account/devices', body)
   }
+
+  getVeiculs(body:any){
+    return this.postFnc(this.apiPath+'vehicles',body);
+  }
+
+  addUser(body:any){
+    return this.postFnc(this.apiPath+'add/user',body); 
+  }
+
+  getUsers(body:any){
+    return this.postFnc(this.apiPath+'findall/user',body); 
+  }
+
+  deleteUser(body:any){
+    return this.deleteFnc(this.apiPath+"delete/user",body);
+  }
 }

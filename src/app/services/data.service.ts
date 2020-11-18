@@ -46,8 +46,10 @@ export class DataService {
     );
   }
 
-  deleteFnc(apiPath: string, itemID: number) {
-    return this.http.delete(apiPath + itemID).pipe(
+  deleteFnc(apiPath: string, itemID: any) {
+    return this.http.delete(apiPath,{
+      observe:itemID
+    }).pipe(
       // eg. "map" without a dot before
       retry(1),
       // "catchError" instead "catch"

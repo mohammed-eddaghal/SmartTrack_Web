@@ -109,8 +109,9 @@
         <li class="nav-item dropdown" ngbDropdown>
           <a class="nav-link dropdown-toggle" id="id01" ngbDropdownToggle routerLinkActive="active">Actions</a>
           <div class="dropdown-menu" aria-labelledby="id01" ngbDropdownMenu>
-            <a class="dropdown-item" routerLink="/action/utilisateurs">Utilisateurs</a>
-            <div class="dropdown-divider"></div>
+            <div *ngIf="admin">
+            <a class="dropdown-item" routerLink="/action/utilisateurs" >Utilisateurs</a>
+            <div class="dropdown-divider"></div></div>
             <a class="dropdown-item" >Chauffeurs</a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" >Vehicules</a>
