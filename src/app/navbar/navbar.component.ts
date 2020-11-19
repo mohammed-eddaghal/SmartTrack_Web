@@ -7,16 +7,23 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./navbar.component.css']
 })
 export class NavbarComponent implements OnInit {
-  admin:boolean=false
-  constructor(private authService:AuthService) { }
-  isShow:boolean=false;
-  isNavbarCollapsed:boolean=true;
+
+  admin: boolean = false
+
+  constructor(private authService: AuthService) { }
+
+  isShow: boolean = false;
+
+  isNavbarCollapsed: boolean = true;
+
   ngOnInit(): void {
-    this.admin=this.authService.isAdmin;
+    this.admin = this.authService.isAdmin;
   }
-  onIsShow(){
-    this.isShow=!this.isShow;
+
+  onIsShow() {
+    this.isShow = !this.isShow;
   }
+
   logout() {
     this.authService.isLoggedIn = false;
     localStorage.clear();

@@ -88,7 +88,7 @@
   <div [ngbNavOutlet]="nav" class="mt-2"></div>-->
 
 
-<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+<!-- <nav class="navbar navbar-expand navbar-light bg-white shadow-sm">
   <a class="navbar-brand" routerLink="/position">
     <img src="../../assets/logo_photoshop.png" width="80" height="40" class="d-inline-block align-top">
   </a>
@@ -96,17 +96,17 @@
   <ul class="navbar-nav mr-auto">
     <li class="nav-item">
       <a class="nav-link" routerLink="/state" routerLinkActive="active">État</a>
-    </li>
-  </ul>
-  <ul class="navbar-nav mr-auto">
-    <li class="nav-item">
+    </li> -->
+<!-- </ul>
+  <ul class="navbar-nav mr-auto"> -->
+<!-- <li class="nav-item">
       <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">dashboard</a>
-    </li>
-  </ul>
+    </li> -->
+<!-- </ul> -->
 
-  <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarsDefault">
-    <ul class="navbar-nav mr-auto">
-      <li class="nav-item dropdown" ngbDropdown>
+<!-- <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarsDefault"> -->
+<!-- <ul class="navbar-nav mr-auto"> -->
+<!-- <li class="nav-item dropdown" ngbDropdown>
         <a class="nav-link dropdown-toggle" id="id01" ngbDropdownToggle routerLinkActive="active">Actions</a>
         <div class="dropdown-menu" aria-labelledby="id01" ngbDropdownMenu>
           <div *ngIf="admin">
@@ -119,13 +119,57 @@
           <div class="dropdown-divider"></div>
           <a class="dropdown-item">Maintenances</a>
         </div>
-      </li>
-    </ul>
-  </div>
+      </li> -->
+<!-- </ul> -->
+<!-- </div> -->
 
-  <ul class="navbar-nav mr-auto">
-    <li class="nav-item">
-      <a class="nav-link" routerLink="" routerLinkActive="active" (click) = "logout()">logout</a>
+<!-- <ul class="navbar-nav mr-auto"> -->
+<!-- <li class="nav-item">
+      <a class="nav-link" routerLink="" routerLinkActive="active" (click)="logout()">logout</a>
     </li>
   </ul>
+</nav> -->
+
+
+
+
+
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <a class="navbar-brand" routerLink="/position">
+    <img src="../../assets/logo_photoshop.png" width="80" height="40" class="d-inline-block align-top">
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/state" routerLinkActive="active">État</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">dashboard</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" routerLinkActive="active">
+          Actions
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" routerLink="/action/users" *ngIf="admin" routerLinkActive="active">Utilisateurs</a>
+          <div class="dropdown-divider" *ngIf="admin"></div>
+          <a class="dropdown-item">Chauffeurs</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item">Vehicules</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item">Maintenances</a>
+        </div>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" routerLink="" (click)="logout()">logout</a>
+      </li>
+    </ul>
+
+  </div>
 </nav>

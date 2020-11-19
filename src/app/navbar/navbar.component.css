@@ -1,0 +1,16 @@
+.navbar-nav>.active>a {
+  color: #fd6a02;
+  background-color: #fd6a02;
+}
+
+.nav-item>a:hover {
+  color: #fd6a02;
+}
+
+.dropdown-item.active {
+  background-color: #fd6a02;
+}
+
+.navbar-light .navbar-nav .show > .nav-link, .navbar-light .navbar-nav .active > .nav-link, .navbar-light .navbar-nav .nav-link.show, .navbar-light .navbar-nav .nav-link.active {
+    color:  #fd6a02;
+}
