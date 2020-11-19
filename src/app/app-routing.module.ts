@@ -11,19 +11,27 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 const routes: Routes = [
-  {path:"",component:LoginComponent},
-  {path:"etat",component:EtatComponent
-  //,canActivate:[AuthGuard]
+  { path: "", component: LoginComponent },
+  {
+    path: "state",
+    component: EtatComponent,
+    canActivate: [AuthGuard]
   },
-  {path:"position",component:PositionComponent
-  //,canActivate:[AuthGuard]
+  {
+    path: "position", 
+    component: PositionComponent, 
+    canActivate: [AuthGuard]
   },
-  {path:"dashboard",component:DashboardComponent
-  //,canActivate:[AuthGuard]
-},
-{path:"action/utilisateurs",component:UtilisateursComponent
-  //,canActivate:[AuthGuard]
-},
+  {
+    path: "dashboard", 
+    component: DashboardComponent, 
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "action/users", 
+    component: UtilisateursComponent, 
+    canActivate: [AuthGuard]
+  },
 ];
 
 @NgModule({

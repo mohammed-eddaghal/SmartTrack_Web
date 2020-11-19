@@ -48,7 +48,7 @@ export class LoginComponent implements OnInit {
     //kandon hadchi ghitbadal
     this.authService.isAdmin = this.isAdmin;
     if (this.authService.isLoggedIn) {
-      this.router.navigate(['position'])
+      this.router.navigate(['state'])
     }
   }
 
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
   signIn() {
     //ila kan is_subUser =true => rah subuser
     //sinon rah admin
-    this.subUser.userID.accountID= this.authService.user.accountID = this.userName;
+    this.subUser.userID.accountID = this.authService.user.accountID = this.userName;
     this.subUser.userID.userID = this.authService.user.userID = this.subuser;
     this.subUser.password = this.passowrd;
     this.authService.isAdmin=false;

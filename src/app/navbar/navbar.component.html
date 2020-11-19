@@ -88,37 +88,44 @@
   <div [ngbNavOutlet]="nav" class="mt-2"></div>-->
 
 
-  <nav class="navbar navbar-expand-lg navbar-light bg-light">
-    <a class="navbar-brand" routerLink="/position">
-        <img src="../../assets/logo_photoshop.png" width="80" height="40" class="d-inline-block align-top">
-      </a>
+<nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+  <a class="navbar-brand" routerLink="/position">
+    <img src="../../assets/logo_photoshop.png" width="80" height="40" class="d-inline-block align-top">
+  </a>
 
-      <ul class="navbar-nav mr-auto">
-      <li class="nav-item">
-        <a class="nav-link" routerLink="/etat" routerLinkActive="active">État</a>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/state" routerLinkActive="active">État</a>
     </li>
   </ul>
   <ul class="navbar-nav mr-auto">
     <li class="nav-item">
       <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">dashboard</a>
-  </li>
-</ul>
+    </li>
+  </ul>
 
-    <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarsDefault">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item dropdown" ngbDropdown>
-          <a class="nav-link dropdown-toggle" id="id01" ngbDropdownToggle routerLinkActive="active">Actions</a>
-          <div class="dropdown-menu" aria-labelledby="id01" ngbDropdownMenu>
-            <div *ngIf="admin">
-            <a class="dropdown-item" routerLink="/action/utilisateurs" >Utilisateurs</a>
-            <div class="dropdown-divider"></div></div>
-            <a class="dropdown-item" >Chauffeurs</a>
+  <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarsDefault">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item dropdown" ngbDropdown>
+        <a class="nav-link dropdown-toggle" id="id01" ngbDropdownToggle routerLinkActive="active">Actions</a>
+        <div class="dropdown-menu" aria-labelledby="id01" ngbDropdownMenu>
+          <div *ngIf="admin">
+            <a class="dropdown-item" routerLink="/action/users">Utilisateurs</a>
             <div class="dropdown-divider"></div>
-            <a class="dropdown-item" >Vehicules</a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" >Maintenances</a>
           </div>
-        </li>
-      </ul>
-    </div>
-  </nav>
+          <a class="dropdown-item">Chauffeurs</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item">Vehicules</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item">Maintenances</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="" routerLinkActive="active" (click) = "logout()">logout</a>
+    </li>
+  </ul>
+</nav>

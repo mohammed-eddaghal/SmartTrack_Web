@@ -15,7 +15,7 @@ import { Observable, throwError } from 'rxjs';
 })
 export class DataService {
   protected apiPath: string ='http://91.234.195.124:9090/api/';
-  //protected apiPath: string = 'http://localhost:9090/api/';
+  // protected apiPath: string = 'http://localhost:9090/api/';
 
   constructor(private http: HttpClient) { }
 

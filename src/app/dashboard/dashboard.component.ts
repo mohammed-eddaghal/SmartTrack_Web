@@ -14,6 +14,7 @@ import { Device } from '../models/device.model';
 import { DashboardDistance } from '../models/dahboard.distance.model';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { formatDate } from '@angular/common';
+import { AuthService } from '../services/auth.service';
 
 declare var google: any;
 
@@ -33,20 +34,21 @@ export class DashboardComponent implements OnInit {
   totalDistance: number;
   averageDistance: number;
   dashboardDistance: DashboardDistance[];
-  dateError: boolean = true;
+  dateErrorHidden: boolean = true;
   dateForm;
 
   constructor(
     @Inject(PLATFORM_ID) private platformId,
     private zone: NgZone,
     private adminService: AdminService,
+    public authService: AuthService,
     private mapsApiLoader: MapsAPILoader,
     private formBuilder: FormBuilder) { }
 
   ngOnInit() {
     this.chart = am4core.create("odometerChart", am4charts.XYChart);
 
-    this.adminService.getDevices("demo", "").pipe(
+    this.adminService.getDevices(this.authService.user.accountID, this.authService.user.search).pipe(
       map((data: Device[]) => data.map(device => new Device().deserialize(device)))
     ).subscribe(
       response => {
@@ -62,7 +64,7 @@ export class DashboardComponent implements OnInit {
     this.startDate.setHours(0, 0, 0, 0);
     this.endDate.setHours(23, 59, 59, 999);
 
-    this.getDashboardDistanceStats("demo", Math.floor(this.startDate.getTime() / 1000), Math.floor(this.endDate.getTime() / 1000));
+    this.getDashboardDistanceStats(this.authService.user.accountID, Math.floor(this.startDate.getTime() / 1000), Math.floor(this.endDate.getTime() / 1000));
 
     this.dateForm = this.formBuilder.group(
       {
@@ -92,18 +94,17 @@ export class DashboardComponent implements OnInit {
 
     let startTimestamp = new Date(this.startDate).getTime() / 1000;
     let endTimestamp = new Date(this.endDate).getTime() / 1000;
-    
     if (endTimestamp <= startTimestamp) {
-      this.dateError = true;
+      this.dateErrorHidden = false;
     } else {
-      if (this.dateError) this.dateError = !this.dateError;
-      this.getDashboardDistanceStats("demo", startTimestamp, endTimestamp);
+      if (!this.dateErrorHidden) this.dateErrorHidden = true;
+      this.getDashboardDistanceStats(this.authService.user.accountID, startTimestamp, endTimestamp);
     }
 
   }
 
   getDashboardDistanceStats(accountID, startDate, endDate) {
-    this.adminService.getDashboardDistanceStats(accountID, startDate, endDate).pipe(
+    this.adminService.getDashboardDistanceStats("demo", startDate, endDate).pipe(
       map((data: DashboardDistance[]) => data.map(dd => new DashboardDistance().deserialize(dd)))
     ).subscribe(
       response => {

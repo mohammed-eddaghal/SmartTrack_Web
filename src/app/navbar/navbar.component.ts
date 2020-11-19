@@ -17,5 +17,8 @@ export class NavbarComponent implements OnInit {
   onIsShow(){
     this.isShow=!this.isShow;
   }
-
+  logout() {
+    this.authService.isLoggedIn = false;
+    localStorage.clear();
+  }
 }
