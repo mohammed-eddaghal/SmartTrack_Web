@@ -1,0 +1,124 @@
+<!--(click)="onIsShow()
+
+[ngClass]="{
+                 'show':isShow
+             }"-->
+
+
+<!--<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img src="../../assets/logo_photoshop.png" width="80" height="40" class="d-inline-block align-top" alt="">
+  </a>
+  <form class="form-inline  ">
+    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+  </form>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+    aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="mr-auto"></div>
+    <ul class="navbar-nav my-2 my-lg-0">
+      <li class="nav-item active">
+        <a class="nav-link" routerLink="">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li ngbDropdown class="nav-item dropdown">
+        <a ngbDropdownAnchor 
+           class="nav-link dropdown-toggle" 
+           id="navbarDropdown" 
+           role="button" 
+           data-display="static"
+           data-toggle="dropdown" 
+           aria-haspopup="true" 
+           aria-expanded="false" 
+          >
+          Profile
+        </a>
+        <div ngbDropdownMenu 
+             class="dropdown-menu dropdown-menu-lg-right "
+             aria-labelledby="navbarDropdown"
+             >
+          <h6 class="dropdown-header">Dropdown header</h6>
+          <a routerLink="" class="dropdown-item" >Action</a>
+          <a class="dropdown-item" >Another action</a>
+        </div>
+
+      </li>
+      <li ngbDropdown class="nav-item">
+        <a href (click)="false" class="nav-link btn-warning" ngbDropdownToggle>Dropdown</a>
+        <div ngbDropdownMenu>
+          <button class="btn-warning" ngbDropdownItem>Action</button>
+          <button class="btn-warning" ngbDropdownItem>Another action</button>
+          <button class="btn-warning" ngbDropdownItem>Something else here</button>
+          <div class="dropdown-divider"></div>
+          <button ngbDropdownItem>Separated link</button>
+        </div>
+      </li>
+
+      
+
+    </ul>
+
+  </div>
+</nav>-->
+<!--<nav>
+<ul ngbNav #nav="ngbNav" [activeId]="2" class="nav-tabs justify-content-center">
+    <li [ngbNavItem]="1" class="btn-warning">
+      <a ngbNavLink>Simple</a>
+    </li>
+    <li [ngbNavItem]="2" class="btn-warning">
+      <a ngbNavLink><b>Fancy</b> title</a>
+    </li>
+    <li ngbDropdown class="nav-item">
+      <a href (click)="false" class="nav-link btn-warning" ngbDropdownToggle>Dropdown</a>
+      <div ngbDropdownMenu>
+        <button class="btn-warning" ngbDropdownItem>Action</button>
+        <button class="btn-warning" ngbDropdownItem>Another action</button>
+        <button class="btn-warning" ngbDropdownItem>Something else here</button>
+        <div class="dropdown-divider"></div>
+        <button ngbDropdownItem>Separated link</button>
+      </div>
+    </li>
+    <li ngbNavItem [disabled]="true" class="ml-auto">
+      <a ngbNavLink>Disabled</a>
+    </li>
+  </ul>
+</nav>
+  <div [ngbNavOutlet]="nav" class="mt-2"></div>-->
+
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" routerLink="/position">
+        <img src="../../assets/logo_photoshop.png" width="80" height="40" class="d-inline-block align-top">
+      </a>
+
+      <ul class="navbar-nav mr-auto">
+      <li class="nav-item">
+        <a class="nav-link" routerLink="/etat" routerLinkActive="active">État</a>
+    </li>
+  </ul>
+  <ul class="navbar-nav mr-auto">
+    <li class="nav-item">
+      <a class="nav-link" routerLink="/dashboard" routerLinkActive="active">dashboard</a>
+  </li>
+</ul>
+
+    <div [ngbCollapse]="isNavbarCollapsed" class="collapse navbar-collapse" id="navbarsDefault">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown" ngbDropdown>
+          <a class="nav-link dropdown-toggle" id="id01" ngbDropdownToggle routerLinkActive="active">Actions</a>
+          <div class="dropdown-menu" aria-labelledby="id01" ngbDropdownMenu>
+            <div *ngIf="admin">
+            <a class="dropdown-item" routerLink="/action/utilisateurs" >Utilisateurs</a>
+            <div class="dropdown-divider"></div></div>
+            <a class="dropdown-item" >Chauffeurs</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" >Vehicules</a>
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item" >Maintenances</a>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </nav>

@@ -1,0 +1,146 @@
+<div class="row m-3">
+  <!--<div class="col-md-5">
+      <a class="btn btn-success" routerLink="/client/add">
+          <i class="fa fa-plus" aria-hidden="true"></i> New Client
+      </a>
+  </div>-->
+  <div class="col-md-6">
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Nouveau Utilisateur</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="username">Nom Utilisateur</label>
+            <input type="text" [(ngModel)]="userName" name="username" id="username" class="form-control"
+              placeholder="username" #username_Admin="ngModel" minlength="10" maxlength="10" required
+              alt="nom Utilisateur">
+          </div>
+          <div class="form-group">
+            <label for="email">e-mail</label>
+            <input type="email" [(ngModel)]="mail" name="mail" id="email" class="form-control"
+              placeholder="email" #email="ngModel" minlength="10" maxlength="10" required
+              alt="nom Utilisateur">
+          </div>
+          <div class="form-group">
+            <label for="password">Mot de Passe</label>
+            <input type="text" [(ngModel)]="passwd" name="passwd" id="password" class="form-control"
+              placeholder="username" #passWd="ngModel" required alt="mot de passe">
+            {{passwd}}
+          </div>
+          <div class="form-check">
+            <input class="form-check-input" [(ngModel)]="isActive" #isactiv="ngModel" type="checkbox" name="isactiv" id="isactiv">
+            <label class="form-check-label" for="isactiv">
+              activated account
+            </label>
+          </div>
+          <br>
+          <div class="form-group">
+            <label for="carList">Vehicules</label>
+            <select [(ngModel)]="listVehicules" #listV="ngModel" name="listVehicul" multiple class="form-control" id="carList">
+              <option *ngFor="let vehicul of vehicules">{{vehicul.vehicleModel}}</option>
+              
+            </select>
+          </div>
+
+          <!--<div class="form-group">
+            <label for="dateOfBirth">Date of birth</label>
+            <div class="input-group">
+              <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker
+                #dp="ngbDatepicker">
+              <div class="input-group-append">
+                <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+              </div>
+            </div>
+          </div>
+        ----<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>-->
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div>
+    </ng-template>
+
+  </div>
+</div>
+
+
+
+<div class="card m-5">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-11">Gestion des utilisateurs </div>
+      <div class="col-1"><button class="btn btn-sm btn-success" (click)="open(content)">Nouveau</button></div>
+    </div>
+
+  </div>
+  <div class="card-body">
+    <div class="container">
+      <div class="row m3">
+        <table id="myTable" class="table table-striped">
+          <thead class="thead-black">
+              <tr>
+                  <th>Nom d'utilisateur</th>
+                  <th>Mot de Passe</th>
+                  <th>Email</th>
+                  <th>Nbr vehicules</th>
+                  <th>Active</th>
+                  <th class="text-center">Action</th>
+              </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let user of listUsers">
+                  <td>{{user.userID.userID}}</td>
+                  <td>XXX</td>
+                  <td>{{user.contactEmail}}</td>
+                  <td>XXX</td>
+                  <td *ngIf="user.isActive" style="color: green;"><b>OUI</b></td>
+                  <td *ngIf="!user.isActive" style="color:red;"><b>NON</b></td>
+                  <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;" role="button" aria-pressed="true">modifier</a>
+                    <a class="btn btn-danger btn-sm active" role="button" aria-pressed="true" (click)="suppUser(user.userUD.userID)">supprimer</a></td>
+                </tr>
+              </tbody>
+            </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!--<div class="card" style="width: 70rem;">
+  
+</div>
+
+
+<ng-template #content let-modal>
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Profile update</h4>
+      <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <form>
+        <div class="form-group">
+          <label for="dateOfBirth">Date of birth</label>
+          <div class="input-group">
+            <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker #dp="ngbDatepicker">
+            <div class="input-group-append">
+              <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+    </div>
+  </ng-template>
+  
+  <button class="btn btn-sm btn-outline-warning" (click)="open(content)">Launch demo modal</button>
+  
+  <hr>
+  
+  <pre>{{ closeResult }}</pre>-->

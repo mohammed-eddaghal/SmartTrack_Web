@@ -1,0 +1,90 @@
+<div class="container-fluid">
+  <div class="row no-gutter">
+    <!-- The image half -->
+    <div class="col-md-6 d-none d-md-flex bg-image"></div>
+    <!-- The content half -->
+    <div class="col-md-6 bg-light">
+      <div class="login d-flex align-items-center py-5">
+        <!-- form content-->
+        <div class="container">
+          <div class="row">
+            <div class="col-lg-10 col-xl-7 mx-auto text-center">
+              <img class="rounded" src="{{logoPath}}" width="300" height="200" />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-lg-10 col-xl-7 mx-auto">
+              <!--<h3 class="display-4">Split page!</h3>
+                <p class="text-muted mb-4">Create a login split page using Bootstrap 4.</p>-->
+              <!-- la formulaire -->
+              <form>
+                <!-- input d username -->
+                <div class="form-group mb-3">
+                  <input id="UserName" type="text" placeholder="nom d'utilisateur"
+                    class="form-control rounded-pill border-0 shadow-sm px-4" [(ngModel)]="userName" name="username"
+                    required minlength="3" [ngClass]="{
+                                'is-invalid':username_Admin.errors && username_Admin.touched,
+                                'is-valid':!username_Admin.errors && username_Admin.touched}" #username_Admin="ngModel">
+                </div>
+                <!-- inpute d subUser -->
+                <div class="form-group mb-3" [hidden]="isAdmin">
+                  <input id="subusername" type="text" placeholder="nom de sous-utilisateur" required="" autofocus=""
+                    class="form-control rounded-pill border-0 shadow-sm px-4" [(ngModel)]="subuser"
+                    #subusername="ngModel" required minlength="3" [ngClass]="{
+                                'is-invalid':subusername.errors && subusername.touched,
+                                'is-valid':!subusername.errors && subusername.touched}" name="subusername">
+                </div>
+                <!-- inpute d password -->
+                <div class="form-group mb-3">
+                  <input id="inputPassword" type="password" placeholder="Password"
+                    class="form-control rounded-pill border-0 shadow-sm px-4 text-primary" [(ngModel)]="passowrd"
+                    name="password" #passwd="ngModel" required minlength="3" [ngClass]="{
+                                'is-invalid':passwd.errors && passwd.touched,
+                                'is-valid':!passwd.errors && passwd.touched}">
+                </div>
+                <!-- <div class="custom-control custom-checkbox mb-3">
+                    <input id="customCheck1" type="checkbox" checked class="custom-control-input">
+                    <label for="customCheck1" class="custom-control-label">Remember password</label>
+                  </div>-->
+                <br>
+                <!-- input d toggle button (switch) -->
+                <div class="container">
+                  <div class="row">
+                    <div class="col-4">
+                      <div class="button b2" id="button-11">
+                        <input type="checkbox" class="checkbox" name="checkuser" (change)="showInput()"
+                          [(ngModel)]="checkuser" #check="ngModel">
+                        <div class="knobs">
+                          <span></span>
+                        </div>
+                        <div class="layer"></div>
+                      </div>
+                    </div>
+                    <div class="col align-self-center">
+                      <!--<div class="container">
+                                <div class="row align-items-center">-->
+                      <p>sous utilisateur</p>
+                    </div>
+                  </div>
+                </div>
+                <br><br>
+                <!-- button login -->
+                <!--button check cas sub-user-->
+                <div *ngIf="check.value">
+                  <button type="submit" class="btn btn-warning btn-block text-uppercase mb-2 rounded-pill shadow-sm"
+                    (click)="signIn()" [disabled]="username_Admin.invalid||subusername.invalid||passwd.invalid">Sign in
+                    as sub-user</button>
+                </div>
+                <!--button check cas admin-->
+                <div *ngIf="!check.value">
+                  <button type="submit" class="btn btn-warning btn-block text-uppercase mb-2 rounded-pill shadow-sm"
+                    (click)="signInAsAdmin()" [disabled]="username_Admin.invalid||passwd.invalid">Sign in as admin</button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div><!-- End -->
+      </div>
+    </div><!-- End -->
+  </div>
+</div>

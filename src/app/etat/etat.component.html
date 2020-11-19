@@ -1,0 +1,114 @@
+<br>
+
+<div class="container">
+    <div class="row">
+        <div class="col-7">
+        <nav aria-label="Page navigation example">
+            <ul *ngIf="pager.pages && pager.pages.length" class="pagination">
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a class="page-link btn-sm" (click)="setPage(1)">First</a>
+                </li>
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a class="page-link btn-sm" (click)="setPage(pager.currentPage - 1)">Previous</a>
+                </li>
+                <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                    <a class="page-link btn-sm" (click)="setPage(page)">{{page}}</a>
+                </li>
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a class="page-link btn-sm" (click)="setPage(pager.currentPage + 1)">Next</a>
+                </li>
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a class="page-link btn-sm" (click)="setPage(pager.totalPages)">Last</a>
+                </li>
+            </ul>
+    </nav>
+    <!--
+        mohim hna f liman kant nawi ndir recherche b modele o peut etre chi boxdown ndir fih i7dad nb ligne f kola pagination
+    -->
+</div>
+<div class="col-5">
+    <div class="form-group">
+      <input type="text" #query (keyup)="onSearsh(query.value)"
+        class="form-control" aria-describedby="helpId" placeholder="searsh...">
+      <small id="helpId" class="form-text text-muted">searsh by vehicule model</small>
+    </div>
+</div>
+</div>
+<table id="myTable" class="table table-striped">
+    <thead class="thead-black">
+        <tr>
+            <th>Balise / Vehicule</th>
+            <th>Dernière position</th>
+            <th>Date</th>
+            <th>Signale</th>
+            <th>Status</th>
+        </tr>
+        </thead>
+        <!--(dblclick)="deleteClient(client.id)"-->
+       <tbody>
+            <tr *ngFor="let etat of pagedItems" >
+                <td scope="row"><img class="mx-auto d-block" [src]="carLogo"> <p class="text-center"><small>{{etat.vehicleModel}}</small></p> </td>
+                <td>{{etat.latitude}}-{{etat.longitude}}</td>
+                <td>{{etat.timestamp*1000|date:'dd/mm/yyyy HH:mm:ss'}}</td>
+                <td><img [src]="signalLogo"></td>
+                <td class="text-right">
+                    <div *ngIf="checkType(etat.activity_time,etat.heading,etat.speedKPH)==1">
+                        <img 
+                         class="mx-auto d-block" 
+                         width="40" 
+                         height="40" 
+                         [src]="etatLogo">
+                            <p class="text-center">
+                                <small>connection perdue</small>
+                            </p>
+                    </div>
+                    <div *ngIf="checkType(etat.activity_time,etat.heading,etat.speedKPH)==0">
+                        <img
+                         class="mx-auto d-block" 
+                         width="40" 
+                         height="40" 
+                         [src]="etatLogo">
+                            <p class="text-center">
+                                <small>en parking</small> {{etat.speedKPH}}<b>KM/H</b>
+                            </p>
+                    </div>
+                    <div *ngIf="checkType(etat.activity_time,etat.heading,etat.speedKPH)==-1">
+                        <img
+                         class="mx-auto d-block" 
+                         width="40" 
+                         height="40" 
+                         [src]="etatLogo">
+                            <p class="text-center">
+                                <small>en marche</small> {{etat.speedKPH}}<b>KM/H</b>
+                            </p>
+                    </div>     
+                </td>
+            </tr>
+        </tbody>
+</table>
+
+</div>
+<div class="container">
+    <div>
+        <nav aria-label="Page navigation example">
+            <ul *ngIf="pager.pages && pager.pages.length" class="pagination justify-content-center">
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a class="page-link btn-sm" (click)="setPage(1)">First</a>
+                </li>
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a class="page-link btn-sm" (click)="setPage(pager.currentPage - 1)">Previous</a>
+                </li>
+                <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                    <a class="page-link btn-sm" (click)="setPage(page)">{{page}}</a>
+                </li>
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a class="page-link btn-sm" (click)="setPage(pager.currentPage + 1)">Next</a>
+                </li>
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a class="page-link btn-sm" (click)="setPage(pager.totalPages)">Last</a>
+                </li>
+            </ul>
+    </nav>
+    </div>
+
+<p>{{authService.isAdmin}}/{{authService.user|json}}</p>
