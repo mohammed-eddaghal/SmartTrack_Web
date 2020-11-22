@@ -7,7 +7,7 @@
   <div class="col-md-6">
     <ng-template #content let-modal>
       <div class="modal-header">
-        <h4 class="modal-title" id="modal-basic-title">Nouveau Utilisateur</h4>
+        <h4 class="modal-title" id="modal-basic-title">{{isUpdatingOrAdding}}</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -23,7 +23,7 @@
           <div class="form-group">
             <label for="email">e-mail</label>
             <input type="email" [(ngModel)]="mail" name="mail" id="email" class="form-control"
-              placeholder="email" #email="ngModel" minlength="10" maxlength="10" required
+              placeholder="email" #email="ngModel" minlength="10" required
               alt="nom Utilisateur">
           </div>
           <div class="form-group">
@@ -43,21 +43,9 @@
             <label for="carList">Vehicules</label>
             <select [(ngModel)]="listVehicules" #listV="ngModel" name="listVehicul" multiple class="form-control" id="carList">
               <option *ngFor="let vehicul of vehicules">{{vehicul.vehicleModel}}</option>
-              
+
             </select>
           </div>
-
-          <!--<div class="form-group">
-            <label for="dateOfBirth">Date of birth</label>
-            <div class="input-group">
-              <input id="dateOfBirth" class="form-control" placeholder="yyyy-mm-dd" name="dp" ngbDatepicker
-                #dp="ngbDatepicker">
-              <div class="input-group-append">
-                <button class="btn btn-outline-secondary calendar" (click)="dp.toggle()" type="button"></button>
-              </div>
-            </div>
-          </div>
-        ----<button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>-->
         </form>
       </div>
       <div class="modal-footer">
@@ -84,8 +72,8 @@
         <table id="myTable" class="table table-striped">
           <thead class="thead-black">
               <tr>
+                  <th><b>ID</b> d'utilisateur</th>
                   <th>Nom d'utilisateur</th>
-                  <th>Mot de Passe</th>
                   <th>Email</th>
                   <th>Nbr vehicules</th>
                   <th>Active</th>
@@ -95,13 +83,13 @@
               <tbody>
                 <tr *ngFor="let user of listUsers">
                   <td>{{user.userID.userID}}</td>
-                  <td>XXX</td>
+                  <td>{{user.contactName}}</td>
                   <td>{{user.contactEmail}}</td>
                   <td>XXX</td>
                   <td *ngIf="user.isActive" style="color: green;"><b>OUI</b></td>
                   <td *ngIf="!user.isActive" style="color:red;"><b>NON</b></td>
-                  <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;" role="button" aria-pressed="true">modifier</a>
-                    <a class="btn btn-danger btn-sm active" role="button" aria-pressed="true" (click)="suppUser(user.userUD.userID)">supprimer</a></td>
+                  <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;" (click)="open(content,user)" role="button" aria-pressed="true">modifier</a>
+                    <a class="btn btn-danger btn-sm active" role="button" aria-pressed="true" (click)="suppUser(user)">supprimer</a></td>
                 </tr>
               </tbody>
             </table>
@@ -110,7 +98,7 @@
   </div>
 </div>
 <!--<div class="card" style="width: 70rem;">
-  
+
 </div>
 
 
@@ -138,9 +126,9 @@
       <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
     </div>
   </ng-template>
-  
+
   <button class="btn btn-sm btn-outline-warning" (click)="open(content)">Launch demo modal</button>
-  
+
   <hr>
-  
+
   <pre>{{ closeResult }}</pre>-->

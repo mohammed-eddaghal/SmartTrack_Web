@@ -14,7 +14,7 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
-  protected apiPath: string ='http://91.234.195.124:9090/api/';
+  protected apiPath = 'http://91.234.195.124:9090/api/';
   // protected apiPath: string = 'http://localhost:9090/api/';
 
   constructor(private http: HttpClient) { }
@@ -38,7 +38,7 @@ export class DataService {
   }
 
   putFnc(apiPath: string, item) {
-    return this.http.put(apiPath + item.id, item).pipe(
+    return this.http.put(apiPath, item).pipe(
       // eg. "map" without a dot before
       retry(1),
       // "catchError" instead "catch"
@@ -47,9 +47,7 @@ export class DataService {
   }
 
   deleteFnc(apiPath: string, itemID: any) {
-    return this.http.delete(apiPath,{
-      observe:itemID
-    }).pipe(
+    return this.http.delete(apiPath + itemID).pipe(
       // eg. "map" without a dot before
       retry(1),
       // "catchError" instead "catch"
@@ -66,7 +64,7 @@ export class DataService {
       // server-side error
       errorMessage = `${error.error.message}`;
     }
-    console.log(error.status === 404); //in not found case will print true 
+    console.log(error.status === 404); // in not found case will print true
     console.log(errorMessage); // for example message will be "le compte n'est pas trouvé"
     return throwError(errorMessage);
   }

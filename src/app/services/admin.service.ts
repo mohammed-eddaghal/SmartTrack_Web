@@ -35,7 +35,7 @@ export class AdminService extends DataService {
     };
     return this.postFnc(this.apiPath + 'dashboard/distance', body);
   }
-  
+
   etatAdmin(body: any) {
     return this.postFnc(this.apiPath + 'account/devices', body)
   }
@@ -45,14 +45,18 @@ export class AdminService extends DataService {
   }
 
   addUser(body:any){
-    return this.postFnc(this.apiPath+'add/user',body); 
+    return this.postFnc(this.apiPath+'add/user',body);
   }
 
   getUsers(body:any){
-    return this.postFnc(this.apiPath+'findall/user',body); 
+    return this.postFnc(this.apiPath+'findall/user',body);
   }
 
   deleteUser(body:any){
-    return this.deleteFnc(this.apiPath+"delete/user",body);
+    return this.deleteFnc(this.apiPath+"delete/user/",body);
+  }
+
+  updatUser(body:any){
+    return this.putFnc(this.apiPath+"update/user",body);
   }
 }
