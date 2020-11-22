@@ -21,12 +21,14 @@ export class UtilisateursComponent implements OnInit {
   isActive:boolean=false;
 
   listUsers:any;
+  taillListUsers:number=-1;
 
   constructor(private modalService: NgbModal,
               private authService:AuthService,
               private adminService:AdminService) { }
 
   ngOnInit(): void {
+    //this.listVehicules=["Citroen 29785-A-17"];
     this.adminService.getVeiculs({accountID:this.authService.user.accountID}).subscribe(resultat=>{
       this.vehicules=resultat;
       console.log( JSON.stringify( resultat))
@@ -47,8 +49,14 @@ export class UtilisateursComponent implements OnInit {
     else {
       this.isUpdatingOrAdding="Modifier Un Utilisateur";
       this.mail=user.contactEmail;
-      this.userName=user.userID.userID;
+      this.userName=user.contactName;
+      this.passwd=user.password;
       this.isActive=user.isActive;
+      //this.listVehicules=["29557-A-17 peugeot208"];
+      //this.listVehicules=user.devices.userDeviceID.deviceID;
+      //console.log(user);
+      //for(let device in  user.devices){
+      //console.log(device);}
       console.log(user);
       console.log("test modifier");
     }
@@ -59,6 +67,7 @@ export class UtilisateursComponent implements OnInit {
 
       if (user==null){
         this.ajoutUtilisateur();
+        this.getAllUsers();
         console.log("function d'ajout");
       }
       else {
@@ -89,11 +98,11 @@ export class UtilisateursComponent implements OnInit {
     this.adminService.updatUser({
         "accountID": this.authService.user.accountID,
         "userID": body.userID.userID,
-        "password" : "xxxx",
-        "name" : "hisName",
-        "email" : "mail@mail.com",
-        "active" : true,
-        "devices" : []
+        "password" : body.password,
+        "name" : this.userName,
+        "email" : this.mail,
+        "active" : this.isActive,
+        "devices" : this.listVehicules
       }
     ).subscribe(rep=>{
       console.log(rep);
@@ -109,6 +118,7 @@ export class UtilisateursComponent implements OnInit {
   }
 
   ajoutUtilisateur(){
+    console.log(this.listVehicules);
     this.adminService.addUser({
       "accountID": this.authService.user.accountID,
       "userID": this.userName+Date.now() % 10000,
@@ -122,7 +132,7 @@ export class UtilisateursComponent implements OnInit {
      console.log(rep)},error=>{
       console.error(error);
     })
-    this.getAllUsers();
+    //this.getAllUsers();
     this.mail="";
     this.passwd="";
     this.listVehicules=[];
@@ -136,6 +146,9 @@ export class UtilisateursComponent implements OnInit {
     this.adminService.getUsers({"accountID":this.authService.user.accountID}).subscribe(
       rep=>{
         this.listUsers=rep;
+        this.taillListUsers=this.listUsers.length;
+        console.log("nv getAllUsers");
+
       },err=>{
         console.error(err)
       }
@@ -143,10 +156,10 @@ export class UtilisateursComponent implements OnInit {
   }
 
   suppUser(userid){
-    console.log(userid.userID.userID);
-    this.adminService.deleteUser(userid.userID.userID).subscribe(rep=>{
-      //this.listUsers=rep;
-
+    console.log(userid);
+    this.adminService.deleteUser({"accountID":this.authService.user.accountID,"userID":userid}).subscribe(rep=>{
+      console.log(rep);
+      this.getAllUsers();
     },err=>{
       console.error("delete !!!")
     });

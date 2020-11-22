@@ -29,8 +29,7 @@
           <div class="form-group">
             <label for="password">Mot de Passe</label>
             <input type="text" [(ngModel)]="passwd" name="passwd" id="password" class="form-control"
-              placeholder="username" #passWd="ngModel" required alt="mot de passe">
-            {{passwd}}
+              placeholder="mot de passe" #passWd="ngModel" required alt="mot de passe">
           </div>
           <div class="form-check">
             <input class="form-check-input" [(ngModel)]="isActive" #isactiv="ngModel" type="checkbox" name="isactiv" id="isactiv">
@@ -42,7 +41,7 @@
           <div class="form-group">
             <label for="carList">Vehicules</label>
             <select [(ngModel)]="listVehicules" #listV="ngModel" name="listVehicul" multiple class="form-control" id="carList">
-              <option *ngFor="let vehicul of vehicules">{{vehicul.vehicleModel}}</option>
+              <option *ngFor="let vehicul of vehicules" >{{vehicul.vehicleModel}}</option>
 
             </select>
           </div>
@@ -74,8 +73,9 @@
               <tr>
                   <th><b>ID</b> d'utilisateur</th>
                   <th>Nom d'utilisateur</th>
-                  <th>Email</th>
-                  <th>Nbr vehicules</th>
+                  <th class="text-center">Email</th>
+                  <th class="text-center">Password</th>
+                  <th class="text-center">Nbr vehicules</th>
                   <th>Active</th>
                   <th class="text-center">Action</th>
               </tr>
@@ -85,14 +85,16 @@
                   <td>{{user.userID.userID}}</td>
                   <td>{{user.contactName}}</td>
                   <td>{{user.contactEmail}}</td>
-                  <td>XXX</td>
-                  <td *ngIf="user.isActive" style="color: green;"><b>OUI</b></td>
-                  <td *ngIf="!user.isActive" style="color:red;"><b>NON</b></td>
+                  <td class="text-center">{{user.password}}</td>
+                  <td class="text-center">{{user.devices.length}}</td>
+                  <td class="text-center" *ngIf="user.isActive" style="color: green;"><b>OUI</b></td>
+                  <td class="text-center" *ngIf="!user.isActive" style="color:red;"><b>NON</b></td>
                   <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;" (click)="open(content,user)" role="button" aria-pressed="true">modifier</a>
-                    <a class="btn btn-danger btn-sm active" role="button" aria-pressed="true" (click)="suppUser(user)">supprimer</a></td>
+                    <a class="btn btn-danger btn-sm active" role="button" aria-pressed="true" (click)="suppUser(user.userID.userID)">supprimer</a></td>
                 </tr>
               </tbody>
             </table>
+            <div *ngIf="taillListUsers==0"><p>il n'y a pas d'utilisateurs</p></div>
       </div>
     </div>
   </div>

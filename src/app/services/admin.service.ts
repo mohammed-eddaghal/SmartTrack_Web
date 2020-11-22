@@ -53,7 +53,7 @@ export class AdminService extends DataService {
   }
 
   deleteUser(body:any){
-    return this.deleteFnc(this.apiPath+"delete/user/",body);
+    return this.postFnc(this.apiPath+"delete/user/",body);
   }
 
   updatUser(body:any){
