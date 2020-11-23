@@ -8,6 +8,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { ReportComponent } from './report/report.component';
 
 
 const routes: Routes = [
@@ -31,6 +32,11 @@ const routes: Routes = [
     path: "action/users", 
     component: UtilisateursComponent, 
     canActivate: [AuthGuard]
+  },
+  {
+    path: "report", 
+    component: ReportComponent, 
+    // canActivate: [AuthGuard]
   },
 ];
 
