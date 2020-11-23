@@ -9,6 +9,7 @@ import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {ChauffeurComponent} from './chauffeur/chauffeur.component';
+import { ReportComponent } from './report/report.component';
 
 
 const routes: Routes = [
@@ -37,6 +38,11 @@ const routes: Routes = [
     path: "action/chauffeur",
     component: ChauffeurComponent,
     canActivate: [AuthGuard]
+  },
+  {
+    path: "report",
+    component: ReportComponent,
+    // canActivate: [AuthGuard]
   },
 ];
 

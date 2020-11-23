@@ -23,7 +23,6 @@ export class AuthService {
 
   set isLoggedIn(newStatus : boolean) {
     localStorage.setItem('loggedIn', newStatus.toString());
-    localStorage.setItem('isAdmin', newStatus.toString());
     this._isLoggedIn = newStatus;
     if(newStatus == true) {
       localStorage.setItem('accountID', this.user.accountID);

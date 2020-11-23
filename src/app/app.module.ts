@@ -19,9 +19,9 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { EtatComponent } from './etat/etat.component';
-import { RouterModule } from '@angular/router';
 import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 import { ChauffeurComponent } from './chauffeur/chauffeur.component';
+import { ReportComponent } from './report/report.component';
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 //import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -35,7 +35,7 @@ import { ChauffeurComponent } from './chauffeur/chauffeur.component';
     EtatComponent,
     UtilisateursComponent,
     ChauffeurComponent,
-
+    ReportComponent,
   ],
   imports: [
     BrowserModule,
