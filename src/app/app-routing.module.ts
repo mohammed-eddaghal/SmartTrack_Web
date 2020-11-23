@@ -8,6 +8,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import {ChauffeurComponent} from './chauffeur/chauffeur.component';
 
 
 const routes: Routes = [
@@ -18,18 +19,23 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "position", 
-    component: PositionComponent, 
+    path: "position",
+    component: PositionComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: "dashboard", 
-    component: DashboardComponent, 
+    path: "dashboard",
+    component: DashboardComponent,
     canActivate: [AuthGuard]
   },
   {
-    path: "action/users", 
-    component: UtilisateursComponent, 
+    path: "action/users",
+    component: UtilisateursComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "action/chauffeur",
+    component: ChauffeurComponent,
     canActivate: [AuthGuard]
   },
 ];

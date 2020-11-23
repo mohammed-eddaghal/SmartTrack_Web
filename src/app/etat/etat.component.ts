@@ -33,8 +33,10 @@ export class EtatComponent implements OnInit {
     private pagerService: PagerService) { }
 
   ngOnInit(): void {
-    //var test = { "accountID": "admin", "userID": "", "search": "" };
+    var test = { "accountID": "admin", "userID": "", "search": "" };
+    test=this.authService.user;
     if (!this.authService.isAdmin) {
+     // test=this.authService.user;
       //this.subUserService.etatUser(test).subscribe(
       this.subUserService.etatUser(this.authService.user).subscribe(
         (response: Etat[]) => {

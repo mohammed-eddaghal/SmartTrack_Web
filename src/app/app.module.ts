@@ -21,6 +21,7 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { EtatComponent } from './etat/etat.component';
 import { RouterModule } from '@angular/router';
 import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
+import { ChauffeurComponent } from './chauffeur/chauffeur.component';
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 //import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -33,6 +34,7 @@ import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
     DashboardComponent,
     EtatComponent,
     UtilisateursComponent,
+    ChauffeurComponent,
 
   ],
   imports: [
