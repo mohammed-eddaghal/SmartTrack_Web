@@ -1,1 +1,105 @@
-<p>chauffeur works!</p>
+<div class="row m-3">
+  <!--<div class="col-md-5">
+      <a class="btn btn-success" routerLink="/client/add">
+          <i class="fa fa-plus" aria-hidden="true"></i> New Client
+      </a>
+  </div>-->
+  <div class="col-md-6">
+    <ng-template #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{isUpdatingOrAdding}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="nomDriver">Nom Chauffeur</label>
+            <input type="text" [(ngModel)]="driverName" name="nomDriver" id="nomDriver" class="form-control"
+                   placeholder="Nom Chauffeur" #username_Admin="ngModel" minlength="4" required
+                   alt="Nom Chauffeur">
+          </div>
+          <div class="form-group">
+            <label for="tele">Téléphone</label>
+            <input type="tel" [(ngModel)]="tele" name="tele" id="tele" class="form-control"
+                   placeholder="Téléphone" #email="ngModel" minlength="10" maxlength="10" required
+                   alt="Téléphone">
+          </div>
+          <div class="form-group">
+            <label for="badge">Badge</label>
+            <input type="text" [(ngModel)]="badge" name="badge" id="badge" class="form-control"
+                   placeholder="Badge" #passWd="ngModel" required alt="Badge">
+          </div>
+          <div class="form-group">
+            <label for="add">Addresse</label>
+            <input type="text" [(ngModel)]="adresse" name="add" id="add" class="form-control"
+                   placeholder="Addresse" #passWd="ngModel" required alt="Addresse">
+          </div>
+          <div class="form-group">
+            <label for="desc">Description</label>
+            <input type="text" [(ngModel)]="description" name="desc" id="desc" class="form-control"
+                   placeholder="Description" #passWd="ngModel" required alt="Description">
+          </div>
+          <div class="form-group">
+            <label for="nots">Notes</label>
+            <textarea [(ngModel)]="note" name="nots" id="nots" class="form-control"
+                      placeholder="Notes..." #passWd="ngModel" required alt="Notes"></textarea>
+          </div>
+          <div class="form-group">
+            <label class="mr-sm-2" for="inlineFormCustomSelect">Balise / Vehicule</label>
+            <select [(ngModel)]="modelCar" #modelC="ngModel" name="modelC"  class="custom-select mr-sm-2" id="inlineFormCustomSelect">
+              <!--<option [selected]="true" [disabled]>Choose...</option>-->
+              <option *ngFor="let vehicule of vehicules"  value="{{vehicule.deviceID}}">{{vehicule.vehicleModel}}</option>
+            </select>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+      </div>
+    </ng-template>
+
+  </div>
+</div>
+
+
+
+<div class="card m-5">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-11">Gestion des chauffeurs </div>
+      <div class="col-1"><button class="btn btn-sm btn-success" (click)="open(content)">Nouveau</button></div>
+    </div>
+
+  </div>
+  <div class="card-body">
+    <div class="container">
+      <div class="row m3">
+        <table id="myTable" class="table table-striped">
+          <thead class="thead-black">
+          <tr>
+            <th>Nom de chauffeur</th>
+            <th class="text-center">Télephone</th>
+            <th class="text-center">Date Création</th>
+            <th class="text-center">Balise/vehicules</th>
+            <th class="text-center">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr *ngFor="let driver of listDriver">
+            <td>{{driver.displayName}}</td>
+            <td>{{driver.contactPhone}}</td>
+            <td class="text-center">makinch f resultat api</td>
+            <td class="text-center">{{getDeviceName(driver.deviceID)}}</td>
+            <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;" (click)="open(content,driver)" role="button" aria-pressed="true">modifier</a>
+              <a class="btn btn-danger btn-sm active" role="button" aria-pressed="true" (click)="suppDriver(driver.driverID.driverID)">supprimer</a></td>
+          </tr>
+          </tbody>
+        </table>
+        <div *ngIf="taillListDriver==0"><p>il n'y a pas du chauffeur</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+

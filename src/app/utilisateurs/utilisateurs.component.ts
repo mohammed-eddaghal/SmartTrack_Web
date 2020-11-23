@@ -40,6 +40,7 @@ export class UtilisateursComponent implements OnInit {
       error => {
       }
     );
+    this.getAllUsers();
     //   this.adminService.getVeiculs({accountID:this.authService.user.accountID}).subscribe(resultat=>{
     //     this.vehicules=resultat;
     //     console.log( JSON.stringify( resultat))
@@ -67,9 +68,8 @@ export class UtilisateursComponent implements OnInit {
       //this.listVehicules=["29557-A-17 peugeot208"];
       //this.listVehicules=user.devices.userDeviceID.deviceID;
       //console.log(user);
-      //for(let device in  user.devices){
-      //console.log(device);}
-      console.log(user);
+
+      console.log(user.devices[0].userDeviceID.deviceID);
       console.log("test modifier");
     }
 
@@ -139,7 +139,6 @@ export class UtilisateursComponent implements OnInit {
       "email": this.mail,
       "active": this.isActive,
       "devices": this.listVehicules
-      console.log(this.listVehicules);
     }).subscribe(rep => {
       //this.getAllUsers();
       console.log(rep)

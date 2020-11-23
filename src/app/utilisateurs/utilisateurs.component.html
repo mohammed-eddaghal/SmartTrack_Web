@@ -42,6 +42,7 @@
             <label for="carList">Vehicules</label>
             <select [(ngModel)]="listVehicules" #listV="ngModel" name="listVehicul" multiple class="form-control" id="carList">
               <option *ngFor="let vehicul of vehicules" value="{{vehicul.deviceID}}">{{vehicul.vehicleModel}}</option>
+              <option value="opel" [selected]="true" >Opel</option>
 
             </select>
           </div>

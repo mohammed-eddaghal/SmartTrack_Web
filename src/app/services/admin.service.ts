@@ -57,12 +57,24 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath+'add/user',body);
   }
 
+  addDriver(body:any){
+    return this.postFnc(this.apiPath+'add/driver',body);
+  }
+
   getUsers(body:any){
     return this.postFnc(this.apiPath+'findall/user',body);
   }
 
+  getChauffeurs(body:any){
+    return this.postFnc(this.apiPath+'findall/driver',body);
+  }
+
   deleteUser(body:any){
     return this.postFnc(this.apiPath+"delete/user/",body);
+  }
+
+  deleteDriver(body:any){
+    return this.postFnc(this.apiPath+"delete/driver/",body);
   }
 
   updatUser(body:any){
