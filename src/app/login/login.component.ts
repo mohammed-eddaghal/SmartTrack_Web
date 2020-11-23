@@ -67,7 +67,7 @@ export class LoginComponent implements OnInit {
 
         if (this.x.isActive) {
           this.authService.isLoggedIn = true;
-          this.router.navigate(["position"]);
+          this.router.navigate(["state"]);
         }
         else { console.log("your account is deactivated") }
       }, error => {
@@ -88,7 +88,7 @@ export class LoginComponent implements OnInit {
 
         if (this.x.isActive) {
           this.authService.isLoggedIn = true;
-          this.router.navigate(["position"]);
+          this.router.navigate(["state"]);
         }
         else { console.log("maakinch") }
 

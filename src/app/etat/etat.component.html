@@ -27,7 +27,7 @@
         </div>
         <div class="col-4">
             <div class="form-group">
-                <input type="text" #query (keyup)="onSearsh(query.value)" class="form-control" aria-describedby="helpId"
+                <input type="text" #query (keyup)="onSearsh(query.value.toLowerCase())" class="form-control" aria-describedby="helpId"
                     placeholder="ex: isuzu 21568-a-1">
                 <!-- <small id="helpId" class="form-text text-muted">chercher par modèle</small> -->
             </div>

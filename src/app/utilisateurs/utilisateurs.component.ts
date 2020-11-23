@@ -11,6 +11,7 @@ import { AuthService } from '../services/auth.service';
 })
 export class UtilisateursComponent implements OnInit {
   closeResult:string;
+  isUpdatingOrAdding:string;
 
   vehicules:any;
   listVehicules:any;
@@ -18,27 +19,64 @@ export class UtilisateursComponent implements OnInit {
   userName: any;
   passwd:any;
   isActive:boolean=false;
-  
+
   listUsers:any;
+  taillListUsers:number=-1;
 
   constructor(private modalService: NgbModal,
               private authService:AuthService,
               private adminService:AdminService) { }
 
   ngOnInit(): void {
+    //this.listVehicules=["Citroen 29785-A-17"];
     this.adminService.getVeiculs({accountID:this.authService.user.accountID}).subscribe(resultat=>{
       this.vehicules=resultat;
-      console.log( JSON.stringify( resultat))   
+      console.log( JSON.stringify( resultat))
     })
    this.getAllUsers();
   }
 
-  open(content) {
+  open(content,user?:any) {
+    if (user==null){
+      this.isUpdatingOrAdding="Nouveau Utilisateur";
+      this.mail="";
+      this.userName="";
+      this.isActive=false;
+      let lastDigit = Date.now() % 10000;
+      console.log('The last digit of ', Date.now(), ' is ', lastDigit);
+      console.log("test ajout");
+    }
+    else {
+      this.isUpdatingOrAdding="Modifier Un Utilisateur";
+      this.mail=user.contactEmail;
+      this.userName=user.contactName;
+      this.passwd=user.password;
+      this.isActive=user.isActive;
+      //this.listVehicules=["29557-A-17 peugeot208"];
+      //this.listVehicules=user.devices.userDeviceID.deviceID;
+      //console.log(user);
+      //for(let device in  user.devices){
+      //console.log(device);}
+      console.log(user);
+      console.log("test modifier");
+    }
+
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'}).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
       console.log(this.closeResult+" 1")
-      this.ajoutUtilisateur();
-      
+
+      if (user==null){
+        this.ajoutUtilisateur();
+        this.getAllUsers();
+        console.log("function d'ajout");
+      }
+      else {
+        this.modifierUtilisateur(user);
+        console.log("fenction de modification");
+      }
+
+      //this.ajoutUtilisateur();
+
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
       console.log(this.closeResult+" 2");
@@ -56,16 +94,19 @@ export class UtilisateursComponent implements OnInit {
     }
   }
 
-  ajoutUtilisateur(){
-    this.adminService.addUser({
-      "accountID": this.authService.user.accountID,
-      "userID": this.userName,
-      "password" : this.passwd,
-      "name" : this.userName+Date.now(),
-      "email" : this.mail,
-      "active" : this.isActive,
-      "devices" : this.listVehicules
-   }).subscribe(rep=>{console.log(rep)},error=>{
+  modifierUtilisateur(body){
+    this.adminService.updatUser({
+        "accountID": this.authService.user.accountID,
+        "userID": body.userID.userID,
+        "password" : body.password,
+        "name" : this.userName,
+        "email" : this.mail,
+        "active" : this.isActive,
+        "devices" : this.listVehicules
+      }
+    ).subscribe(rep=>{
+      console.log(rep);
+    },error => {
       console.error(error);
     })
     this.getAllUsers();
@@ -74,23 +115,54 @@ export class UtilisateursComponent implements OnInit {
     this.listVehicules=[];
     this.userName="";
     this.isActive=false;
+  }
 
-    
+  ajoutUtilisateur(){
+    console.log(this.listVehicules);
+    this.adminService.addUser({
+      "accountID": this.authService.user.accountID,
+      "userID": this.userName+Date.now() % 10000,
+      "password" : this.passwd,
+      "name" : this.userName,
+      "email" : this.mail,
+      "active" : this.isActive,
+      "devices" : this.listVehicules
+   }).subscribe(rep=>{
+     //this.getAllUsers();
+     console.log(rep)},error=>{
+      console.error(error);
+    })
+    //this.getAllUsers();
+    this.mail="";
+    this.passwd="";
+    this.listVehicules=[];
+    this.userName="";
+    this.isActive=false;
+
+
   }
 
   getAllUsers(){
     this.adminService.getUsers({"accountID":this.authService.user.accountID}).subscribe(
       rep=>{
         this.listUsers=rep;
+        this.taillListUsers=this.listUsers.length;
+        console.log("nv getAllUsers");
+
       },err=>{
         console.error(err)
       }
     )
   }
 
-  suppUser(userid:string){
-    this.adminService.deleteUser({"accountID":this.authService.user.accountID,
-  "userID":userid});
+  suppUser(userid){
+    console.log(userid);
+    this.adminService.deleteUser({"accountID":this.authService.user.accountID,"userID":userid}).subscribe(rep=>{
+      console.log(rep);
+      this.getAllUsers();
+    },err=>{
+      console.error("delete !!!")
+    });
   console.log("supp button");
   }
 
