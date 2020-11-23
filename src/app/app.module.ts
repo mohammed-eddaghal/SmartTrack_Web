@@ -21,6 +21,8 @@ import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { EtatComponent } from './etat/etat.component';
 import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 import { ReportComponent } from './report/report.component';
+import { SummaryReportComponent } from './report/summary-report/summary-report.component';
+import { SpeedReportComponent } from './report/speed-report/speed-report.component';
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 //import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -34,6 +36,8 @@ import { ReportComponent } from './report/report.component';
     EtatComponent,
     UtilisateursComponent,
     ReportComponent,
+    SummaryReportComponent,
+    SpeedReportComponent,
   ],
   imports: [
     BrowserModule,

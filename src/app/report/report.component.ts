@@ -1,9 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewContainerRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { Vehicle } from '../models/vehicle.model';
 import { AdminService } from '../services/admin.service';
 import { AuthService } from '../services/auth.service';
+import { SpeedReportComponent } from './speed-report/speed-report.component';
+import { SummaryReportComponent } from './summary-report/summary-report.component';
 
 @Component({
   selector: 'app-report',
@@ -22,7 +24,9 @@ export class ReportComponent implements OnInit {
 
   constructor(
     private adminService: AdminService,
-    private authService: AuthService
+    private authService: AuthService,
+    private cvref: ViewContainerRef,
+    private resolver: ComponentFactoryResolver
   ) { }
 
   ngOnInit(): void {
@@ -38,7 +42,14 @@ export class ReportComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
+    this.cvref.clear();
+    this.cvref.createComponent(this.resolver.resolveComponentFactory(SummaryReportComponent));
     console.log(form.value);
   }
-
+  loadSpeedReport() {
+    this.cvref.clear();
+    const componentRef: ComponentRef<SpeedReportComponent> = this.cvref.createComponent(this.resolver.resolveComponentFactory(SpeedReportComponent));
+    componentRef.instance.data = "this is a data passed dynamically";
+    console.log('speed report');
+  }
 }
