@@ -19,18 +19,18 @@ export class ChauffeurComponent implements OnInit {
 
   tele: any;
   driverName: any;
-  adresse:string;
-  description:string;
-  note:string;
+  adresse: string;
+  description: string;
+  note: string;
   badge: any;
-  modelCar:any;
+  modelCar: any;
 
   listDriver: any;
   taillListDriver: number = -1;
 
   constructor(private modalService: NgbModal,
-              private authService: AuthService,
-              private adminService: AdminService) { }
+    private authService: AuthService,
+    private adminService: AdminService) { }
 
   ngOnInit(): void {
     //this.listVehicules=["Citroen 29785-A-17"];
@@ -57,7 +57,7 @@ export class ChauffeurComponent implements OnInit {
       this.isUpdatingOrAdding = "Nouveau Chauffeur";
       this.tele = "";
       this.driverName = "";
-      this.badge="";
+      this.badge = "";
       let lastDigit = Date.now() % 10000;
       console.log('The last digit of ', Date.now(), ' is ', lastDigit);
       console.log("test ajout");
@@ -65,13 +65,13 @@ export class ChauffeurComponent implements OnInit {
     else {
       console.log(user);
       this.isUpdatingOrAdding = "Modifier Un Chauffeur";
-      this.tele=user.contactPhone;
-      this.driverName=user.displayName;
-      this.adresse=user.address;
-      this.description=user.description;
-      this.note=user.notes;
-      this.badge=user.badgeID;
-      this.modelCar=user.deviceID;
+      this.tele = user.contactPhone;
+      this.driverName = user.displayName;
+      this.adresse = user.address;
+      this.description = user.description;
+      this.note = user.notes;
+      this.badge = user.badgeID;
+      this.modelCar = user.deviceID;
 
       console.log("test modifier");
     }
@@ -111,19 +111,19 @@ export class ChauffeurComponent implements OnInit {
   }
 
   modifierDriver(body) {
-    this.adminService.updatUser({
-        "driverID": {
-          "accountID": this.authService.user.accountID,
-          "driverID": body.driverID.driverID,
-        },
-        "displayName" : body.displayName,
-        "badgeID" : body.badgeID,
-        "contactPhone" : body.contactPhone,
-        "address" : body.address,
-        "description" : body.description,
-        "notes" : body.notes,
-        "deviceID" : body.deviceID
-      }
+    this.adminService.updateDriver({
+      "driverID": {
+        "accountID": this.authService.user.accountID,
+        "driverID": body.driverID.driverID,
+      },
+      "displayName": body.displayName,
+      "badgeID": body.badgeID,
+      "contactPhone": body.contactPhone,
+      "address": body.address,
+      "description": body.description,
+      "notes": body.notes,
+      "deviceID": body.deviceID
+    }
 
     ).subscribe(rep => {
       console.log(rep);
@@ -131,64 +131,64 @@ export class ChauffeurComponent implements OnInit {
       console.error(error);
     })
     //this.getAllDriver();
-    this.tele="";
-    this.driverName="";
-    this.adresse="";
-    this.description="";
-    this.note="";
-    this.badge="";
-    this.modelCar="";
+    this.tele = "";
+    this.driverName = "";
+    this.adresse = "";
+    this.description = "";
+    this.note = "";
+    this.badge = "";
+    this.modelCar = "";
   }
 
   ajoutDriver() {
     console.log(this.listVehicules);
     this.adminService.addDriver({
-        "driverID": {
-          "accountID": this.authService.user.accountID,
-//generate an id (ex: use displayname + timestamp of now())
-          "driverID": this.driverName+Date.now()%1000
-        },
-        "displayName" : this.driverName, //driver’s name
-        "badgeID" : this.badge,
-        "contactPhone" : this.tele,
-        "address" : this.adresse,
-        "description" : this.description,
-        "notes" : this.note,
-        "deviceID" : this.modelCar
-      }
+      "driverID": {
+        "accountID": this.authService.user.accountID,
+        //generate an id (ex: use displayname + timestamp of now())
+        "driverID": this.driverName + Date.now() % 1000
+      },
+      "displayName": this.driverName, //driver’s name
+      "badgeID": this.badge,
+      "contactPhone": this.tele,
+      "address": this.adresse,
+      "description": this.description,
+      "notes": this.note,
+      "deviceID": this.modelCar
+    }
     ).subscribe(rep => {
       //this.getAllUsers();
       console.log(rep)
     }, error => {
       console.error(error);
     })
-    this.tele="";
-    this.driverName="";
-    this.adresse="";
-    this.description="";
-    this.note="";
-    this.badge="";
-    this.modelCar="";
+    this.tele = "";
+    this.driverName = "";
+    this.adresse = "";
+    this.description = "";
+    this.note = "";
+    this.badge = "";
+    this.modelCar = "";
 
 
 
   }
 
-  getAllDriver(){
-    this.adminService.getChauffeurs({"accountID":this.authService.user.accountID}).subscribe(
-      rep=>{
+  getAllDriver() {
+    this.adminService.getChauffeurs({ "accountID": this.authService.user.accountID }).subscribe(
+      rep => {
         console.log(rep);
-        this.listDriver=rep;
-        this.taillListDriver=this.listDriver.length;
+        this.listDriver = rep;
+        this.taillListDriver = this.listDriver.length;
       }
     )
   }
 
-  getDeviceName(deviceId:any){
-    for (let car of this.vehicules){
-      if(car.deviceID===deviceId)
+  getDeviceName(deviceId: any) {
+    for (let car of this.vehicules) {
+      if (car.deviceID === deviceId)
         return car.vehicleModel;
-    }return "";
+    } return "";
   }
 
   suppDriver(userid) {

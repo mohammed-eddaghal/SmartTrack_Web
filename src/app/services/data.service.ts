@@ -3,7 +3,7 @@ import { InvalidInput } from './../commen/invalid-input';
 import { NotFoundError } from './../commen/not-found-error';
 import { AppError } from './../commen/app-error';
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { catchError, retry } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 
@@ -15,12 +15,19 @@ import { Observable, throwError } from 'rxjs';
 })
 export class DataService {
   protected apiPath = 'http://91.234.195.124:9090/api/';
+
+  private httpOption = {
+    headers: new HttpHeaders({
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json'
+    })
+  };
   // protected apiPath: string = 'http://localhost:9090/api/';
 
   constructor(private http: HttpClient) { }
 
   getFnc() {
-    return this.http.get(this.apiPath).pipe(
+    return this.http.get(this.apiPath, this.httpOption).pipe(
       // eg. "map" without a dot before
       retry(1),
       // "catchError" instead "catch"
@@ -29,7 +36,7 @@ export class DataService {
   }
 
   postFnc(apiPath: string, body) {
-    return this.http.post(apiPath, body).pipe(
+    return this.http.post(apiPath, body, this.httpOption).pipe(
       // eg. "map" without a dot before
       retry(1),
       // "catchError" instead "catch"
@@ -38,7 +45,7 @@ export class DataService {
   }
 
   putFnc(apiPath: string, item) {
-    return this.http.put(apiPath, item).pipe(
+    return this.http.put(apiPath, item, this.httpOption).pipe(
       // eg. "map" without a dot before
       retry(1),
       // "catchError" instead "catch"
@@ -47,7 +54,7 @@ export class DataService {
   }
 
   deleteFnc(apiPath: string, itemID: any) {
-    return this.http.delete(apiPath + itemID).pipe(
+    return this.http.delete(apiPath + itemID, this.httpOption).pipe(
       // eg. "map" without a dot before
       retry(1),
       // "catchError" instead "catch"

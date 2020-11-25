@@ -80,4 +80,8 @@ export class AdminService extends DataService {
   updatUser(body:any){
     return this.putFnc(this.apiPath+"update/user",body);
   }
+
+  updateDriver(body:any){
+    return this.putFnc(this.apiPath+"update/driver",body);
+  }
 }
