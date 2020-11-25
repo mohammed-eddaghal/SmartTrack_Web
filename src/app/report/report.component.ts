@@ -1,3 +1,4 @@
+import { formatDate } from '@angular/common';
 import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewContainerRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { map } from 'rxjs/operators';
@@ -18,7 +19,7 @@ export class ReportComponent implements OnInit {
 
   defaultVehicle = 0;
 
-  defaultFilter = 1;
+  defaultFilter = 0;
 
   vehicles: Vehicle[] = [];
 
@@ -42,9 +43,16 @@ export class ReportComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    this.cvref.clear();
-    this.cvref.createComponent(this.resolver.resolveComponentFactory(SummaryReportComponent));
-    console.log(form.value);
+    console.log('filter value is ', form.value['filter']);
+    if (form.value['filter'] === 0) {
+      this.cvref.clear();
+      const componentRef: ComponentRef<SummaryReportComponent> =
+        this.cvref.createComponent(this.resolver.resolveComponentFactory(SummaryReportComponent));
+      componentRef.instance.deviceID = form.value['deviceID'];
+      componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
+      componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
+      console.log('data sent is: ', componentRef.instance.deviceID, componentRef.instance.startTime, componentRef.instance.endTime);
+    }
   }
   loadSpeedReport() {
     this.cvref.clear();
