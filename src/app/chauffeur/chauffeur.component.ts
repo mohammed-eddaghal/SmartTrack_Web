@@ -24,7 +24,7 @@ export class ChauffeurComponent implements OnInit {
   note: string;
   badge: any;
   modelCar: any;
-
+  driver: any;
   listDriver: any;
   taillListDriver: number = -1;
 
@@ -53,6 +53,7 @@ export class ChauffeurComponent implements OnInit {
   }
 
   open(content, user?: any) {
+    this.driver = user;
     if (user == null) {
       this.isUpdatingOrAdding = "Nouveau Chauffeur";
       this.tele = "";
@@ -64,7 +65,7 @@ export class ChauffeurComponent implements OnInit {
     }
     else {
       console.log(user);
-      this.isUpdatingOrAdding = "Modifier Un Chauffeur";
+      this.isUpdatingOrAdding = "Modifier Chauffeur";
       this.tele = user.contactPhone;
       this.driverName = user.displayName;
       this.adresse = user.address;
@@ -116,13 +117,13 @@ export class ChauffeurComponent implements OnInit {
         "accountID": this.authService.user.accountID,
         "driverID": body.driverID.driverID,
       },
-      "displayName": body.displayName,
-      "badgeID": body.badgeID,
-      "contactPhone": body.contactPhone,
-      "address": body.address,
-      "description": body.description,
-      "notes": body.notes,
-      "deviceID": body.deviceID
+      "displayName": this.driverName, //driver’s name
+      "badgeID": this.badge,
+      "contactPhone": this.tele,
+      "address": this.adresse,
+      "description": this.description,
+      "notes": this.note,
+      "deviceID": this.modelCar
     }
 
     ).subscribe(rep => {

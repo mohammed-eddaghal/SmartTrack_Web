@@ -19,15 +19,14 @@
             <input type="text" [(ngModel)]="userName" name="username" id="username" class="form-control"
               placeholder="username" #username_Admin="ngModel" minlength="4" maxlength="100" required
               alt="nom Utilisateur">
-            <div *ngIf="username_Admin.invalid && (username_Admin.dirty || username_Admin.touched)"
-              class="alert alert-danger">
-              <div *ngIf="username_Admin.errors.required">
+            <div *ngIf="username_Admin.invalid && (username_Admin.dirty || username_Admin.touched)">
+              <div *ngIf="username_Admin.errors.required" class="error-msg">
                 nom est requis
               </div>
-              <div *ngIf="username_Admin.errors.minlength">
+              <div *ngIf="username_Admin.errors.minlength" class="error-msg">
                 nom doit contenir au moins 4 caractères
               </div>
-              <div *ngIf="username_Admin.errors.maxlength">
+              <div *ngIf="username_Admin.errors.maxlength" class="error-msg">
                 nom ne doit pas dépasser 100 caractères
               </div>
             </div>
@@ -37,11 +36,11 @@
             <input email type="email" [(ngModel)]="mail" name="mail" id="email" class="form-control" placeholder="email"
               #email="ngModel" minlength="10" required alt="nom Utilisateur"
               pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
-            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
-              <div *ngIf="email.errors.required">
+            <div *ngIf="email.invalid && (email.dirty || email.touched)">
+              <div *ngIf="email.errors.required" class="error-msg">
                 email est requis
               </div>
-              <div *ngIf="email.errors.pattern">
+              <div *ngIf="email.errors.pattern" class="error-msg">
                 email ne respecte pas une forme
               </div>
             </div>
@@ -51,14 +50,14 @@
             <input type="password" [(ngModel)]="passwd" name="passwd" id="password" class="form-control"
               placeholder="mot de passe" #passWd="ngModel" required alt="mot de passe" minlength=5
               pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{4,}">
-            <div *ngIf="passWd.invalid && (passWd.dirty || passWd.touched)" class="alert alert-danger">
-              <div *ngIf="passWd.errors.required">
+            <div *ngIf="passWd.invalid && (passWd.dirty || passWd.touched)">
+              <div *ngIf="passWd.errors.required" class="error-msg">
                 mot de passe est requis
               </div>
-              <div *ngIf="passWd.errors.minlength">
+              <div *ngIf="passWd.errors.minlength" class="error-msg">
                 mote de passe doit contenir au moins 4 caractères
               </div>
-              <div *ngIf="passWd.hasError('pattern')">
+              <div *ngIf="passWd.hasError('pattern')" class="error-msg">
                 mot de passe doit être fort: utiliser maj/min/caractère spécial/chiffre
               </div>
             </div>
@@ -78,8 +77,8 @@
               <option *ngFor="let vehicul of vehicules" value="{{vehicul.deviceID}}">
                 {{vehicul.vehicleModel}}</option>
             </select>
-            <div *ngIf="listV.invalid && (listV.dirty || listV.touched)" class="alert alert-danger">
-              <div *ngIf="listV.errors.required">
+            <div *ngIf="listV.invalid && (listV.dirty || listV.touched)">
+              <div *ngIf="listV.errors.required" class="error-msg">
                 un utilisateur doit avoir au moins un véhicule
               </div>
             </div>

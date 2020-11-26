@@ -61,7 +61,7 @@ export class UtilisateursComponent implements OnInit {
       console.log("test ajout");
     }
     else {
-      this.isUpdatingOrAdding = "Modifier Un Utilisateur";
+      this.isUpdatingOrAdding = "Modifier Utilisateur";
       this.mail = user.contactEmail;
       this.userName = user.contactName;
       this.passwd = user.password;

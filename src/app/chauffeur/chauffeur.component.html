@@ -13,50 +13,101 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form #f="ngForm">
           <div class="form-group">
             <label for="nomDriver">Nom Chauffeur</label>
             <input type="text" [(ngModel)]="driverName" name="nomDriver" id="nomDriver" class="form-control"
-                   placeholder="Nom Chauffeur" #username_Admin="ngModel" minlength="4" required
-                   alt="Nom Chauffeur">
+              placeholder="Nom Chauffeur" #name="ngModel" minlength="4" maxlength="100" required alt="Nom Chauffeur">
+            <div *ngIf="name.invalid && (name.dirty || name.touched)">
+              <div *ngIf="name.errors.required" class="error-msg">
+                nom est requis
+              </div>
+              <div *ngIf="name.errors.minlength" class="error-msg">
+                nom doit contenir au moins 4 caractères
+              </div>
+              <div *ngIf="name.errors.maxlength" class="error-msg">
+                nom ne doit pas dépasser 100 caractères
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="tele">Téléphone</label>
-            <input type="tel" [(ngModel)]="tele" name="tele" id="tele" class="form-control"
-                   placeholder="Téléphone" #email="ngModel" minlength="10" maxlength="10" required
-                   alt="Téléphone">
+            <input type="tel" [(ngModel)]="tele" name="tele" id="tele" class="form-control" placeholder="Téléphone"
+              #phone="ngModel" minlength="10" maxlength="10" required alt="Téléphone">
+            <div *ngIf="phone.invalid && (phone.dirty || phone.touched)">
+              <div *ngIf="phone.errors.required" class="error-msg">
+                numéro de téléphone est requis
+              </div>
+              <div *ngIf="phone.errors.minlength" class="error-msg">
+                numéro de téléphone doit contenir au moins 10 chiffres
+              </div>
+              <div *ngIf="phone.errors.maxlength" class="error-msg">
+                numéro de téléphone ne doit pas dépasser 10 chiffres
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="badge">Badge</label>
-            <input type="text" [(ngModel)]="badge" name="badge" id="badge" class="form-control"
-                   placeholder="Badge" #passWd="ngModel" required alt="Badge">
+            <input type="text" [(ngModel)]="badge" name="badge" id="badge" class="form-control" placeholder="Badge"
+              #tag="ngModel" required alt="Badge">
+            <div *ngIf="tag.invalid && (tag.dirty || tag.touched)">
+              <div *ngIf="tag.errors.required" class="error-msg">
+                badge est requis
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="add">Addresse</label>
-            <input type="text" [(ngModel)]="adresse" name="add" id="add" class="form-control"
-                   placeholder="Addresse" #passWd="ngModel" required alt="Addresse">
+            <input type="text" [(ngModel)]="adresse" name="add" id="add" class="form-control" placeholder="Addresse"
+              #address="ngModel" required alt="Addresse" maxlength="250">
+            <div *ngIf="address.invalid && (address.dirty || address.touched)">
+              <div *ngIf="address.errors.required" class="error-msg">
+                addresse est requis
+              </div>
+              <div *ngIf="address.errors.maxlength" class="error-msg">
+                addresse ne doit pas dépasser 250 caractères
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="desc">Description</label>
             <input type="text" [(ngModel)]="description" name="desc" id="desc" class="form-control"
-                   placeholder="Description" #passWd="ngModel" required alt="Description">
+              placeholder="Description" #Description="ngModel" required alt="Description" maxlength="250">
+            <div *ngIf="Description.invalid && (Description.dirty || Description.touched)">
+              <div *ngIf="Description.errors.required" class="error-msg">
+                description est requis
+              </div>
+              <div *ngIf="Description.errors.maxlength" class="error-msg">
+                description ne doit pas dépasser 250 caractères
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="nots">Notes</label>
-            <textarea [(ngModel)]="note" name="nots" id="nots" class="form-control"
-                      placeholder="Notes..." #passWd="ngModel" required alt="Notes"></textarea>
+            <textarea [(ngModel)]="note" name="nots" id="nots" class="form-control" placeholder="Notes..."
+              #notes="ngModel" required alt="Notes"></textarea>
+            <div *ngIf="notes.invalid && (notes.dirty || notes.touched)">
+              <div *ngIf="notes.errors.required" class="error-msg">
+                notes est requis
+              </div>
+              <!-- <div *ngIf="notes.errors.maxlength" class="error-msg">
+                  note ne doit pas dépasser 250 caractères
+                </div> -->
+            </div>
           </div>
           <div class="form-group">
             <label class="mr-sm-2" for="inlineFormCustomSelect">Balise / Vehicule</label>
-            <select [(ngModel)]="modelCar" #modelC="ngModel" name="modelC"  class="custom-select mr-sm-2" id="inlineFormCustomSelect">
-              <!--<option [selected]="true" [disabled]>Choose...</option>-->
-              <option *ngFor="let vehicule of vehicules"  value="{{vehicule.deviceID}}">{{vehicule.vehicleModel}}</option>
+            <select [(ngModel)]="modelCar" [ngModel]="driver?.deviceID" #modelC="ngModel" name="modelC"
+              class="custom-select mr-sm-2" id="inlineFormCustomSelect" required>
+              <option *ngFor="let vehicule of vehicules" value="{{vehicule.deviceID}}">{{vehicule.vehicleModel}}
+              </option>
             </select>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')"
+          [disabled]="!f.valid">Save</button>
       </div>
     </ng-template>
 
@@ -69,7 +120,7 @@
   <div class="card-header">
     <div class="row">
       <div class="col-11">Gestion des chauffeurs </div>
-      <div class="col-1"><button class="btn btn-sm btn-success" (click)="open(content)">Nouveau</button></div>
+      <div class="col-1"><button class="btn btn-sm btn-success" (click)="open(content, null)">Nouveau</button></div>
     </div>
 
   </div>
@@ -78,28 +129,31 @@
       <div class="row m3">
         <table id="myTable" class="table table-striped">
           <thead class="thead-black">
-          <tr>
-            <th>Nom de chauffeur</th>
-            <th class="text-center">Télephone</th>
-            <th class="text-center">Date Création</th>
-            <th class="text-center">Balise/vehicules</th>
-            <th class="text-center">Action</th>
-          </tr>
+            <tr>
+              <th>Nom de chauffeur</th>
+              <th class="text-center">Télephone</th>
+              <th class="text-center">Date Création</th>
+              <th class="text-center">Balise/vehicules</th>
+              <th class="text-center">Action</th>
+            </tr>
           </thead>
           <tbody>
-          <tr *ngFor="let driver of listDriver">
-            <td>{{driver.displayName}}</td>
-            <td>{{driver.contactPhone}}</td>
-            <td class="text-center">{{driver.creationTime | date: 'short' }}</td>
-            <td class="text-center">{{getDeviceName(driver.deviceID)}}</td>
-            <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;" (click)="open(content,driver)" role="button" aria-pressed="true">modifier</a>
-              <a class="btn btn-danger btn-sm active" role="button" aria-pressed="true" (click)="suppDriver(driver.driverID.driverID)">supprimer</a></td>
-          </tr>
+            <tr *ngFor="let driver of listDriver">
+              <td>{{driver.displayName}}</td>
+              <td>{{driver.contactPhone}}</td>
+              <td class="text-center">{{driver.creationTime | date: 'short' }}</td>
+              <td class="text-center">{{getDeviceName(driver.deviceID)}}</td>
+              <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;"
+                  (click)="open(content,driver)" role="button" aria-pressed="true">modifier</a>
+                <a class="btn btn-danger btn-sm active" role="button" aria-pressed="true"
+                  (click)="suppDriver(driver.driverID.driverID)">supprimer</a></td>
+            </tr>
           </tbody>
         </table>
-        <div *ngIf="taillListDriver==0"><p>il n'y a pas du chauffeur</p></div>
+        <div *ngIf="taillListDriver==0">
+          <p>il n'y a pas du chauffeur</p>
+        </div>
       </div>
     </div>
   </div>
 </div>
-
