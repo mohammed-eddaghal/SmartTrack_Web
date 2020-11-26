@@ -22,6 +22,7 @@ import { EtatComponent } from './etat/etat.component';
 import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 import { ChauffeurComponent } from './chauffeur/chauffeur.component';
 import { ReportComponent } from './report/report.component';
+import { NgxSpinnerModule } from "ngx-spinner";
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 //import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -44,6 +45,7 @@ import { ReportComponent } from './report/report.component';
     ReactiveFormsModule,
     HttpClientModule,
     NgbModule,
+    NgxSpinnerModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyCHVQYBlEDRUG-832fnRV9mzMcavXR84Kg',
     })

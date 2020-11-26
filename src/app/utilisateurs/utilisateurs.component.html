@@ -1,3 +1,6 @@
+<ngx-spinner bdColor="rgba(255,255,255,0.8)" size="medium" color="#fd4e02" type="ball-scale-pulse" [fullScreen]="false">
+  <p style="color: black"> Loading... </p>
+</ngx-spinner>
 <div class="row m-3">
   <!--<div class="col-md-5">
       <a class="btn btn-success" routerLink="/client/add">
@@ -35,7 +38,7 @@
             <label for="email">e-mail</label>
             <input email type="email" [(ngModel)]="mail" name="mail" id="email" class="form-control" placeholder="email"
               #email="ngModel" minlength="10" required alt="nom Utilisateur"
-              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+              pattern="[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$">
             <div *ngIf="email.invalid && (email.dirty || email.touched)">
               <div *ngIf="email.errors.required" class="error-msg">
                 email est requis

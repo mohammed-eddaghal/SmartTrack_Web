@@ -4,6 +4,7 @@ import { NgbModal, ModalDismissReasons } from '@ng-bootstrap/ng-bootstrap';
 import { AuthService } from '../services/auth.service';
 import { Vehicle } from '../models/vehicle.model';
 import { map } from 'rxjs/operators';
+import { NgxSpinnerService } from 'ngx-spinner';
 @Component({
   selector: 'app-chauffeur',
   templateUrl: './chauffeur.component.html',
@@ -29,15 +30,18 @@ export class ChauffeurComponent implements OnInit {
   taillListDriver: number = -1;
 
   constructor(private modalService: NgbModal,
+    private spinner: NgxSpinnerService,
     private authService: AuthService,
     private adminService: AdminService) { }
 
   ngOnInit(): void {
+    this.spinner.show();
     //this.listVehicules=["Citroen 29785-A-17"];
     this.adminService.getVeiculs({ accountID: this.authService.user.accountID }).pipe(
       map((data: Vehicle[]) => data.map(vehicle => new Vehicle().deserialize(vehicle)))
     ).subscribe(
       response => {
+        this.spinner.hide();
         this.vehicules = response;
         console.log(this.vehicules);
       },

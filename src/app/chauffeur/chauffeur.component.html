@@ -1,3 +1,6 @@
+<ngx-spinner bdColor="rgba(255,255,255,0.8)" size="medium" color="#fd4e02" type="ball-scale-pulse" [fullScreen]="false">
+  <p style="color: black"> Loading... </p>
+</ngx-spinner>
 <div class="row m-3">
   <!--<div class="col-md-5">
       <a class="btn btn-success" routerLink="/client/add">
@@ -141,7 +144,7 @@
             <tr *ngFor="let driver of listDriver">
               <td>{{driver.displayName}}</td>
               <td>{{driver.contactPhone}}</td>
-              <td class="text-center">{{driver.creationTime | date: 'short' }}</td>
+              <td class="text-center">{{driver.creationTime * 1000 | date: 'short' }}</td>
               <td class="text-center">{{getDeviceName(driver.deviceID)}}</td>
               <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;"
                   (click)="open(content,driver)" role="button" aria-pressed="true">modifier</a>
