@@ -27,11 +27,11 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'account/devices', body);
   }
 
-  getVehicles(accountID: string, userID: string, search: string) {
+  getVehicles(accountID: string, userID: string, search?: string) {
     var body = {
       "accountID": accountID,
       "userID": userID,
-      "search": search
+      "search": search ?? ''
     };
     return this.postFnc(this.apiPath + 'vehicles', body);
   }
@@ -49,9 +49,9 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'account/devices', body)
   }
 
-  getVeiculs(body:any){
+  /*getVeiculs(body:any){
     return this.postFnc(this.apiPath+'vehicles',body);
-  }
+  }*/
 
   addUser(body:any){
     return this.postFnc(this.apiPath+'add/user',body);
