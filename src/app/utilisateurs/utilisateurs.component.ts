@@ -21,7 +21,7 @@ export class UtilisateursComponent implements OnInit {
   userName: any;
   passwd: any;
   isActive: boolean = false;
-
+  user = null;
   listUsers: any;
   taillListUsers: number = -1;
 
@@ -49,11 +49,12 @@ export class UtilisateursComponent implements OnInit {
   }
 
   open(content, user?: any) {
+    this.user = user;
     if (user == null) {
       this.isUpdatingOrAdding = "Nouveau Utilisateur";
       this.mail = "";
       this.userName = "";
-      this.passwd="";
+      this.passwd = "";
       this.isActive = false;
       let lastDigit = Date.now() % 10000;
       console.log('The last digit of ', Date.now(), ' is ', lastDigit);
@@ -69,7 +70,7 @@ export class UtilisateursComponent implements OnInit {
       //this.listVehicules=user.devices.userDeviceID.deviceID;
       //console.log(user);
 
-      console.log(user.devices[0].userDeviceID.deviceID);
+      console.log(user.devices[0]);
       console.log("test modifier");
     }
 

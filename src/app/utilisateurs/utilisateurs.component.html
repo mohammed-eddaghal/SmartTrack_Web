@@ -13,43 +13,82 @@
         </button>
       </div>
       <div class="modal-body">
-        <form>
+        <form #f="ngForm">
           <div class="form-group">
             <label for="username">Nom Utilisateur</label>
             <input type="text" [(ngModel)]="userName" name="username" id="username" class="form-control"
-              placeholder="username" #username_Admin="ngModel" minlength="10" maxlength="10" required
+              placeholder="username" #username_Admin="ngModel" minlength="4" maxlength="100" required
               alt="nom Utilisateur">
+            <div *ngIf="username_Admin.invalid && (username_Admin.dirty || username_Admin.touched)"
+              class="alert alert-danger">
+              <div *ngIf="username_Admin.errors.required">
+                nom est requis
+              </div>
+              <div *ngIf="username_Admin.errors.minlength">
+                nom doit contenir au moins 4 caractères
+              </div>
+              <div *ngIf="username_Admin.errors.maxlength">
+                nom ne doit pas dépasser 100 caractères
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="email">e-mail</label>
-            <input type="email" [(ngModel)]="mail" name="mail" id="email" class="form-control"
-              placeholder="email" #email="ngModel" minlength="10" required
-              alt="nom Utilisateur">
+            <input email type="email" [(ngModel)]="mail" name="mail" id="email" class="form-control" placeholder="email"
+              #email="ngModel" minlength="10" required alt="nom Utilisateur"
+              pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+            <div *ngIf="email.invalid && (email.dirty || email.touched)" class="alert alert-danger">
+              <div *ngIf="email.errors.required">
+                email est requis
+              </div>
+              <div *ngIf="email.errors.pattern">
+                email ne respecte pas une forme
+              </div>
+            </div>
           </div>
           <div class="form-group">
             <label for="password">Mot de Passe</label>
-            <input type="text" [(ngModel)]="passwd" name="passwd" id="password" class="form-control"
-              placeholder="mot de passe" #passWd="ngModel" required alt="mot de passe">
+            <input type="password" [(ngModel)]="passwd" name="passwd" id="password" class="form-control"
+              placeholder="mot de passe" #passWd="ngModel" required alt="mot de passe" minlength=5
+              pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{4,}">
+            <div *ngIf="passWd.invalid && (passWd.dirty || passWd.touched)" class="alert alert-danger">
+              <div *ngIf="passWd.errors.required">
+                mot de passe est requis
+              </div>
+              <div *ngIf="passWd.errors.minlength">
+                mote de passe doit contenir au moins 4 caractères
+              </div>
+              <div *ngIf="passWd.hasError('pattern')">
+                mot de passe doit être fort: utiliser maj/min/caractère spécial/chiffre
+              </div>
+            </div>
           </div>
           <div class="form-check">
-            <input class="form-check-input" [(ngModel)]="isActive" #isactiv="ngModel" type="checkbox" name="isactiv" id="isactiv">
+            <input class="form-check-input" [(ngModel)]="isActive" #isactiv="ngModel" type="checkbox" name="isactiv"
+              id="isactiv">
             <label class="form-check-label" for="isactiv">
-              activated account
+              activé
             </label>
           </div>
           <br>
           <div class="form-group">
             <label for="carList">Vehicules</label>
-            <select [(ngModel)]="listVehicules" #listV="ngModel" name="listVehicul" multiple class="form-control" id="carList">
-              <option *ngFor="let vehicul of vehicules" value="{{vehicul.deviceID}}">{{vehicul.vehicleModel}}</option>
-              <option value="opel" [selected]="true" >Opel</option>
-
+            <select [(ngModel)]="listVehicules" #listV="ngModel" [ngModel]="user?.devices" name="listVehicul" multiple
+              class="form-control" id="carList" required>
+              <option *ngFor="let vehicul of vehicules" value="{{vehicul.deviceID}}">
+                {{vehicul.vehicleModel}}</option>
             </select>
+            <div *ngIf="listV.invalid && (listV.dirty || listV.touched)" class="alert alert-danger">
+              <div *ngIf="listV.errors.required">
+                un utilisateur doit avoir au moins un véhicule
+              </div>
+            </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')"
+          [disabled]="!f.valid">Save</button>
       </div>
     </ng-template>
 
@@ -62,7 +101,7 @@
   <div class="card-header">
     <div class="row">
       <div class="col-11">Gestion des utilisateurs </div>
-      <div class="col-1"><button class="btn btn-sm btn-success" (click)="open(content)">Nouveau</button></div>
+      <div class="col-1"><button class="btn btn-sm btn-success" (click)="open(content, null)">Nouveau</button></div>
     </div>
 
   </div>
@@ -71,31 +110,35 @@
       <div class="row m3">
         <table id="myTable" class="table table-striped">
           <thead class="thead-black">
-              <tr>
-                  <th><b>ID</b> d'utilisateur</th>
-                  <th>Nom d'utilisateur</th>
-                  <th class="text-center">Email</th>
-                  <th class="text-center">Password</th>
-                  <th class="text-center">Nbr vehicules</th>
-                  <th>Active</th>
-                  <th class="text-center">Action</th>
-              </tr>
-              </thead>
-              <tbody>
-                <tr *ngFor="let user of listUsers">
-                  <td>{{user.userID.userID}}</td>
-                  <td>{{user.contactName}}</td>
-                  <td>{{user.contactEmail}}</td>
-                  <td class="text-center">{{user.password}}</td>
-                  <td class="text-center">{{user.devices.length}}</td>
-                  <td class="text-center" *ngIf="user.isActive" style="color: green;"><b>OUI</b></td>
-                  <td class="text-center" *ngIf="!user.isActive" style="color:red;"><b>NON</b></td>
-                  <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;" (click)="open(content,user)" role="button" aria-pressed="true">modifier</a>
-                    <a class="btn btn-danger btn-sm active" role="button" aria-pressed="true" (click)="suppUser(user.userID.userID)">supprimer</a></td>
-                </tr>
-              </tbody>
-            </table>
-            <div *ngIf="taillListUsers==0"><p>il n'y a pas d'utilisateurs</p></div>
+            <tr>
+              <th><b>ID</b> d'utilisateur</th>
+              <th>Nom d'utilisateur</th>
+              <th class="text-center">Email</th>
+              <th class="text-center">Password</th>
+              <th class="text-center">Nbr vehicules</th>
+              <th>Active</th>
+              <th class="text-center">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of listUsers">
+              <td>{{user.userID.userID}}</td>
+              <td>{{user.contactName}}</td>
+              <td>{{user.contactEmail}}</td>
+              <td class="text-center">{{user.password}}</td>
+              <td class="text-center">{{user.devices.length}}</td>
+              <td class="text-center" *ngIf="user.isActive" style="color: green;"><b>OUI</b></td>
+              <td class="text-center" *ngIf="!user.isActive" style="color:red;"><b>NON</b></td>
+              <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;"
+                  (click)="open(content, user)" role="button" aria-pressed="true">modifier</a>
+                <a class="btn btn-danger btn-sm active" role="button" aria-pressed="true"
+                  (click)="suppUser(user.userID.userID)">supprimer</a></td>
+            </tr>
+          </tbody>
+        </table>
+        <div *ngIf="taillListUsers==0">
+          <p>il n'y a pas d'utilisateurs</p>
+        </div>
       </div>
     </div>
   </div>
