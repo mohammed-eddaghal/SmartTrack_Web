@@ -14,8 +14,7 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
-  // protected apiPath = 'http://91.234.195.124:9090/api/';
-  protected apiPath = 'http://192.168.0.125:9090/api/';
+  protected apiPath = 'http://91.234.195.124:9090/api/';
 
   private httpOption = {
     headers: new HttpHeaders({
