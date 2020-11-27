@@ -1,0 +1,396 @@
+<ngx-spinner bdColor="rgba(255,255,255,0.8)" size="medium" color="#fd4e02" type="ball-scale-pulse" [fullScreen]="false">
+  <p style="color: black"> Loading... </p>
+</ngx-spinner>
+<div class="row m-3">
+  <div class="col-md-6">
+    <ng-template  #content let-modal>
+      <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">{{isUpdatingOrAdding}}</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+
+
+      <!-- Form de (Nv Assurance) -->
+      <div *ngIf="typeOfForm==0">
+      <div class="modal-body">
+
+        <form #f="ngForm">
+          <div>
+            <div class="form-group">
+              <label class="mr-sm-2" for="inlineFormCustomSelect">Balise / Vehicule</label>
+              <select [(ngModel)]="modelCar" [ngModel]="maint?.deviceID" #modelC="ngModel" name="modelC"
+                      class="custom-select mr-sm-2" id="inlineFormCustomSelect" required>
+                <option *ngFor="let vehicule of vehicules" value="{{vehicule.deviceID}}">{{vehicule.vehicleModel}}
+                </option>
+              </select>
+            </div>
+
+
+          <div class="form-group" >
+            <label for="nomMaint">Nom</label>
+            <input type="text" [(ngModel)]="MaintName" name="nom" id="nomMaint" class="form-control"
+                   placeholder="Nom" #nom="ngModel" minlength="4" maxlength="100" required alt="Nom">
+            <div *ngIf="nom.invalid && (nom.dirty || nom.touched)">
+              <div *ngIf="nom.errors.required" class="error-msg">
+                nom est requis
+              </div>
+              <div *ngIf="nom.errors.minlength" class="error-msg">
+                nom doit contenir au moins 4 caractères
+              </div>
+              <div *ngIf="nom.errors.maxlength" class="error-msg">
+                nom ne doit pas dépasser 100 caractères
+              </div>
+            </div>
+          </div>
+
+            <div class="form-group" >
+              <label for="prix">Prix</label>
+              <input type="number" [(ngModel)]="prixMaint" name="prix" id="prix" class="form-control"
+                     placeholder="Prix..." #prix="ngModel" min="0" required alt="Prix">
+              <div *ngIf="prix.invalid && (prix.dirty || prix.touched)">
+                <div *ngIf="prix.errors.required" class="error-msg">
+                  Le Prix est requis
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" >
+              <label for="dateDeb">Date Debut</label>
+              <input type="date" [min]="toDay" [(ngModel)]="dateDebut" name="dateD" id="dateDeb" class="form-control"
+                     placeholder="dd/mm/yyyy" #datDeb="ngModel" required alt="Date de Debut">
+              <div *ngIf="datDeb.invalid && (datDeb.dirty || datDeb.touched)">
+                <div *ngIf="datDeb.errors.required" class="error-msg">
+                  La Date de Depart est requis
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" >
+              <label for="dateF">Date de Fin</label>
+              <input type="date" [min]="dateDebut" [(ngModel)]="dateFin" name="datFin" id="dateF" class="form-control"
+                     placeholder="dd/mm/yyyy" #dateF="ngModel" required alt="Date de Fin">
+              <div *ngIf="dateF.invalid && (dateF.dirty || dateF.touched)">
+                <div *ngIf="dateF.errors.required" class="error-msg">
+                  La Date de Fin est requis
+                </div>
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')"
+                [disabled]="!f.valid">Save</button>
+      </div>
+      </div>
+
+
+      <!-- Form (Nv Cart Grise) -->
+      <div *ngIf="typeOfForm==1">
+        <div class="modal-body">
+
+          <form #f2="ngForm">
+
+              <div class="form-group">
+                <label class="mr-sm-2" for="inlineFormCustomSelect">Balise / Vehicule</label>
+                <select [(ngModel)]="modelCar" [ngModel]="maint?.deviceID" #modelC="ngModel" name="modelC"
+                        class="custom-select mr-sm-2" id="inlineFormCustomSelect" required>
+                  <option *ngFor="let vehicule of vehicules" value="{{vehicule.deviceID}}">{{vehicule.vehicleModel}}
+                  </option>
+                </select>
+              </div>
+
+
+              <div class="form-group" >
+                <label for="nomMaint">Nom</label>
+                <input type="text" [(ngModel)]="MaintName" name="nom" id="nomMaint" class="form-control"
+                       placeholder="Nom" #nom="ngModel" minlength="4" maxlength="100" required alt="Nom">
+                <div *ngIf="nom.invalid && (nom.dirty || nom.touched)">
+                  <div *ngIf="nom.errors.required" class="error-msg">
+                    nom est requis
+                  </div>
+                  <div *ngIf="nom.errors.minlength" class="error-msg">
+                    nom doit contenir au moins 4 caractères
+                  </div>
+                  <div *ngIf="nom.errors.maxlength" class="error-msg">
+                    nom ne doit pas dépasser 100 caractères
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" >
+                <label for="dateCG">Date de Carte Grise</label>
+                <input type="date" [(ngModel)]="dateCartGrise" name="dateCG" id="dateCG" class="form-control"
+                       placeholder="dd/mm/yyyy" #datCG="ngModel" required alt="Date de Debut">
+                <div *ngIf="datCG.invalid && (datCG.dirty || datCG.touched)">
+                  <div *ngIf="datCG.errors.required" class="error-msg">
+                    La Date de Depart est requis
+                  </div>
+                </div>
+              </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')"
+                  [disabled]="!f2.valid">Save</button>
+        </div>
+      </div>
+
+
+      <!-- Form de (Nv Visite Technique) -->
+      <div *ngIf="typeOfForm==2">
+        <div class="modal-body">
+
+          <form #f3="ngForm">
+            <div>
+              <div class="form-group">
+                <label class="mr-sm-2" for="inlineFormCustomSelect">Balise / Vehicule</label>
+                <select [(ngModel)]="modelCar" [ngModel]="maint?.deviceID" #modelC="ngModel" name="modelC"
+                        class="custom-select mr-sm-2" id="inlineFormCustomSelect" required>
+                  <option *ngFor="let vehicule of vehicules" value="{{vehicule.deviceID}}">{{vehicule.vehicleModel}}
+                  </option>
+                </select>
+              </div>
+
+
+              <div class="form-group" >
+                <label for="nomMaint">Nom</label>
+                <input type="text" [(ngModel)]="MaintName" name="nom" id="nomMaint" class="form-control"
+                       placeholder="Nom" #nom="ngModel" minlength="4" maxlength="100" required alt="Nom">
+                <div *ngIf="nom.invalid && (nom.dirty || nom.touched)">
+                  <div *ngIf="nom.errors.required" class="error-msg">
+                    nom est requis
+                  </div>
+                  <div *ngIf="nom.errors.minlength" class="error-msg">
+                    nom doit contenir au moins 4 caractères
+                  </div>
+                  <div *ngIf="nom.errors.maxlength" class="error-msg">
+                    nom ne doit pas dépasser 100 caractères
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" >
+                <label for="prix">Prix</label>
+                <input type="number" [(ngModel)]="prixMaint" name="prix" id="prix" class="form-control"
+                       placeholder="Prix..." #prix="ngModel" min="0" required alt="Prix">
+                <div *ngIf="prix.invalid && (prix.dirty || prix.touched)">
+                  <div *ngIf="prix.errors.required" class="error-msg">
+                    Le Prix est requis
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" >
+                <label for="dateDeb">Date Debut</label>
+                <input type="date" [min]="toDay" [(ngModel)]="dateDebut" name="dateD" id="dateDeb" class="form-control"
+                       placeholder="dd/mm/yyyy" #datDeb="ngModel" required alt="Date de Debut">
+                <div *ngIf="datDeb.invalid && (datDeb.dirty || datDeb.touched)">
+                  <div *ngIf="datDeb.errors.required" class="error-msg">
+                    La Date de Depart est requis
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" >
+                <label for="dateF">Date de Fin</label>
+                <input type="date" [min]="dateDebut" [(ngModel)]="dateFin" name="datFin" id="dateF" class="form-control"
+                       placeholder="dd/mm/yyyy" #dateF="ngModel" required alt="Date de Fin">
+                <div *ngIf="dateF.invalid && (dateF.dirty || dateF.touched)">
+                  <div *ngIf="dateF.errors.required" class="error-msg">
+                    La Date de Fin est requis
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')"
+                  [disabled]="!f3.valid">Save</button>
+        </div>
+      </div>
+
+      <!-- Form (Nv Cart Grise) -->
+      <div *ngIf="typeOfForm==1">
+        <div class="modal-body">
+
+          <form #f2="ngForm">
+
+            <div class="form-group">
+              <label class="mr-sm-2" for="inlineFormCustomSelect">Balise / Vehicule</label>
+              <select [(ngModel)]="modelCar" [ngModel]="maint?.deviceID" #modelC="ngModel" name="modelC"
+                      class="custom-select mr-sm-2" id="inlineFormCustomSelect" required>
+                <option *ngFor="let vehicule of vehicules" value="{{vehicule.deviceID}}">{{vehicule.vehicleModel}}
+                </option>
+              </select>
+            </div>
+
+
+            <div class="form-group" >
+              <label for="nomMaint">Nom</label>
+              <input type="text" [(ngModel)]="MaintName" name="nom" id="nomMaint" class="form-control"
+                     placeholder="Nom" #nom="ngModel" minlength="4" maxlength="100" required alt="Nom">
+              <div *ngIf="nom.invalid && (nom.dirty || nom.touched)">
+                <div *ngIf="nom.errors.required" class="error-msg">
+                  nom est requis
+                </div>
+                <div *ngIf="nom.errors.minlength" class="error-msg">
+                  nom doit contenir au moins 4 caractères
+                </div>
+                <div *ngIf="nom.errors.maxlength" class="error-msg">
+                  nom ne doit pas dépasser 100 caractères
+                </div>
+              </div>
+            </div>
+
+            <div class="form-group" >
+              <label for="dateCG">Date de Carte Grise</label>
+              <input type="date" [(ngModel)]="dateCartGrise" name="dateCG" id="dateCG" class="form-control"
+                     placeholder="dd/mm/yyyy" #datCG="ngModel" required alt="Date de Debut">
+              <div *ngIf="datCG.invalid && (datCG.dirty || datCG.touched)">
+                <div *ngIf="datCG.errors.required" class="error-msg">
+                  La Date de Depart est requis
+                </div>
+              </div>
+            </div>
+
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')"
+                  [disabled]="!f2.valid">Save</button>
+        </div>
+      </div>
+
+
+      <!-- Form de (Entretien) -->
+      <div *ngIf="typeOfForm==4">
+        <div class="modal-body">
+
+          <form #f5="ngForm">
+            <div>
+              <div class="form-group">
+                <label class="mr-sm-2" for="inlineFormCustomSelect">Balise / Vehicule</label>
+                <select [(ngModel)]="modelCar" [ngModel]="maint?.deviceID" #modelC="ngModel" name="modelC"
+                        class="custom-select mr-sm-2" id="inlineFormCustomSelect" required>
+                  <option *ngFor="let vehicule of vehicules" value="{{vehicule.deviceID}}">{{vehicule.vehicleModel}}
+                  </option>
+                </select>
+              </div>
+
+
+              <div class="form-group" >
+                <label for="nomMaint">Nom</label>
+                <input type="text" [(ngModel)]="MaintName" name="nom" id="nomMaint" class="form-control"
+                       placeholder="Nom" #nom="ngModel" minlength="4" maxlength="100" required alt="Nom">
+                <div *ngIf="nom.invalid && (nom.dirty || nom.touched)">
+                  <div *ngIf="nom.errors.required" class="error-msg">
+                    nom est requis
+                  </div>
+                  <div *ngIf="nom.errors.minlength" class="error-msg">
+                    nom doit contenir au moins 4 caractères
+                  </div>
+                  <div *ngIf="nom.errors.maxlength" class="error-msg">
+                    nom ne doit pas dépasser 100 caractères
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" >
+                <label for="prix">Prix</label>
+                <input type="number" [(ngModel)]="prixMaint" name="prix" id="prix" class="form-control"
+                       placeholder="Prix..." #prix="ngModel" min="0" required alt="Prix">
+                <div *ngIf="prix.invalid && (prix.dirty || prix.touched)">
+                  <div *ngIf="prix.errors.required" class="error-msg">
+                    Le Prix est requis
+                  </div>
+                </div>
+              </div>
+
+              <div class="form-group" >
+                <label for="dateDeb">Date Debut</label>
+                <input type="date" [min]="toDay" [(ngModel)]="dateDebut" name="dateD" id="dateDeb" class="form-control"
+                       placeholder="dd/mm/yyyy" #datDeb="ngModel" required alt="Date de Debut">
+                <div *ngIf="datDeb.invalid && (datDeb.dirty || datDeb.touched)">
+                  <div *ngIf="datDeb.errors.required" class="error-msg">
+                    La Date de Depart est requis
+                  </div>
+                </div>
+              </div>
+
+              <!--<div class="form-group" >
+                <label for="dateF">Date de Fin</label>
+                <input type="date" [min]="dateDebut" [(ngModel)]="dateFin" name="datFin" id="dateF" class="form-control"
+                       placeholder="dd/mm/yyyy" #dateF="ngModel" required alt="Date de Fin">
+                <div *ngIf="dateF.invalid && (dateF.dirty || dateF.touched)">
+                  <div *ngIf="dateF.errors.required" class="error-msg">
+                    La Date de Fin est requis
+                  </div>
+                </div>
+              </div>-->
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')"
+                  [disabled]="!f5.valid">Save</button>
+        </div>
+      </div>
+
+    </ng-template>
+
+  </div>
+</div>
+
+
+
+<div class="card m-5">
+  <div class="card-header">
+    <div class="row">
+      <div class="col-10">List Maintenance</div>
+      <div class="col-2">
+        <!--<button class="btn btn-sm btn-success" (click)="open(content, null)">Nouveau</button>-->
+        <div ngbDropdown class="d-inline-block">
+          <button class="btn btn-outline-warning" id="dropdownBasic1" ngbDropdownToggle>Ajouter Nouveau</button>
+          <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+            <button class="btn-sm" *ngFor="let nvMaint of listNvMaintenance;let index=index" (click)="open(content,index)" ngbDropdownItem>{{nvMaint}}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="card-body">
+    <div class="container">
+      <div class="row m3">
+        <table id="myTable" class="table table-striped">
+          <thead class="thead-black">
+          <tr>
+            <th>Nom</th>
+            <th class="text-center">Type</th>
+            <th class="text-center">Balise/vehicules</th>
+            <th class="text-center">Date Création</th>
+            <th class="text-center">Jours Restant</th>
+            <th class="text-center">Dates</th>
+            <th class="text-center">Prix</th>
+            <th class="text-center">Plus Info</th>
+            <th class="text-center">Action</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr>
+
+          </tr>
+          </tbody>
+        </table>
+        <!--<div *ngIf="taillListDriver==0">
+          <p>il n'y a pas du chauffeur</p>
+        </div>-->
+      </div>
+    </div>
+  </div>
+</div>

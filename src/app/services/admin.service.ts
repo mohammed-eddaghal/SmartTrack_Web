@@ -61,6 +61,22 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath+'add/driver',body);
   }
 
+  addMaitenanceAssurance(body:any){
+    return this.postFnc(this.apiPath+'add/insurance',body);
+  }
+
+  /*addMaintenanceCartGrise(body:any){
+    return this.postFnc(this.apiPath+'add/insurance',body);
+  }*/
+
+  addMaintenanceVisitTechnique(body:any){
+    return this.postFnc(this.apiPath+'add/technicalVisit',body);
+  }
+
+  addMaintenanceEntretien(body:any){
+    return this.postFnc(this.apiPath+'add/entretien',body);
+  }
+
   getUsers(body:any){
     return this.postFnc(this.apiPath+'findall/user',body);
   }

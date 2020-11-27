@@ -23,6 +23,8 @@ import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 import { ChauffeurComponent } from './chauffeur/chauffeur.component';
 import { ReportComponent } from './report/report.component';
 import { NgxSpinnerModule } from "ngx-spinner";
+import { MaintenanceComponent } from './maintenance/maintenance.component';
+import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 //import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -37,8 +39,12 @@ import { NgxSpinnerModule } from "ngx-spinner";
     UtilisateursComponent,
     ChauffeurComponent,
     ReportComponent,
+    MaintenanceComponent,
   ],
   imports: [
+    BrowserAnimationsModule,
+    NoopAnimationsModule,
+
     BrowserModule,
     AppRoutingModule,
     FormsModule,

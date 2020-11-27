@@ -28,4 +28,5 @@ export class NavbarComponent implements OnInit {
     this.authService.isLoggedIn = false;
     localStorage.clear();
   }
+
 }
