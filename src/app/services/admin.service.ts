@@ -49,6 +49,19 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'report/summary', body);
   }
 
+  getSpeedReport(accountID: string, userID: string, startTime: number, endTime: number, deviceID?: string) {
+    var body = {
+      "accountID": accountID,
+      "userID": userID,
+      "startTime": startTime,
+      "endTime": endTime,
+      "speed": 0
+    };
+    if(deviceID != "0") body['deviceID'] = deviceID;
+
+    return this.postFnc(this.apiPath + 'report/speed', body);
+  }
+
   getDashboardDistanceStats(accountID: string, startTime: number, endTime: number) {
     var body = {
       "accountID": accountID,

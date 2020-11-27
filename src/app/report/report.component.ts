@@ -44,20 +44,20 @@ export class ReportComponent implements OnInit {
 
   onSubmit(form: NgForm) {
     console.log('filter value is ', form.value['filter']);
-    if (form.value['filter'] === 0) {
+    if (form.value.filter == 0) {
       this.cvref.clear();
       const componentRef: ComponentRef<SummaryReportComponent> =
         this.cvref.createComponent(this.resolver.resolveComponentFactory(SummaryReportComponent));
-      componentRef.instance.deviceID = form.value['deviceID'];
-      componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
-      componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
-      console.log('data sent is: ', componentRef.instance.deviceID, componentRef.instance.startTime, componentRef.instance.endTime);
+        componentRef.instance.deviceID = form.value['deviceID'];
+        componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
+        componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
+    } else if (form.value.filter == 4) {
+      this.cvref.clear();
+      const componentRef: ComponentRef<SpeedReportComponent> =
+        this.cvref.createComponent(this.resolver.resolveComponentFactory(SpeedReportComponent));
+        componentRef.instance.deviceID = form.value['deviceID'];
+        componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
+        componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
     }
-  }
-  loadSpeedReport() {
-    this.cvref.clear();
-    const componentRef: ComponentRef<SpeedReportComponent> = this.cvref.createComponent(this.resolver.resolveComponentFactory(SpeedReportComponent));
-    componentRef.instance.data = "this is a data passed dynamically";
-    console.log('speed report');
   }
 }
