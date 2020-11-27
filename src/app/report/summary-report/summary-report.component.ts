@@ -1,5 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { map } from 'rxjs/operators';
 import { AdminService } from 'src/app/services/admin.service';
+import { AllSummaryReport } from 'src/app/models/summary.report.all.model';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -13,7 +15,7 @@ export class SummaryReportComponent implements OnInit {
   @Input() startTime: number;
   @Input() endTime: number;
 
-  data: any;
+  data: AllSummaryReport[];
 
   constructor(private adminService: AdminService,
     private authService: AuthService) { }
@@ -30,10 +32,12 @@ export class SummaryReportComponent implements OnInit {
 
     this.adminService.getSummaryReport(this.authService.user.accountID, this.authService.user.userID,
       this.deviceID, this.startTime, this.endTime, web)
-      .subscribe(
+      .pipe(
+        map((data: AllSummaryReport[]) => data.map(report => new AllSummaryReport().deserialize(report)))
+      ).subscribe(
         response => {
           this.data = response;
-          console.log(response);
+          console.log(this.data);
         },
         error => {
         }

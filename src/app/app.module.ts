@@ -23,6 +23,7 @@ import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 import { ReportComponent } from './report/report.component';
 import { SummaryReportComponent } from './report/summary-report/summary-report.component';
 import { SpeedReportComponent } from './report/speed-report/speed-report.component';
+import { CustomtimeformatterPipe } from 'src/pipes/customtimeformatter.pipe';
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 //import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -38,6 +39,7 @@ import { SpeedReportComponent } from './report/speed-report/speed-report.compone
     ReportComponent,
     SummaryReportComponent,
     SpeedReportComponent,
+    CustomtimeformatterPipe,
   ],
   imports: [
     BrowserModule,

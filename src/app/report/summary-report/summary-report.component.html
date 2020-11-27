@@ -1,29 +1,28 @@
 <table class="table table-bordered">
     <thead class="thead-dark">
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">First</th>
-        <th scope="col">Last</th>
-        <th scope="col">Handle</th>
+        <th scope="col">Balise / Vehicule</th>
+        <th scope="col">Du</th>
+        <th scope="col">Au</th>
+        <th scope="col">DISTANCE</th>
+        <th scope="col">VITESSE MAX</th>
+        <th scope="col">VITESSE MOYENNE</th>
+        <th scope="col">STATIONNEMENTS</th>
+        <th scope="col">ARRÊTS</th>
+        <th scope="col">MOUVEMENTS</th>
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <th scope="row">1</th>
-        <td>Mark</td>
-        <td>Otto</td>
-        <td>@mdo</td>
-      </tr>
-      <tr>
-        <th scope="row">2</th>
-        <td>Jacob</td>
-        <td>Thornton</td>
-        <td>@fat</td>
-      </tr>
-      <tr>
-        <th scope="row">3</th>
-        <td colspan="2">Larry the Bird</td>
-        <td>@twitter</td>
+      <tr *ngFor="let device of data">
+        <td>{{device.vehicleModel}}</td>
+        <td>{{this.startTime | date: 'short'}}</td>
+        <td>{{this.endTime | date: 'short'}}</td>
+        <td>{{device.distance| number:'1.0-2'}}</td>
+        <td>{{device.speedMax| number:'1.0-2'}}</td>
+        <td>{{device.speedAvg| number:'1.0-2'}}</td>
+        <td>{{device.stops}}</td>
+        <td>{{device.parkingTimes  | customtimeformatter}}</td>
+        <td>{{device.runningTime | customtimeformatter}}</td>
       </tr>
     </tbody>
   </table>
