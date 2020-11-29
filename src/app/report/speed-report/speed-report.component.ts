@@ -8,6 +8,7 @@ import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { isPlatformBrowser } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-speed-report',
@@ -31,19 +32,23 @@ export class SpeedReportComponent implements OnInit {
 
   ngOnInit(): void {
     this.chart = am4core.create("speedChart", am4charts.XYChart);
-    this.adminService.getSpeedReport(this.authService.user.accountID, this.authService.user.userID,
-      this.startTime, this.endTime, this.deviceID)
-      .pipe(
-        map((data: SpeedReport[]) => data.map(report => new SpeedReport().deserialize(report)))
-      ).subscribe(
-        response => {
-          this.data = response;
-          this.chart.data = response;
-          console.log(this.data);
-        },
-        error => {
-        }
-      );
+    if(this.deviceID == '0') {
+      Swal.fire('Oops...', "veuillez choisir un véhicule", 'error')
+    }else {
+      this.adminService.getSpeedReport(this.authService.user.accountID, this.authService.user.userID,
+        this.startTime, this.endTime, this.deviceID)
+        .pipe(
+          map((data: SpeedReport[]) => data.map(report => new SpeedReport().deserialize(report)))
+        ).subscribe(
+          response => {
+            this.data = response;
+            this.chart.data = response;
+            console.log(this.data);
+          },
+          error => {
+          }
+        );
+    }
   }
   // Run the function only in the browser
   browserOnly(f: () => void) {

@@ -5,6 +5,7 @@ import { NgxSpinnerService } from 'ngx-spinner';
 import { AuthService } from '../services/auth.service';
 import { AdminService } from '../services/admin.service';
 import { map } from 'rxjs/operators';
+import { time } from '@amcharts/amcharts4/core';
 
 @Component({
   selector: 'app-maintenance',
@@ -27,6 +28,7 @@ export class MaintenanceComponent implements OnInit {
   isUpdatingOrAdding: string;
 
   vehicules: Vehicle[];
+  maintenances: any;
 
   MaintName: any;
 
@@ -62,6 +64,15 @@ export class MaintenanceComponent implements OnInit {
       error => {
       }
     );
+    this.adminService.getAllMaintenances(this.authService.user.accountID, this.authService.user.userID).subscribe(
+      response => {
+        this.maintenances = response;
+        console.log(response);
+      },
+      error => {
+
+      }
+    )
   }
 
   open(content, index?: number, user?: any) {
@@ -243,7 +254,7 @@ export class MaintenanceComponent implements OnInit {
       "deviceID": this.modelCar,
       "timestampStart": (new Date(this.dateDebut).getTime() / 1000),
       "timestampEnd": new Date(this.dateFin).getTime() / 1000,
-      "insuranceName": this.MaintName
+      "name": this.MaintName
     }
 
     ).subscribe(rep => {
@@ -264,7 +275,7 @@ export class MaintenanceComponent implements OnInit {
       "deviceID": this.modelCar,
       "timestampStart": (new Date(this.dateDebut).getTime() / 1000),
       "timestampEnd": new Date(this.dateFin).getTime() / 1000,
-      "technicalVisitName": this.MaintName,
+      "name": this.MaintName,
       "price": this.prixMaint
     }).subscribe(rep => {
       console.log(rep)
@@ -284,7 +295,7 @@ export class MaintenanceComponent implements OnInit {
       "deviceID": this.modelCar,
       "timestamp": (new Date(this.dateDebut).getTime() / 1000),
       //"timestampEnd": new Date(this.dateFin).getTime()/1000,
-      "entretienName": this.MaintName,
+      "name": this.MaintName,
       "price": this.prixMaint
     }).subscribe(rep => {
       console.log(rep)
@@ -296,6 +307,44 @@ export class MaintenanceComponent implements OnInit {
     this.dateFin = "";
     this.dateDebut = "";
     this.prixMaint = null;
+  }
+
+  getType(type) {
+    switch (type) {
+      case 'entretien':
+        return 'entretien';
+
+      case 'technicalVisit':
+        return 'visite technique';
+
+      case 'insurance':
+        return 'assurance';
+
+      case 'draining':
+        return 'vidange';
+
+      default:
+        return 'maintenance';
+    }
+  }
+
+  getPourcentageDays(timestampStart, timestampEnd) {
+    return (timestampEnd - timestampStart) / Math.abs(Math.floor(new Date().getTime() / 1000) - timestampEnd);
+  }
+
+  getProgressClass(timestampStart, timestampEnd) {
+    var p = this.getPourcentageDays(timestampStart, timestampEnd);
+    switch (true) {
+      case p < 25:
+        return 'progress-bar progress-bar-striped  bg-success';
+      case p < 50:
+        return 'progress-bar progress-bar-striped  bg-warning';
+      case p < 75:
+        return 'progress-bar progress-bar-striped  bg-danger';
+      default:
+        return 'progress-bar progress-bar-striped bg-info';
+    }
+
   }
 
   getDeviceName(deviceId: any) {

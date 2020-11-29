@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SubUserService } from '../services/subuser.service';
 import { AuthService } from '../services/auth.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-login',
@@ -72,6 +73,7 @@ export class LoginComponent implements OnInit {
         else { console.log("your account is deactivated") }
       }, error => {
         // alert("erreur verifier les données inserer")
+        Swal.fire('Oops...', 'Something went wrong!', 'error')
       })
   }
 
@@ -94,6 +96,7 @@ export class LoginComponent implements OnInit {
 
       }, error => {
         console.log('error: ', error);
+        Swal.fire('Oops...', error, 'error');
         // alert("erreur verifier les données inserer")
       })
   }

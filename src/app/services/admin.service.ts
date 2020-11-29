@@ -57,7 +57,7 @@ export class AdminService extends DataService {
       "endTime": endTime,
       "speed": 0
     };
-    if(deviceID != "0") body['deviceID'] = deviceID;
+    if (deviceID != "0") body['deviceID'] = deviceID;
 
     return this.postFnc(this.apiPath + 'report/speed', body);
   }
@@ -79,52 +79,61 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath+'vehicles',body);
   }*/
 
-  addUser(body:any){
-    return this.postFnc(this.apiPath+'add/user',body);
+  addUser(body: any) {
+    return this.postFnc(this.apiPath + 'add/user', body);
   }
 
-  addDriver(body:any){
-    return this.postFnc(this.apiPath+'add/driver',body);
+  addDriver(body: any) {
+    return this.postFnc(this.apiPath + 'add/driver', body);
   }
 
-  addMaitenanceAssurance(body:any){
-    return this.postFnc(this.apiPath+'add/insurance',body);
+  getAllMaintenances(accountID: string, userID: string) {
+    var body = {
+      "accountID": accountID
+    };
+    if (userID != null && userID != "") body['userID'] = userID;
+
+    return this.postFnc(this.apiPath + 'findall/maintenance', body);
+  }
+
+  addMaitenanceAssurance(body: any) {
+    return this.postFnc(this.apiPath + 'add/insurance', body);
   }
 
   /*addMaintenanceCartGrise(body:any){
     return this.postFnc(this.apiPath+'add/insurance',body);
   }*/
 
-  addMaintenanceVisitTechnique(body:any){
-    return this.postFnc(this.apiPath+'add/technicalVisit',body);
+  addMaintenanceVisitTechnique(body: any) {
+    return this.postFnc(this.apiPath + 'add/technicalVisit', body);
   }
 
-  addMaintenanceEntretien(body:any){
-    return this.postFnc(this.apiPath+'add/entretien',body);
+  addMaintenanceEntretien(body: any) {
+    return this.postFnc(this.apiPath + 'add/entretien', body);
   }
 
-  getUsers(body:any){
-    return this.postFnc(this.apiPath+'findall/user',body);
+  getUsers(body: any) {
+    return this.postFnc(this.apiPath + 'findall/user', body);
   }
 
-  getChauffeurs(body:any){
-    return this.postFnc(this.apiPath+'findall/driver',body);
+  getChauffeurs(body: any) {
+    return this.postFnc(this.apiPath + 'findall/driver', body);
   }
 
-  deleteUser(body:any){
-    return this.postFnc(this.apiPath+"delete/user/",body);
+  deleteUser(body: any) {
+    return this.postFnc(this.apiPath + "delete/user/", body);
   }
 
-  deleteDriver(body:any){
-    return this.postFnc(this.apiPath+"delete/driver/",body);
+  deleteDriver(body: any) {
+    return this.postFnc(this.apiPath + "delete/driver/", body);
   }
 
-  updatUser(body:any){
-    return this.putFnc(this.apiPath+"update/user",body);
+  updatUser(body: any) {
+    return this.putFnc(this.apiPath + "update/user", body);
   }
 
-  updateDriver(body:any){
-    return this.putFnc(this.apiPath+"update/driver",body);
+  updateDriver(body: any) {
+    return this.putFnc(this.apiPath + "update/driver", body);
   }
   getVeiculs(body: any) {
     return this.postFnc(this.apiPath + 'vehicles', body);
