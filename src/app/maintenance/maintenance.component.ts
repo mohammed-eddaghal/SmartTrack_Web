@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {Vehicle} from '../models/vehicle.model';
-import {ModalDismissReasons, NgbModal} from '@ng-bootstrap/ng-bootstrap';
-import {NgxSpinnerService} from 'ngx-spinner';
-import {AuthService} from '../services/auth.service';
-import {AdminService} from '../services/admin.service';
-import {map} from 'rxjs/operators';
+import { Vehicle } from '../models/vehicle.model';
+import { ModalDismissReasons, NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { NgxSpinnerService } from 'ngx-spinner';
+import { AuthService } from '../services/auth.service';
+import { AdminService } from '../services/admin.service';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-maintenance',
@@ -13,7 +13,7 @@ import {map} from 'rxjs/operators';
 })
 export class MaintenanceComponent implements OnInit {
 
-  listNvMaintenance:string[]=[
+  listNvMaintenance: string[] = [
     'Nouveau Assurance',
     'Nouveau Cart Grise',
     'Nouveau Visite Technique',
@@ -21,35 +21,35 @@ export class MaintenanceComponent implements OnInit {
     'Nouveau Entretiens'
   ];
 
-  typeOfForm:number=-1;
+  typeOfForm: number = -1;
 
   closeResult: string;
   isUpdatingOrAdding: string;
 
   vehicules: Vehicle[];
 
-  MaintName:any;
+  MaintName: any;
 
   maint: any;
 
-  toDay:string;
+  toDay: string;
 
   dateDebut: string = "";
-  dateFin:string="";
-  prixMaint:number;
+  dateFin: string = "";
+  prixMaint: number;
   modelCar: any;
-  namex:any;
-  dateCartGrise:string;
+  namex: any;
+  dateCartGrise: string;
 
   constructor(private modalService: NgbModal,
-              private spinner: NgxSpinnerService,
-              private authService: AuthService,
-              private adminService: AdminService) { }
+    private spinner: NgxSpinnerService,
+    private authService: AuthService,
+    private adminService: AdminService) { }
 
   ngOnInit(): void {
-    this.toDay=new Date().toJSON().split('T')[0];
+    this.toDay = new Date().toJSON().split('T')[0];
     console.log(this.toDay)
-    console.log("hhhhh "+new Date(this.toDay).getTime());
+    console.log("hhhhh " + new Date(this.toDay).getTime());
     this.spinner.show();
     this.adminService.getVehicles(this.authService.user.accountID, this.authService.user.userID).pipe(
       map((data: Vehicle[]) => data.map(vehicle => new Vehicle().deserialize(vehicle)))
@@ -64,9 +64,9 @@ export class MaintenanceComponent implements OnInit {
     );
   }
 
-  open(content, index?: number , user?: any) {
+  open(content, index?: number, user?: any) {
 
-    switch (index){
+    switch (index) {
       case 0: {
         this.typeOfForm = index;
         this.nvAssurance(content, user);
@@ -91,7 +91,7 @@ export class MaintenanceComponent implements OnInit {
 
   }
 
-  nvCartGrise(content,user?: any){
+  nvCartGrise(content, user?: any) {
     console.log("cart Grise");
     this.maint = user;
     if (user == null) {
@@ -123,15 +123,15 @@ export class MaintenanceComponent implements OnInit {
     });
   }
 
-  nvAssurance(content,user?: any){
+  nvAssurance(content, user?: any) {
     this.maint = user;
     if (user == null) {
       this.isUpdatingOrAdding = "Ajouter Assurance";
-      this.modelCar="";
+      this.modelCar = "";
       this.MaintName = "";
       this.dateDebut = "";
       this.dateFin = "";
-      this.prixMaint=null;
+      this.prixMaint = null;
       console.log("test ajout");
     }
     /*else {
@@ -153,7 +153,7 @@ export class MaintenanceComponent implements OnInit {
       console.log(this.closeResult + " 1")
 
       if (user == null) {
-        console.log(this.dateDebut+"/"+this.modelCar);
+        console.log(this.dateDebut + "/" + this.modelCar);
         this.ajoutAssurance();
         console.log("function d'ajout");
       }
@@ -170,15 +170,15 @@ export class MaintenanceComponent implements OnInit {
     });
   }
 
-  nvVistTechnique(content,user?: any){
+  nvVistTechnique(content, user?: any) {
     this.maint = user;
     if (user == null) {
       this.isUpdatingOrAdding = "Nouveau Visit Technique";
-      this.modelCar="";
+      this.modelCar = "";
       this.MaintName = "";
       this.dateDebut = "";
       this.dateFin = "";
-      this.prixMaint=null;
+      this.prixMaint = null;
       console.log("test ajout");
     }
 
@@ -187,7 +187,7 @@ export class MaintenanceComponent implements OnInit {
       console.log(this.closeResult + " 1")
 
       if (user == null) {
-        console.log(this.dateDebut+"/"+this.modelCar);
+        console.log(this.dateDebut + "/" + this.modelCar);
         this.ajoutVesitTech();
         console.log("function d'ajout");
       }
@@ -198,15 +198,15 @@ export class MaintenanceComponent implements OnInit {
     });
   }
 
-  nvEntretien(content,user?: any){
+  nvEntretien(content, user?: any) {
     this.maint = user;
     if (user == null) {
       this.isUpdatingOrAdding = "Nouveau Entretien";
-      this.modelCar="";
+      this.modelCar = "";
       this.MaintName = "";
       this.dateDebut = "";
       this.dateFin = "";
-      this.prixMaint=null;
+      this.prixMaint = null;
       console.log("test ajout");
     }
 
@@ -215,7 +215,7 @@ export class MaintenanceComponent implements OnInit {
       console.log(this.closeResult + " 1")
 
       if (user == null) {
-        console.log(this.dateDebut+"/"+this.modelCar);
+        console.log(this.dateDebut + "/" + this.modelCar);
         this.ajoutEntretien();
         console.log("function d'ajout");
       }
@@ -240,11 +240,11 @@ export class MaintenanceComponent implements OnInit {
   ajoutAssurance() {
     //console.log(this.modelCar+" / "+new Date(this.dateDebut).getTime()+" / "+new Date(this.dateFin).getTime()+" / "+ this.MaintName);
     this.adminService.addMaitenanceAssurance({
-        "deviceID": this.modelCar,
-        "timestampStart": (new Date(this.dateDebut).getTime()/1000),
-        "timestampEnd": new Date(this.dateFin).getTime()/1000,
-        "insuranceName": this.MaintName
-      }
+      "deviceID": this.modelCar,
+      "timestampStart": (new Date(this.dateDebut).getTime() / 1000),
+      "timestampEnd": new Date(this.dateFin).getTime() / 1000,
+      "insuranceName": this.MaintName
+    }
 
     ).subscribe(rep => {
       console.log(rep)
@@ -253,39 +253,19 @@ export class MaintenanceComponent implements OnInit {
     })
     this.MaintName = "";
     this.modelCar = "";
-    this.dateFin="";
-    this.dateDebut="";
-    this.prixMaint=null;
+    this.dateFin = "";
+    this.dateDebut = "";
+    this.prixMaint = null;
   }
 
   ajoutVesitTech() {
     //console.log(this.modelCar+" / "+new Date(this.dateDebut).getTime()+" / "+new Date(this.dateFin).getTime()+" / "+ this.MaintName);
     this.adminService.addMaintenanceVisitTechnique({
-        "deviceID": this.modelCar,
-        "timestampStart": (new Date(this.dateDebut).getTime()/1000),
-        "timestampEnd": new Date(this.dateFin).getTime()/1000,
-        "technicalVisitName": this.MaintName,
-        "price":this.prixMaint
-      }).subscribe(rep => {
-      console.log(rep)
-    }, error => {
-      console.error(error);
-    })
-    this.MaintName = "";
-    this.modelCar = "";
-    this.dateFin="";
-    this.dateDebut="";
-    this.prixMaint=null;
-  }
-
-  ajoutEntretien() {
-    //console.log(this.modelCar+" / "+new Date(this.dateDebut).getTime()+" / "+new Date(this.dateFin).getTime()+" / "+ this.MaintName);
-    this.adminService.addMaintenanceEntretien({
       "deviceID": this.modelCar,
-      "timestamp": (new Date(this.dateDebut).getTime()/1000),
-      //"timestampEnd": new Date(this.dateFin).getTime()/1000,
-      "entretienName": this.MaintName,
-      "price":this.prixMaint
+      "timestampStart": (new Date(this.dateDebut).getTime() / 1000),
+      "timestampEnd": new Date(this.dateFin).getTime() / 1000,
+      "technicalVisitName": this.MaintName,
+      "price": this.prixMaint
     }).subscribe(rep => {
       console.log(rep)
     }, error => {
@@ -293,9 +273,29 @@ export class MaintenanceComponent implements OnInit {
     })
     this.MaintName = "";
     this.modelCar = "";
-    this.dateFin="";
-    this.dateDebut="";
-    this.prixMaint=null;
+    this.dateFin = "";
+    this.dateDebut = "";
+    this.prixMaint = null;
+  }
+
+  ajoutEntretien() {
+    //console.log(this.modelCar+" / "+new Date(this.dateDebut).getTime()+" / "+new Date(this.dateFin).getTime()+" / "+ this.MaintName);
+    this.adminService.addMaintenanceEntretien({
+      "deviceID": this.modelCar,
+      "timestamp": (new Date(this.dateDebut).getTime() / 1000),
+      //"timestampEnd": new Date(this.dateFin).getTime()/1000,
+      "entretienName": this.MaintName,
+      "price": this.prixMaint
+    }).subscribe(rep => {
+      console.log(rep)
+    }, error => {
+      console.error(error);
+    })
+    this.MaintName = "";
+    this.modelCar = "";
+    this.dateFin = "";
+    this.dateDebut = "";
+    this.prixMaint = null;
   }
 
   getDeviceName(deviceId: any) {

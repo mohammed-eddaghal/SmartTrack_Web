@@ -1,9 +1,12 @@
-import { Component, OnInit } from '@angular/core';
+import { formatDate } from '@angular/common';
+import { Component, ComponentFactoryResolver, ComponentRef, OnInit, ViewContainerRef } from '@angular/core';
 import { NgForm } from '@angular/forms';
 import { map } from 'rxjs/operators';
 import { Vehicle } from '../models/vehicle.model';
 import { AdminService } from '../services/admin.service';
 import { AuthService } from '../services/auth.service';
+import { SpeedReportComponent } from './speed-report/speed-report.component';
+import { SummaryReportComponent } from './summary-report/summary-report.component';
 
 @Component({
   selector: 'app-report',
@@ -16,13 +19,15 @@ export class ReportComponent implements OnInit {
 
   defaultVehicle = 0;
 
-  defaultFilter = 1;
+  defaultFilter = 0;
 
   vehicles: Vehicle[] = [];
 
   constructor(
     private adminService: AdminService,
-    private authService: AuthService
+    private authService: AuthService,
+    private cvref: ViewContainerRef,
+    private resolver: ComponentFactoryResolver
   ) { }
 
   ngOnInit(): void {
@@ -38,7 +43,21 @@ export class ReportComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    console.log(form.value);
+    console.log('filter value is ', form.value['filter']);
+    if (form.value.filter == 0) {
+      this.cvref.clear();
+      const componentRef: ComponentRef<SummaryReportComponent> =
+        this.cvref.createComponent(this.resolver.resolveComponentFactory(SummaryReportComponent));
+        componentRef.instance.deviceID = form.value['deviceID'];
+        componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
+        componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
+    } else if (form.value.filter == 4) {
+      this.cvref.clear();
+      const componentRef: ComponentRef<SpeedReportComponent> =
+        this.cvref.createComponent(this.resolver.resolveComponentFactory(SpeedReportComponent));
+        componentRef.instance.deviceID = form.value['deviceID'];
+        componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
+        componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
+    }
   }
-
 }

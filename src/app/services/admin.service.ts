@@ -36,6 +36,32 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'vehicles', body);
   }
 
+
+  getSummaryReport(accountID: string, userID: string, deviceID: string, startTime: number, endTime: number, web: string) {
+    var body = {
+      "accountID": accountID,
+      "userID": userID,
+      "deviceID": deviceID,
+      "startTime": startTime,
+      "endTime": endTime,
+      "web": web
+    };
+    return this.postFnc(this.apiPath + 'report/summary', body);
+  }
+
+  getSpeedReport(accountID: string, userID: string, startTime: number, endTime: number, deviceID?: string) {
+    var body = {
+      "accountID": accountID,
+      "userID": userID,
+      "startTime": startTime,
+      "endTime": endTime,
+      "speed": 0
+    };
+    if(deviceID != "0") body['deviceID'] = deviceID;
+
+    return this.postFnc(this.apiPath + 'report/speed', body);
+  }
+
   getDashboardDistanceStats(accountID: string, startTime: number, endTime: number) {
     var body = {
       "accountID": accountID,
@@ -100,4 +126,19 @@ export class AdminService extends DataService {
   updateDriver(body:any){
     return this.putFnc(this.apiPath+"update/driver",body);
   }
+  getVeiculs(body: any) {
+    return this.postFnc(this.apiPath + 'vehicles', body);
+  }
+
+  // addUser(body: any) {
+  //   return this.postFnc(this.apiPath + 'add/user', body);
+  // }
+
+  // getUsers(body: any) {
+  //   return this.postFnc(this.apiPath + 'findall/user', body);
+  // }
+
+  // deleteUser(body: any) {
+  //   return this.deleteFnc(this.apiPath + "delete/user", body);
+  // }
 }

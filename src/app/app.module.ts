@@ -25,6 +25,9 @@ import { ReportComponent } from './report/report.component';
 import { NgxSpinnerModule } from "ngx-spinner";
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { SummaryReportComponent } from './report/summary-report/summary-report.component';
+import { SpeedReportComponent } from './report/speed-report/speed-report.component';
+import { CustomtimeformatterPipe } from 'src/pipes/customtimeformatter.pipe';
 //import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 //import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -40,6 +43,9 @@ import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-b
     ChauffeurComponent,
     ReportComponent,
     MaintenanceComponent,
+    SummaryReportComponent,
+    SpeedReportComponent,
+    CustomtimeformatterPipe,
   ],
   imports: [
     BrowserAnimationsModule,
