@@ -22,14 +22,15 @@ import { EtatComponent } from './etat/etat.component';
 import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 import { ChauffeurComponent } from './chauffeur/chauffeur.component';
 import { ReportComponent } from './report/report.component';
-import { NgxSpinnerModule } from "ngx-spinner";
+import { NgxSpinnerModule } from 'ngx-spinner';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import { SummaryReportComponent } from './report/summary-report/summary-report.component';
 import { SpeedReportComponent } from './report/speed-report/speed-report.component';
 import { CustomtimeformatterPipe } from 'src/pipes/customtimeformatter.pipe';
-//import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-//import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+import {DatePipe} from '@angular/common';
+// import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+// import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -70,7 +71,8 @@ import { CustomtimeformatterPipe } from 'src/pipes/customtimeformatter.pipe';
     AuthGuard,
     DeauthGuard,
     GoogleMapsAPIWrapper,
-    PagerService
+    PagerService,
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

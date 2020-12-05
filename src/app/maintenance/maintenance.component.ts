@@ -6,6 +6,7 @@ import { AuthService } from '../services/auth.service';
 import { AdminService } from '../services/admin.service';
 import { map } from 'rxjs/operators';
 import { time } from '@amcharts/amcharts4/core';
+import {DatePipe} from '@angular/common';
 
 @Component({
   selector: 'app-maintenance',
@@ -44,6 +45,7 @@ export class MaintenanceComponent implements OnInit {
   dateCartGrise: string;
 
   constructor(private modalService: NgbModal,
+    private datePipe:DatePipe,
     private spinner: NgxSpinnerService,
     private authService: AuthService,
     private adminService: AdminService) { }
@@ -75,31 +77,55 @@ export class MaintenanceComponent implements OnInit {
     )
   }
 
-  open(content, index?: number, user?: any) {
+  open(content, index?: number, mintKey?: string, maint?: any) {
 
-    switch (index) {
-      case 0: {
-        this.typeOfForm = index;
-        this.nvAssurance(content, user);
-        break;
+    if(maint==null){
+      switch (index) {
+        case 0: {
+          this.typeOfForm = index;
+          this.assurance(content, maint);
+          break;
+        }
+        case 1: {
+          this.typeOfForm = index;
+          this.nvCartGrise(content, maint);
+          break;
+        }
+        case 2: {
+          this.typeOfForm = index;
+          this.nvVistTechnique(content, maint);
+          break;
+        }
+        case 4: {
+          this.typeOfForm = index;
+          this.nvEntretien(content, maint);
+          break;
+        }
       }
-      case 1: {
-        this.typeOfForm = index;
-        this.nvCartGrise(content, user);
-        break;
+    }else {
+      switch (this.getMaintType(mintKey)) {
+        case 0: {
+          this.typeOfForm = 0;
+          this.assurance(content, maint);
+          break;
+        }
+        case 1: console.log(2);break;
+        case 4: console.log(4);break;
+        default: console.log("xx");
       }
-      case 2: {
-        this.typeOfForm = index;
-        this.nvVistTechnique(content, user);
-        break;
-      }
-      case 4: {
-        this.typeOfForm = index;
-        this.nvEntretien(content, user);
-        break;
-      }
+      console.log(JSON.stringify(maint)+" / "+mintKey);
     }
 
+
+
+  }
+
+  private getMaintType(maint:any):number{
+    console.log(maint);
+    if(maint==="insurance")return 0;
+    if(maint==="technicalVisit")return 1;
+    if(maint==="entretien")return 4;
+    else return -1;
   }
 
   nvCartGrise(content, user?: any) {
@@ -134,9 +160,9 @@ export class MaintenanceComponent implements OnInit {
     });
   }
 
-  nvAssurance(content, user?: any) {
-    this.maint = user;
-    if (user == null) {
+  assurance(content, row?: any) {
+    this.maint = row;
+    if (row == null) {
       this.isUpdatingOrAdding = "Ajouter Assurance";
       this.modelCar = "";
       this.MaintName = "";
@@ -145,33 +171,37 @@ export class MaintenanceComponent implements OnInit {
       this.prixMaint = null;
       console.log("test ajout");
     }
-    /*else {
-      console.log(user);
+    else {
+      console.log(row);
+      let dateS=new Date(row.timestampStart*1000);
+      let dateF=new Date(row.timestampEnd*1000);
+      this.datePipe.transform(dateS, 'dd/MM/yyyy');
+      //console.log(new Date(row.timestampEnd*1000))
       this.isUpdatingOrAdding = "Modifier Assurance";
-      //this.tele = user.contactPhone;
-      this.MaintName = user.displayName;
-      this.adresse = user.address;
-      this.description = user.description;
-      this.note = user.notes;
-      this.badge = user.badgeID;
-      this.modelCar = user.deviceID;
+      //this.modelCar = "";
+      this.MaintName = row.name;
+      this.dateDebut = this.datePipe.transform(dateS, 'yyyy-MM-dd');
+      this.dateFin = this.datePipe.transform(dateF, 'yyyy-MM-dd');
+      this.prixMaint = 0;
 
       console.log("test modifier");
-    }*/
+    }
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
       console.log(this.closeResult + " 1")
 
-      if (user == null) {
+      if (row == null) {
         console.log(this.dateDebut + "/" + this.modelCar);
         this.ajoutAssurance();
         console.log("function d'ajout");
       }
-      /*else {
-
+      else {
+        console.log(this.dateDebut+" / "+this.dateFin);
+        this.modifieAssurance(row.id);
         console.log("fenction de modification");
-      }*/
+
+      }
 
       //this.ajoutUtilisateur();
 
@@ -247,7 +277,6 @@ export class MaintenanceComponent implements OnInit {
     }
   }
 
-
   ajoutAssurance() {
     //console.log(this.modelCar+" / "+new Date(this.dateDebut).getTime()+" / "+new Date(this.dateFin).getTime()+" / "+ this.MaintName);
     this.adminService.addMaitenanceAssurance({
@@ -262,6 +291,32 @@ export class MaintenanceComponent implements OnInit {
     }, error => {
       console.error(error);
     })
+    this.MaintName = "";
+    this.modelCar = "";
+    this.dateFin = "";
+    this.dateDebut = "";
+    this.prixMaint = null;
+  }
+
+  modifieAssurance(row:any) {
+
+    console.log(row);
+    console.log("1"+this.MaintName);
+    console.log("1"+new Date(this.dateDebut).getTime() / 1000);
+    console.log("1"+new Date(this.dateFin).getTime() / 1000);
+    console.log("1"+this.modelCar);
+    this.adminService.updateMaintenaceAssurance({
+      "id": 10,
+      "deviceID": "357454071240632",
+      "timestampStart": 1606780800,
+      "timestampEnd": 1608076800,
+      "name": "kabala1"
+    })/*.subscribe(rep => {
+      console.log(rep);
+    }, error => {
+      console.error(error);
+    })*/
+    console.log("2"+this.MaintName);
     this.MaintName = "";
     this.modelCar = "";
     this.dateFin = "";
@@ -353,5 +408,6 @@ export class MaintenanceComponent implements OnInit {
         return car.vehicleModel;
     } return "";
   }
+
 
 }

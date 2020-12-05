@@ -96,6 +96,11 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'findall/maintenance', body);
   }
 
+  updateMaintenaceAssurance(body:any){
+    console.log("aloo");
+    return this.putFnc(this.apiPath + 'update/insurance/', body);
+  }
+
   addMaitenanceAssurance(body: any) {
     return this.postFnc(this.apiPath + 'add/insurance', body);
   }
