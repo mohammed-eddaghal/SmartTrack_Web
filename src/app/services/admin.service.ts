@@ -97,8 +97,8 @@ export class AdminService extends DataService {
   }
 
   updateMaintenaceAssurance(body:any){
-    console.log("aloo");
-    return this.putFnc(this.apiPath + 'update/insurance/', body);
+    console.log(JSON.stringify(body));
+    return this.putFnc(this.apiPath + '/update/insurance', body);
   }
 
   addMaitenanceAssurance(body: any) {

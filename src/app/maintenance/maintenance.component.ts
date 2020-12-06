@@ -98,7 +98,7 @@ export class MaintenanceComponent implements OnInit {
         }
         case 4: {
           this.typeOfForm = index;
-          this.nvEntretien(content, maint);
+          this.entretien(content, maint);
           break;
         }
       }
@@ -106,11 +106,19 @@ export class MaintenanceComponent implements OnInit {
       switch (this.getMaintType(mintKey)) {
         case 0: {
           this.typeOfForm = 0;
+          console.log("////**************/////////////");
+          console.log(JSON.stringify(maint));
           this.assurance(content, maint);
           break;
         }
         case 1: console.log(2);break;
-        case 4: console.log(4);break;
+        case 4: {
+          this.typeOfForm = 4;
+          console.log("////**************/////////////");
+          console.log(JSON.stringify(maint));
+          this.entretien(content, maint);
+          break;
+        }
         default: console.log("xx");
       }
       console.log(JSON.stringify(maint)+" / "+mintKey);
@@ -198,7 +206,7 @@ export class MaintenanceComponent implements OnInit {
       }
       else {
         console.log(this.dateDebut+" / "+this.dateFin);
-        this.modifieAssurance(row.id);
+        this.modifieAssurance(row);
         console.log("fenction de modification");
 
       }
@@ -239,10 +247,10 @@ export class MaintenanceComponent implements OnInit {
     });
   }
 
-  nvEntretien(content, user?: any) {
-    this.maint = user;
-    if (user == null) {
-      this.isUpdatingOrAdding = "Nouveau Entretien";
+  entretien(content, row?: any) {
+    this.maint = row;
+    if (row == null) {
+      this.isUpdatingOrAdding = "Ajouter Entretien";
       this.modelCar = "";
       this.MaintName = "";
       this.dateDebut = "";
@@ -250,16 +258,39 @@ export class MaintenanceComponent implements OnInit {
       this.prixMaint = null;
       console.log("test ajout");
     }
+    else {
+      console.log(row);
+      let dateS=new Date(row.timestampStart*1000);
+      let dateF=new Date(row.timestampEnd*1000);
+      this.datePipe.transform(dateS, 'dd/MM/yyyy');
+      //console.log(new Date(row.timestampEnd*1000))
+      this.isUpdatingOrAdding = "Modifier Entretien";
+      //this.modelCar = "";
+      this.MaintName = row.name;
+      this.dateDebut = this.datePipe.transform(dateS, 'yyyy-MM-dd');
+      this.dateFin = this.datePipe.transform(dateF, 'yyyy-MM-dd');
+      this.prixMaint = 0;
+
+      console.log("test modifier");
+    }
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
       console.log(this.closeResult + " 1")
 
-      if (user == null) {
+      if (row == null) {
         console.log(this.dateDebut + "/" + this.modelCar);
         this.ajoutEntretien();
         console.log("function d'ajout");
       }
+      else {
+        console.log(this.dateDebut+" / "+this.dateFin);
+        //this.modifieAssurance(row);
+        console.log("fenction de modification");
+
+      }
+
+      //this.ajoutUtilisateur();
 
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
@@ -299,24 +330,24 @@ export class MaintenanceComponent implements OnInit {
   }
 
   modifieAssurance(row:any) {
-
-    console.log(row);
-    console.log("1"+this.MaintName);
-    console.log("1"+new Date(this.dateDebut).getTime() / 1000);
-    console.log("1"+new Date(this.dateFin).getTime() / 1000);
-    console.log("1"+this.modelCar);
+    console.log("///////////")
+    console.log("1 "+row.id);
+    this.modelCar = row.deviceID;
+    console.log("1 "+this.MaintName);
+    console.log("1 "+new Date(this.dateDebut).getTime() / 1000);
+    console.log("1 "+new Date(this.dateFin).getTime() / 1000);
+    console.log("1 "+this.modelCar);
     this.adminService.updateMaintenaceAssurance({
-      "id": 10,
-      "deviceID": "357454071240632",
-      "timestampStart": 1606780800,
-      "timestampEnd": 1608076800,
-      "name": "kabala1"
+      "id": row.id,
+      "deviceID": this.modelCar,
+      "timestampStart": new Date(this.dateDebut).getTime() / 1000,
+      "timestampEnd": new Date(this.dateFin).getTime() / 1000,
+      "name": this.MaintName
     })/*.subscribe(rep => {
       console.log(rep);
     }, error => {
       console.error(error);
     })*/
-    console.log("2"+this.MaintName);
     this.MaintName = "";
     this.modelCar = "";
     this.dateFin = "";
