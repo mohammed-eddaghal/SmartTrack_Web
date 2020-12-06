@@ -343,11 +343,11 @@ export class MaintenanceComponent implements OnInit {
       "timestampStart": new Date(this.dateDebut).getTime() / 1000,
       "timestampEnd": new Date(this.dateFin).getTime() / 1000,
       "name": this.MaintName
-    })/*.subscribe(rep => {
+    }).subscribe(rep => {
       console.log(rep);
     }, error => {
       console.error(error);
-    })*/
+    });
     this.MaintName = "";
     this.modelCar = "";
     this.dateFin = "";

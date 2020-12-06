@@ -14,6 +14,7 @@ import { Observable, throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
+  
   protected apiPath = 'https://geotech-gps.com:9090/api/';
 
   private httpOption = {

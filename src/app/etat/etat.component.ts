@@ -75,9 +75,9 @@ export class EtatComponent implements OnInit {
           // alert("mochkil f etat parti admin")
         })
     }
-
-
-
+    setTimeout(() => {
+      console.log('called');
+    }, 1000);
   }
 
 
