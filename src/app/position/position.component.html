@@ -1,11 +1,47 @@
-<div class="row">
-  <div class="col">
-    <div ngbDropdown class="d-inline-block">
-      <button class="btn btn-outline-primary" id="dropdownBasic1" ngbDropdownToggle>Toggle dropdown</button>
-      <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
-        <button ngbDropdownItem>Action - 1</button>
-        <button ngbDropdownItem>Another Action</button>
-        <button ngbDropdownItem>Something else is here</button>
-      </div>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-3 pl-0 pr-0">
+      <mat-toolbar style="background-color: #419873; color: white;">
+        <button class="md-icon-button md-accent md-button md-ink-ripple" type="button"
+          (click)="isSearching = !isSearching">
+          <mat-icon aria-hidden="false" aria-label="search icon">search</mat-icon>
+        </button>
+        <span [class]="isSearching ? 'd-none' : 'd-block'">Devices</span>
+        <mat-form-field [class]="isSearching ? 'd-block' : 'd-none'">
+          <!-- <mat-label>Search</mat-label> -->
+          <input matInput placeholder="Cherche ..." value="">
+        </mat-form-field>
+      </mat-toolbar>
+      <mat-tab-group>
+        <mat-tab label="TOUS">
+          <mat-selection-list #devicesSelected>
+            <mat-list-option *ngFor="let device of devices">
+              <img matListIcon src="../../assets/status/marker_blue_parking.png"
+                style="width: 25px; height: 30px; display:inline-flex;">
+              <div class="car-model" matLine>{{device.vehicleModel}}</div>
+              <hr />
+              <div class="car-details" matLine>
+                {{device.distanceKM}} KM | {{device.activity_time}} | {{device.timestamp * 1000 | date: 'dd/MM/yyyy
+                HH:mm:ss'}}
+              </div>
+              <mat-divider></mat-divider>
+            </mat-list-option>
+          </mat-selection-list>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <img src="../../assets/status/pin_green.png">
+          </ng-template>
+        </mat-tab>
+        <mat-tab>
+          <ng-template mat-tab-label>
+            <img src="../../assets/status/pin_blue_dot.png">
+          </ng-template>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+    <div class="col-9 pl-0 pr-0">
+      <app-map (map$)="receiveMap($event)" (zoom$)="receiveZoom($event)" id='main-map'></app-map>
     </div>
   </div>
+</div>

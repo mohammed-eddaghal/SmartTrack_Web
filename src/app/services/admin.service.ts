@@ -36,6 +36,15 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'vehicles', body);
   }
 
+  getDevicesPosition(accountID: string, userID: string, search?: string) {
+    var body = {
+      "accountID": accountID,
+      "userID": userID,
+      "search": search ?? ''
+    };
+    return this.postFnc(this.apiPath + 'account/devices', body);
+  }
+
 
   getSummaryReport(accountID: string, userID: string, deviceID: string, startTime: number, endTime: number, web: string) {
     var body = {

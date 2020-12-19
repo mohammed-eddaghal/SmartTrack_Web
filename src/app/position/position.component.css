@@ -1,0 +1,111 @@
+.md-toolbar-tools>.md-button:first-child {
+  margin-left: -8px;
+}
+
+.md-toolbar-tools .md-button,
+.md-toolbar-tools .md-button.md-icon-button md-icon {
+  -webkit-transition-duration: .5s;
+  transition-duration: .5s;
+  -webkit-transition-timing-function: cubic-bezier(.35, 0, .25, 1);
+  transition-timing-function: cubic-bezier(.35, 0, .25, 1);
+  -webkit-transition-property: background-color, fill, color;
+  transition-property: background-color, fill, color;
+}
+
+.md-toolbar-tools .md-button {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.md-button.md-icon-button {
+  margin: 0 6px;
+  height: 40px;
+  min-width: 0;
+  line-height: 24px;
+  padding: 8px;
+  width: 40px;
+  border-radius: 50%;
+}
+
+/* .md-button.md-default-theme.md-accent,
+.md-button.md-accent {
+  color: rgb(255, 64, 129);
+} */
+
+.md-button {
+  display: inline-block;
+  position: relative;
+  cursor: pointer;
+  min-height: 36px;
+  min-width: 88px;
+  line-height: 36px;
+  vertical-align: middle;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 2px;
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  outline: none;
+  border: 0;
+  padding: 0 6px;
+  margin: 6px 8px;
+  background: transparent;
+  color: currentColor;
+  white-space: nowrap;
+  text-transform: uppercase;
+  font-weight: 500;
+  font-size: 14px;
+  font-style: inherit;
+  font-variant: inherit;
+  font-family: inherit;
+  text-decoration: none;
+  overflow: hidden;
+  -webkit-transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), background-color .4s cubic-bezier(.25, .8, .25, 1);
+  transition: box-shadow .4s cubic-bezier(.25, .8, .25, 1), background-color .4s cubic-bezier(.25, .8, .25, 1);
+}
+
+.md-button {
+  letter-spacing: .01em;
+}
+
+::ng-deep.mat-tab-label,
+::ng-deep.mat-tab-label-active {
+  min-width: 0px !important;
+  padding: 30px !important;
+  margin: 5px !important;
+}
+
+.car-model {
+  font-size: 12px !important;
+}
+
+.car-details {
+  font-size: 10px !important;
+}
+
+mat-form-field {
+  font-size: 12px !important;
+}
+
+@media only screen and (max-width: 600px) {
+  .col-3 {
+    width: 100vw !important;
+    display: contents;
+  }
+
+  ::ng-deep.mat-tab-body-content {
+    width: 100vw !important;
+  }
+
+  ::ng-deep.mat-tab-label,
+::ng-deep.mat-tab-label-active {
+  min-width: 0px !important;
+  padding-right: 40px !important;
+  margin: 5px !important;
+}
+}

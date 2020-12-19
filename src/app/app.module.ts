@@ -24,11 +24,21 @@ import { ChauffeurComponent } from './chauffeur/chauffeur.component';
 import { ReportComponent } from './report/report.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
-import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
+import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SummaryReportComponent } from './report/summary-report/summary-report.component';
 import { SpeedReportComponent } from './report/speed-report/speed-report.component';
 import { CustomtimeformatterPipe } from 'src/pipes/customtimeformatter.pipe';
-import {DatePipe} from '@angular/common';
+import { DatePipe } from '@angular/common';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatIconModule } from '@angular/material/icon';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatListModule } from '@angular/material/list';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatGridListModule } from '@angular/material/grid-list';
+import { MapComponent } from './map/map.component';
+import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 // import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
 
@@ -47,11 +57,20 @@ import {DatePipe} from '@angular/common';
     SummaryReportComponent,
     SpeedReportComponent,
     CustomtimeformatterPipe,
+    MapComponent,
   ],
   imports: [
     BrowserAnimationsModule,
     NoopAnimationsModule,
-
+    MatToolbarModule,
+    MatIconModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatTabsModule,
+    MatListModule,
+    MatDividerModule,
+    MatGridListModule,
+    LeafletModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
