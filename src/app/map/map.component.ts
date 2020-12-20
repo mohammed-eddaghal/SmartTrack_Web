@@ -1,6 +1,5 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { Map, Control, DomUtil, ZoomAnimEvent, Layer, MapOptions, tileLayer, latLng, Icon, Marker } from 'leaflet';
-import { Device } from '../models/device.model';
+import { Map, ZoomAnimEvent, MapOptions, tileLayer, latLng } from 'leaflet';
 
 @Component({
   selector: 'app-map',
