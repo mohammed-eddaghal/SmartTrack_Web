@@ -4,12 +4,14 @@
       <mat-toolbar style="background-color: #419873; color: white;">
         <button class="md-icon-button md-accent md-button md-ink-ripple" type="button"
           (click)="isSearching = !isSearching">
-          <mat-icon aria-hidden="false" aria-label="search icon">search</mat-icon>
+          <mat-icon aria-hidden="false" aria-label="search icon" *ngIf="!isSearching">search</mat-icon>
+          <mat-icon aria-hidden="false" aria-label="search icon" *ngIf="isSearching" (click)="searchWord = ''; this.updateDevices();">close
+          </mat-icon>
         </button>
         <span [class]="isSearching ? 'd-none' : 'd-block'">Devices</span>
         <mat-form-field [class]="isSearching ? 'd-block' : 'd-none'">
           <!-- <mat-label>Search</mat-label> -->
-          <input matInput placeholder="Cherche ..." value="">
+          <input matInput value="" (input)="searchWord = $event.target.value; this.updateDevices();">
         </mat-form-field>
       </mat-toolbar>
       <mat-tab-group #tabRef (selectedTabChange)="onTabChanged(tabRef.selectedIndex)">

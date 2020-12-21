@@ -15,6 +15,7 @@ import { map } from "rxjs/operators";
 export class PositionComponent implements OnInit, OnDestroy {
   isAdmin: boolean;
   isSearching: boolean = false;
+  searchWord : String = "";
   devices: Device[] = [];
   markers: CMarker[] = [];
   timer: Subscription;
@@ -31,7 +32,7 @@ export class PositionComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.isAdmin = this.adminService.isAdmin;
     this.updateDevices();
-    this.timer = interval(1000).subscribe(() => {
+    this.timer = interval(60000).subscribe(() => {
       // console.log('say hello baby');
       this.updateDevices();
     });
@@ -74,7 +75,7 @@ export class PositionComponent implements OnInit, OnDestroy {
   }
 
   updateDevices() {
-    this.adminService.getDevicesPosition(this.authService.user.accountID, this.authService.user.userID, this.tabContent).pipe(
+    this.adminService.getDevicesPosition(this.authService.user.accountID, this.authService.user.userID, this.tabContent, this.searchWord).pipe(
       map((data: Device[]) => data.map(device => new Device().deserialize(device)))
     ).subscribe(
       (response) => {
@@ -123,6 +124,7 @@ export class PositionComponent implements OnInit, OnDestroy {
     } else if (tabIndex == 2) {
       this.tabContent = 'parking';
     }
+    this.updateDevices();
   }
 }
 
