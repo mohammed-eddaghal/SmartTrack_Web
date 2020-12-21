@@ -21,6 +21,7 @@ export class PositionComponent implements OnInit, OnDestroy {
   devicesSelected: any = [];
   private map: Map;
   private zoom: number;
+  tabContent: String = "";
   private parc = {
     lat: 34.033759,
     lng: -5.009296
@@ -52,18 +53,18 @@ export class PositionComponent implements OnInit, OnDestroy {
       this.markers.length = 0;
     }
     this.devices.forEach(device => {
-     if(this.devicesSelected.find(deviceID => device.deviceID == deviceID)) {
-      this.markers.push({
-        "marker": new Marker([device.latitude, device.longitude], {
-          icon: new Icon({
-            iconUrl: device.icon(),
-            iconSize: [26, 30],
-            iconAnchor: [14, 4],
-          })
-        }),
-        "deviceID": device.deviceID
-      });
-     }
+      if (this.devicesSelected.find(deviceID => device.deviceID == deviceID)) {
+        this.markers.push({
+          "marker": new Marker([device.latitude, device.longitude], {
+            icon: new Icon({
+              iconUrl: device.icon(),
+              iconSize: [26, 30],
+              iconAnchor: [14, 4],
+            })
+          }),
+          "deviceID": device.deviceID
+        });
+      }
     });
     this.markers.every((marker) => marker.marker.addTo(this.map));
   }
@@ -73,7 +74,7 @@ export class PositionComponent implements OnInit, OnDestroy {
   }
 
   updateDevices() {
-    this.adminService.getDevicesPosition(this.authService.user.accountID, this.authService.user.userID).pipe(
+    this.adminService.getDevicesPosition(this.authService.user.accountID, this.authService.user.userID, this.tabContent).pipe(
       map((data: Device[]) => data.map(device => new Device().deserialize(device)))
     ).subscribe(
       (response) => {
@@ -94,12 +95,6 @@ export class PositionComponent implements OnInit, OnDestroy {
     const index = this.devicesSelected.indexOf(deviceID);
     if (index == -1) {
       this.devicesSelected.push(deviceID);
-      const cMarkerIndex = this.markers.findIndex(marker => marker.deviceID == deviceID);
-      this.markers[cMarkerIndex].marker.remove();
-      this.markers.splice(cMarkerIndex, 1);
-
-    } else {
-      this.devicesSelected.splice(index, 1);
       const device = this.devices.find(device => device.deviceID = deviceID);
       this.markers.push({
         "marker": new Marker([device.latitude, device.longitude], {
@@ -111,7 +106,22 @@ export class PositionComponent implements OnInit, OnDestroy {
         }),
         "deviceID": device.deviceID
       });
-      this.markers[this.markers.length].marker.addTo(this.map);
+      this.markers[this.markers.length - 1].marker.addTo(this.map);
+    } else {
+      this.devicesSelected.splice(index, 1);
+      const cMarkerIndex = this.markers.findIndex(marker => marker.deviceID == deviceID);
+      this.markers[cMarkerIndex].marker.remove();
+      this.markers.splice(cMarkerIndex, 1);
+    }
+  }
+
+  onTabChanged(tabIndex) {
+    if (tabIndex == 0) {
+      this.tabContent = '';
+    } else if (tabIndex == 1) {
+      this.tabContent = 'running';
+    } else if (tabIndex == 2) {
+      this.tabContent = 'parking';
     }
   }
 }
