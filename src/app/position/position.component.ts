@@ -3,6 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { AuthService } from "../services/auth.service";
 import { Device } from "../models/device.model";
 import { Icon, Map, Marker} from 'leaflet';
+import { Observable } from "rxjs";
+import { interval } from "rxjs";
+import { map } from "rxjs/operators";
 
 @Component({
   selector: 'app-position',
@@ -28,14 +31,7 @@ export class PositionComponent implements OnInit {
 
   ngOnInit(): void {
     this.isAdmin = this.adminService.isAdmin;
-    this.adminService.getDevicesPosition(this.authService.user.accountID, this.authService.user.userID)
-      .subscribe(
-        (response: Device[]) => {
-          this.devices = response;
-          this.setMarkers();
-        },
-        error => null,
-      );
+    this.updateDevices();
   }
 
   receiveMap(map: Map) {
@@ -47,9 +43,22 @@ export class PositionComponent implements OnInit {
       const marker = new Marker([device.latitude, device.longitude], { icon: this.smallIcon });
       marker.addTo(this.map).bindPopup('text');
     });
+    interval(3000).subscribe((val) => { console.log('called'); this.devices[0].activity_time='+10,l'; });
   }
 
   receiveZoom(zoom: number) {
     this.zoom = zoom;
+  }
+
+  updateDevices() {
+    this.adminService.getDevicesPosition(this.authService.user.accountID, this.authService.user.userID).pipe(
+      map((data: Device[]) => data.map(device => new Device().deserialize(device)))
+    ).subscribe(
+        (response) => {
+          this.devices = response;
+          this.setMarkers();
+        },
+        error => null,
+      );
   }
 }

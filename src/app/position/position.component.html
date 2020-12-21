@@ -16,12 +16,12 @@
         <mat-tab label="TOUS">
           <mat-selection-list #devicesSelected>
             <mat-list-option *ngFor="let device of devices">
-              <img matListIcon src="../../assets/status/marker_blue_parking.png"
-                style="width: 25px; height: 30px; display:inline-flex;">
+              <img matListIcon [src]= device.icon() style="width: 25px; height: 30px; display:inline-flex;">
               <div class="car-model" matLine>{{device.vehicleModel}}</div>
               <hr />
               <div class="car-details" matLine>
-                {{device.distanceKM}} KM | {{device.activity_time.split(',')[0]}} | {{device.timestamp * 1000 | date: 'dd/MM/yyyy
+                {{device.distanceKM}} KM | {{device.activity_time.split(',')[0]}} | {{device.timestamp * 1000 | date:
+                'dd/MM/yyyy
                 HH:mm:ss'}}
               </div>
               <mat-divider></mat-divider>
