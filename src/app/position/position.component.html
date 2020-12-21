@@ -14,13 +14,14 @@
       </mat-toolbar>
       <mat-tab-group>
         <mat-tab label="TOUS">
-          <mat-selection-list #devicesSelected>
-            <mat-list-option *ngFor="let device of devices">
-              <img matListIcon [src]= device.icon() style="width: 25px; height: 30px; display:inline-flex;">
-              <div class="car-model" matLine>{{device.vehicleModel}}</div>
+          <mat-selection-list [ngModel]="devicesSelected">
+            <mat-list-option *ngFor="let device of devices" [value]="device.deviceID" (click) = "onNgModelChange(device.deviceID)"
+              [selected]="devicesSelected.indexOf(device.deviceID) == -1 ? false : true">
+              <img matListIcon [src]=device.icon() style="width: 25px; height: 30px; display:inline-flex;">
+              <div class="car-model" matLine>{{device.vehicleModel}} {{devicesSelected.indexOf(device.deviceID) == -1 ? false : true}}</div>
               <hr />
               <div class="car-details" matLine>
-                {{device.distanceKM}} KM | {{device.activity_time.split(',')[0]}} | {{device.timestamp * 1000 | date:
+                {{device.speedKPH}} KM | {{device.activity_time.split(',')[0]}} | {{device.timestamp * 1000 | date:
                 'dd/MM/yyyy
                 HH:mm:ss'}}
               </div>
