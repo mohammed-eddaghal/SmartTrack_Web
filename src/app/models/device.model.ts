@@ -1,4 +1,5 @@
 import { DatePipe, formatDate } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
 import { Deserializable } from "./deserializable.model";
 
 export class Device implements Deserializable {
@@ -16,8 +17,21 @@ export class Device implements Deserializable {
     speedKPH: number;
     timestamp: number;
     vehicleModel: String;
-    address: string;
+    private _address: string = "";
     private _status: number; // -2: unkown, -1: late, 0: parking, 1:running
+
+    constructor(private http?: HttpClient) {
+        this.http = http;
+    };
+
+    get address() : string{
+        /*this.http?.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=-34.44076&lon=-58.70521')
+        .subscribe(
+            (response) => this._address = response['display_name'] ?? '',
+            (error) => this._address = ''
+        );*/
+        return this._address;
+    }
 
     get status() {
         if (this.activity_time != null) {

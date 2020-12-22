@@ -21,8 +21,7 @@
               (click)="onNgModelChange(device.deviceID)"
               [selected]="devicesSelected.indexOf(device.deviceID) == -1 ? false : true">
               <img matListIcon [src]=device.icon() style="width: 25px; height: 30px; display:inline-flex;">
-              <div class="car-model" matLine>{{device.vehicleModel}} {{devicesSelected.indexOf(device.deviceID) == -1 ?
-                false : true}}</div>
+              <div class="car-model" matLine>{{device.vehicleModel}} {{device.address}}</div>
               <hr />
               <div class="car-details" matLine>
                 {{device.speedKPH}} KM | {{device.activity_time.split(',')[0]}} | {{device.timestamp * 1000 | date:

@@ -6,6 +6,8 @@ import { Icon, Map, Marker } from 'leaflet';
 import { Observable, Subscription } from "rxjs";
 import { interval } from "rxjs";
 import { map } from "rxjs/operators";
+import { DatePipe } from "@angular/common";
+import { HttpClient } from "@angular/common/http";
 
 @Component({
   selector: 'app-position',
@@ -15,7 +17,7 @@ import { map } from "rxjs/operators";
 export class PositionComponent implements OnInit, OnDestroy {
   isAdmin: boolean;
   isSearching: boolean = false;
-  searchWord : String = "";
+  searchWord: String = "";
   devices: Device[] = [];
   markers: CMarker[] = [];
   timer: Subscription;
@@ -27,7 +29,7 @@ export class PositionComponent implements OnInit, OnDestroy {
     lat: 34.033759,
     lng: -5.009296
   };
-  constructor(private adminService: AdminService, private authService: AuthService) { }
+  constructor(private adminService: AdminService, private authService: AuthService, private http: HttpClient) { }
 
   ngOnInit(): void {
     this.isAdmin = this.adminService.isAdmin;
@@ -63,11 +65,20 @@ export class PositionComponent implements OnInit, OnDestroy {
               iconAnchor: [14, 4],
             })
           }),
-          "deviceID": device.deviceID
+          "deviceID": device.deviceID,
+          "popupText": "<span style='color:#089200;font-weight:bold;'>" + device.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
+            + "<span style=''>" + device.address + "</span>" + " <br/>"
+            + "<span style=''>" + new DatePipe('en-US').transform(new Date(device.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
+            + "<span style=''>" + device.speedKPH + " Km/h</span>" + " <br/>"
+            + "<span style=''> état: " + device.activity_time.split(',')[1] + "</span>" + " <br/>"
+            + "<span style=''>" + device.odometerKM + " KM</span>"
         });
       }
     });
-    this.markers.every((marker) => marker.marker.addTo(this.map));
+    this.markers.forEach((marker) => {
+      marker.marker.bindPopup(marker.popupText.toString());
+      marker.marker.addTo(this.map);
+    });
   }
 
   receiveZoom(zoom: number) {
@@ -76,7 +87,7 @@ export class PositionComponent implements OnInit, OnDestroy {
 
   updateDevices() {
     this.adminService.getDevicesPosition(this.authService.user.accountID, this.authService.user.userID, this.tabContent, this.searchWord).pipe(
-      map((data: Device[]) => data.map(device => new Device().deserialize(device)))
+      map((data: Device[]) => data.map(device => new Device(this.http).deserialize(device)))
     ).subscribe(
       (response) => {
         if (this.devices.length == 0) {
@@ -105,8 +116,10 @@ export class PositionComponent implements OnInit, OnDestroy {
             iconAnchor: [14, 4],
           })
         }),
-        "deviceID": device.deviceID
+        "deviceID": device.deviceID,
+        "popupText": device.vehicleModel + " <br/>" + "address" + " <br/>" + device.timestamp + " <br/>" + device.speedKPH + " <br/>" + device.odometerKM + " <br/>"
       });
+      this.markers[this.markers.length - 1].marker.bindPopup(this.markers[this.markers.length - 1].popupText.toString());
       this.markers[this.markers.length - 1].marker.addTo(this.map);
     } else {
       this.devicesSelected.splice(index, 1);
@@ -133,5 +146,6 @@ export class PositionComponent implements OnInit, OnDestroy {
  */
 export interface CMarker {
   marker: Marker,
-  deviceID: String
+  deviceID: String,
+  popupText: String
 }

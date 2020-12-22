@@ -6,7 +6,7 @@ import { DataService } from './services/data.service';
 import { AdminService } from './services/admin.service';
 import { SubUserService } from './services/subuser.service';
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { LOCALE_ID, NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -39,8 +39,13 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MapComponent } from './map/map.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+// import { registerLocaleData } from '@angular/common';
+// import localeFr from '@angular/common/locales/fr';
+
 // import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 // import { NgbAlertModule,NgbPaginationModule} from '@ng-bootstrap/ng-bootstrap';
+
+// registerLocaleData(localeFr, 'fr');
 
 @NgModule({
   declarations: [
@@ -91,7 +96,8 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     DeauthGuard,
     GoogleMapsAPIWrapper,
     PagerService,
-    DatePipe
+    DatePipe,
+    // { provide: LOCALE_ID, useValue: 'fr' }
   ],
   bootstrap: [AppComponent]
 })

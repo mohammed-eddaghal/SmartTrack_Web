@@ -92,6 +92,10 @@ mat-form-field {
   font-size: 12px !important;
 }
 
+.leaflet-popup-content {
+  font-size: 12px;
+}
+
 @media only screen and (max-width: 600px) {
   .col-3 {
     width: 100vw !important;
@@ -103,9 +107,9 @@ mat-form-field {
   }
 
   ::ng-deep.mat-tab-label,
-::ng-deep.mat-tab-label-active {
-  min-width: 0px !important;
-  padding-right: 40px !important;
-  margin: 5px !important;
-}
+  ::ng-deep.mat-tab-label-active {
+    min-width: 0px !important;
+    padding-right: 40px !important;
+    margin: 5px !important;
+  }
 }
