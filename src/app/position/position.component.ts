@@ -96,7 +96,7 @@ export class PositionComponent implements OnInit, OnDestroy {
     const index = this.devicesSelected.indexOf(deviceID);
     if (index == -1) {
       this.devicesSelected.push(deviceID);
-      const device = this.devices.find(device => device.deviceID = deviceID);
+      const device = this.devices.find(device => device.deviceID == deviceID);
       this.markers.push({
         "marker": new Marker([device.latitude, device.longitude], {
           icon: new Icon({
