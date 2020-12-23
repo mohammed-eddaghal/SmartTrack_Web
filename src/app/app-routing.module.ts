@@ -27,7 +27,7 @@ const routes: Routes = [
     canActivate: [AuthGuard]
   },
   {
-    path: "live",
+    path: "live/:deviceID",
     component: LiveComponent,
     canActivate: [AuthGuard]
   },

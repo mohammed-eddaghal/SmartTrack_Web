@@ -6,7 +6,7 @@ import { Icon, Map, Marker } from 'leaflet';
 import { Observable, Subscription } from "rxjs";
 import { interval } from "rxjs";
 import { map } from "rxjs/operators";
-import { DatePipe } from "@angular/common";
+import { DatePipe, DecimalPipe } from "@angular/common";
 import { HttpClient } from "@angular/common/http";
 
 @Component({
@@ -25,7 +25,7 @@ export class PositionComponent implements OnInit, OnDestroy {
   private map: Map;
   private zoom: number;
   tabContent: String = "";
-  constructor(private adminService: AdminService, private authService: AuthService, private http: HttpClient) { }
+  constructor(private adminService: AdminService, private authService: AuthService, private http: HttpClient, private _decimalPipe: DecimalPipe) { }
 
   ngOnInit(): void {
     this.isAdmin = this.adminService.isAdmin;
@@ -46,6 +46,10 @@ export class PositionComponent implements OnInit, OnDestroy {
     this.map = map;
   }
 
+  transformDecimal(num) {
+    return this._decimalPipe.transform(num, '1.2-2');
+   }
+
   setMarkers() {
     if (this.markers.length != 0) {
       this.markers.every((marker) => marker.marker.remove());
@@ -65,9 +69,9 @@ export class PositionComponent implements OnInit, OnDestroy {
           "popupText": "<span style='color:#089200;font-weight:bold;'>" + device.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
             + "<span style=''>" + device.address + "</span>" + " <br/>"
             + "<span style=''>" + new DatePipe('en-US').transform(new Date(device.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
-            + "<span style=''>" + device.speedKPH + " Km/h</span>" + " <br/>"
+            + "<span style=''>" + this.transformDecimal(device.speedKPH) + " Km/h</span>" + " <br/>"
             + "<span style=''> état: " + device.activity_time.split(',')[1] + "</span>" + " <br/>"
-            + "<span style=''>" + device.odometerKM + " KM</span>"
+            + "<span style=''>" + this.transformDecimal(device.odometerKM) + " KM</span>"
         });
       }
     });

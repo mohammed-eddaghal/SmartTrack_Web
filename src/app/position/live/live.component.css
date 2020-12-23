@@ -9,3 +9,7 @@
 button.btn.btn-primary {
   width: inherit;
 }
+
+.leaflet-popup-content {
+  font-size: 12px;
+}

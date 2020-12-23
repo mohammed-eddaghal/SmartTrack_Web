@@ -42,12 +42,20 @@ export class AdminService extends DataService {
       "userID": userID,
       "search": search ?? ''
     };
-    if(tabContent == '') {
+    if (tabContent == '') {
       var link = 'account/devices';
     } else {
-      var link = 'account/'+ tabContent + '/vehicles';
+      var link = 'account/' + tabContent + '/vehicles';
     }
     return this.postFnc(this.apiPath + link, body);
+  }
+
+
+  getDevicePosition(deviceID: string) {
+    var body = {
+      "deviceID": deviceID
+    };
+    return this.postFnc(this.apiPath + 'solo/eventdata', body);
   }
 
 
@@ -110,7 +118,7 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'findall/maintenance', body);
   }
 
-  updateMaintenaceAssurance(body:any){
+  updateMaintenaceAssurance(body: any) {
     console.log("json send is: ", body);
     return this.putFnc(this.apiPath + 'update/insurance', body);
   }

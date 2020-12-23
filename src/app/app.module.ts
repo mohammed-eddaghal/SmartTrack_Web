@@ -40,6 +40,8 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MapComponent } from './map/map.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LiveComponent } from './position/live/live.component';
+import {DecimalPipe} from '@angular/common';
+import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
 // import { registerLocaleData } from '@angular/common';
 // import localeFr from '@angular/common/locales/fr';
 
@@ -78,6 +80,9 @@ import { LiveComponent } from './position/live/live.component';
     MatDividerModule,
     MatGridListModule,
     LeafletModule,
+    LeafletModule.forRoot(),
+    LeafletModule,
+    LeafletMarkerClusterModule,
     BrowserModule,
     AppRoutingModule,
     FormsModule,
@@ -99,6 +104,7 @@ import { LiveComponent } from './position/live/live.component';
     GoogleMapsAPIWrapper,
     PagerService,
     DatePipe,
+    DecimalPipe
     // { provide: LOCALE_ID, useValue: 'fr' }
   ],
   bootstrap: [AppComponent]

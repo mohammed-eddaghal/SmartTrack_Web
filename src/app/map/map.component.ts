@@ -1,5 +1,8 @@
 import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
-import { Map, ZoomAnimEvent, MapOptions, tileLayer, latLng } from 'leaflet';
+import { MarkerClusterGroupOptions } from 'leaflet';
+import { MarkerClusterGroup } from 'leaflet';
+import 'leaflet.markercluster';
+import { Map, ZoomAnimEvent, MapOptions, tileLayer, latLng, Marker } from 'leaflet';
 
 @Component({
   selector: 'app-map',
@@ -23,6 +26,15 @@ export class MapComponent implements OnInit, OnDestroy {
   public map: Map;
   public zoom: number;
 
+  // Marker cluster stuff
+	markerClusterGroup: MarkerClusterGroup;
+  @Input() markerClusterData: Marker[] = [];
+	markerClusterOptions: MarkerClusterGroupOptions;
+
+  markerClusterReady(group: MarkerClusterGroup) {
+    this.markerClusterGroup = group;
+    console.log('group is ready');
+	}
   constructor() {
   }
 

@@ -18,14 +18,15 @@
       <mat-tab-group #tabRef (selectedTabChange)="onTabChanged(tabRef.selectedIndex)">
         <mat-tab label="TOUS">
           <div class="row w-100 m-auto pt-2 border-bottom" *ngFor="let device of devices">
-            <div class="col-10 m-auto">
+            <div class="col-10 m-auto" [routerLink]="['/live', device.deviceID]" routerLinkActive="active">
               <div class="row">
                 <div class="col-2">
                   <img [src]=device.icon() style="width: 25px; height: 30px;">
                 </div>
                 <div class="col-10">
                   <p class="mb-1 car-model">{{device.vehicleModel}}</p>
-                  <p class="car-details border-top"> {{device.speedKPH | number:'1.0-2'}} KM | {{device.activity_time.split(',')[0]}} |
+                  <p class="car-details border-top"> {{device.speedKPH | number:'1.0-2'}} KM |
+                    {{device.activity_time.split(',')[0]}} |
                     {{device.timestamp * 1000 | date:
                     'dd/MM/yyyy
                     HH:mm:ss'}}</p>
@@ -42,14 +43,15 @@
             <img src="../../assets/status/pin_green.png">
           </ng-template>
           <div class="row w-100 m-auto pt-2 border-bottom" *ngFor="let device of devices">
-            <div class="col-10 m-auto">
+            <div class="col-10 m-auto" [routerLink]="['/live', device.deviceID]" routerLinkActive="active">
               <div class="row">
                 <div class="col-2">
                   <img [src]=device.icon() style="width: 25px; height: 30px;">
                 </div>
                 <div class="col-10">
                   <p class="mb-1 car-model">{{device.vehicleModel}}</p>
-                  <p class="car-details border-top"> {{device.speedKPH | number:'1.0-2'}} KM | {{device.activity_time.split(',')[0]}} |
+                  <p class="car-details border-top"> {{device.speedKPH | number:'1.0-2'}} KM |
+                    {{device.activity_time.split(',')[0]}} |
                     {{device.timestamp * 1000 | date:
                     'dd/MM/yyyy
                     HH:mm:ss'}}</p>
@@ -66,14 +68,15 @@
             <img src="../../assets/status/pin_blue_dot.png">
           </ng-template>
           <div class="row w-100 m-auto pt-2 border-bottom" *ngFor="let device of devices">
-            <div class="col-10 m-auto">
+            <div class="col-10 m-auto" [routerLink]="['/live', device.deviceID]" routerLinkActive="active">
               <div class="row">
                 <div class="col-2">
                   <img [src]=device.icon() style="width: 25px; height: 30px;">
                 </div>
                 <div class="col-10">
                   <p class="mb-1 car-model">{{device.vehicleModel}}</p>
-                  <p class="car-details border-top"> {{device.speedKPH | number:'1.0-2'}} KM | {{device.activity_time.split(',')[0]}} |
+                  <p class="car-details border-top"> {{device.speedKPH | number:'1.0-2'}} KM |
+                    {{device.activity_time.split(',')[0]}} |
                     {{device.timestamp * 1000 | date:
                     'dd/MM/yyyy
                     HH:mm:ss'}}</p>
@@ -88,7 +91,8 @@
       </mat-tab-group>
     </div>
     <div class="col-9 pl-0 pr-0">
-      <app-map (map$)="receiveMap($event)" (zoom$)="receiveZoom($event)" id='main-map'></app-map>
+      <app-map (map$)="receiveMap($event)" (zoom$)="receiveZoom($event)" id='main-map' [markerClusterData]="markers">
+      </app-map>
     </div>
   </div>
 </div>

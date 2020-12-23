@@ -1,28 +1,78 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 /* Imports */
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
 import { Icon, Map, Marker } from 'leaflet';
+import { ActivatedRoute } from '@angular/router';
+import { switchMap } from 'rxjs/operators';
+import { interval, Subscription } from 'rxjs';
+import { AdminService } from 'src/app/services/admin.service';
+import { Device } from 'src/app/models/device.model';
+import { map } from "rxjs/operators";
+import { DatePipe, DecimalPipe } from '@angular/common';
 
 @Component({
   selector: 'app-live',
   templateUrl: './live.component.html',
   styleUrls: ['./live.component.css']
 })
-export class LiveComponent implements OnInit {
+export class LiveComponent implements OnInit, OnDestroy {
 
   private chart: any;
   private hand: any;
   private map: Map;
   private zoom: number;
-  private deviceID: string;
-  
-  constructor() { }
+  deviceID: string;
+  device: Device;
+  timer: Subscription;
+  marker: Marker;
+
+  constructor(private route: ActivatedRoute, private adminService: AdminService, private _decimalPipe: DecimalPipe) { }
+
+  ngOnDestroy(): void {
+    this.timer.unsubscribe();
+  }
 
   ngOnInit(): void {
+    this.route.paramMap.subscribe(
+      params => this.deviceID = params.get('deviceID')
+    );
+    this.getDeviceEventData();
     this.initChart();
+    this.timer = interval(60000).subscribe(() => {
+      // console.log('say hello baby');
+      this.getDeviceEventData();
+    });
   }
+
+  getDeviceEventData() {
+    this.adminService.getDevicePosition(this.deviceID).pipe(
+      map((device: Device) => new Device().deserialize(device))
+    ).subscribe(
+      (response) => {
+        this.device = response;
+        this.marker = new Marker([this.device.latitude, this.device.longitude], {
+          icon: new Icon({
+            //TODO: add in api side activity_time to solo/eventdata
+            // iconUrl: this.device.icon(),
+            iconUrl: "../../assets/status/marker_green.png",
+            iconSize: [26, 30],
+            iconAnchor: [14, 4],
+          })
+        });
+        this.marker.bindPopup("<span style='color:#089200;font-weight:bold;'>" + this.device.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
+          + "<span style=''>" + this.device.address + "</span>" + " <br/>"
+          + "<span style=''>" + new DatePipe('en-US').transform(new Date(this.device.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
+          + "<span style=''>" + this.transformDecimal(this.device.speedKPH) + " Km/h</span>" + " <br/>"
+          + "<span style=''> état: " + (this.device.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"
+          + "<span style=''>" + this.transformDecimal(this.device.odometerKM) + " KM</span>");
+        this.marker.addTo(this.map);
+      },
+      (error) => null
+    );
+  }
+
   initChart() {
     /* Chart code */
     // Themes begin
@@ -69,16 +119,20 @@ export class LiveComponent implements OnInit {
 
     this.hand = this.chart.hands.push(new am4charts.ClockHand());
     // using chart.setTimeout method as the timeout will be disposed together with a chart
-    setInterval(() => {
-      this.hand.showValue(Math.random() * 100, 1000, am4core.ease.cubicOut);
-    }, 1000);
+    // setInterval(() => {
+    //   this.hand.showValue(Math.random() * 100, 1000, am4core.ease.cubicOut);
+    // }, 1000);
   }
 
   receiveMap(map: Map) {
     this.map = map;
   }
-  
+
   receiveZoom(zoom: number) {
     this.zoom = zoom;
+  }
+
+  transformDecimal(num) {
+    return this._decimalPipe.transform(num, '1.2-2');
   }
 }
