@@ -25,10 +25,6 @@ export class PositionComponent implements OnInit, OnDestroy {
   private map: Map;
   private zoom: number;
   tabContent: String = "";
-  private parc = {
-    lat: 34.033759,
-    lng: -5.009296
-  };
   constructor(private adminService: AdminService, private authService: AuthService, private http: HttpClient) { }
 
   ngOnInit(): void {
@@ -138,6 +134,10 @@ export class PositionComponent implements OnInit, OnDestroy {
       this.tabContent = 'parking';
     }
     this.updateDevices();
+  }
+
+  doSomething() {
+    alert('hello');
   }
 }
 

@@ -39,6 +39,7 @@ import { MatDividerModule } from '@angular/material/divider';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MapComponent } from './map/map.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
+import { LiveComponent } from './position/live/live.component';
 // import { registerLocaleData } from '@angular/common';
 // import localeFr from '@angular/common/locales/fr';
 
@@ -63,6 +64,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
     SpeedReportComponent,
     CustomtimeformatterPipe,
     MapComponent,
+    LiveComponent,
   ],
   imports: [
     BrowserAnimationsModule,

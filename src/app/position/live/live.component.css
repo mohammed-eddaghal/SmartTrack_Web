@@ -1,0 +1,11 @@
+.chart {
+  /* padding: 15px 0px; */
+  position: relative;
+  width: 300px;
+  margin-left: 0px;
+  height: 202px;
+}
+
+button.btn.btn-primary {
+  width: inherit;
+}

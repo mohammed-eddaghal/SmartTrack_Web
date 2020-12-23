@@ -5,7 +5,8 @@
         <button class="md-icon-button md-accent md-button md-ink-ripple" type="button"
           (click)="isSearching = !isSearching">
           <mat-icon aria-hidden="false" aria-label="search icon" *ngIf="!isSearching">search</mat-icon>
-          <mat-icon aria-hidden="false" aria-label="search icon" *ngIf="isSearching" (click)="searchWord = ''; this.updateDevices();">close
+          <mat-icon aria-hidden="false" aria-label="search icon" *ngIf="isSearching"
+            (click)="searchWord = ''; this.updateDevices();">close
           </mat-icon>
         </button>
         <span [class]="isSearching ? 'd-none' : 'd-block'">Devices</span>
@@ -16,63 +17,73 @@
       </mat-toolbar>
       <mat-tab-group #tabRef (selectedTabChange)="onTabChanged(tabRef.selectedIndex)">
         <mat-tab label="TOUS">
-          <mat-selection-list [ngModel]="devicesSelected">
-            <mat-list-option *ngFor="let device of devices" [value]="device.deviceID"
-              (click)="onNgModelChange(device.deviceID)"
-              [selected]="devicesSelected.indexOf(device.deviceID) == -1 ? false : true">
-              <img matListIcon [src]=device.icon() style="width: 25px; height: 30px; display:inline-flex;">
-              <div class="car-model" matLine>{{device.vehicleModel}} {{device.address}}</div>
-              <hr />
-              <div class="car-details" matLine>
-                {{device.speedKPH}} KM | {{device.activity_time.split(',')[0]}} | {{device.timestamp * 1000 | date:
-                'dd/MM/yyyy
-                HH:mm:ss'}}
+          <div class="row w-100 m-auto pt-2 border-bottom" *ngFor="let device of devices">
+            <div class="col-10 m-auto">
+              <div class="row">
+                <div class="col-2">
+                  <img [src]=device.icon() style="width: 25px; height: 30px;">
+                </div>
+                <div class="col-10">
+                  <p class="mb-1 car-model">{{device.vehicleModel}}</p>
+                  <p class="car-details border-top"> {{device.speedKPH | number:'1.0-2'}} KM | {{device.activity_time.split(',')[0]}} |
+                    {{device.timestamp * 1000 | date:
+                    'dd/MM/yyyy
+                    HH:mm:ss'}}</p>
+                </div>
               </div>
-              <mat-divider></mat-divider>
-            </mat-list-option>
-          </mat-selection-list>
+            </div>
+            <div class="col-2 m-auto">
+              <input type="checkbox" (click)="onNgModelChange(device.deviceID)" checked>
+            </div>
+          </div>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
             <img src="../../assets/status/pin_green.png">
           </ng-template>
-          <mat-selection-list [ngModel]="devicesSelected">
-            <mat-list-option *ngFor="let device of devices" [value]="device.deviceID"
-              (click)="onNgModelChange(device.deviceID)"
-              [selected]="devicesSelected.indexOf(device.deviceID) == -1 ? false : true">
-              <img matListIcon [src]=device.icon() style="width: 25px; height: 30px; display:inline-flex;">
-              <div class="car-model" matLine>{{device.vehicleModel}} {{devicesSelected.indexOf(device.deviceID) == -1 ?
-                false : true}}</div>
-              <hr />
-              <div class="car-details" matLine>
-                {{device.speedKPH}} KM | {{device.activity_time.split(',')[0]}} | {{device.timestamp * 1000 | date:
-                'dd/MM/yyyy
-                HH:mm:ss'}}
+          <div class="row w-100 m-auto pt-2 border-bottom" *ngFor="let device of devices">
+            <div class="col-10 m-auto">
+              <div class="row">
+                <div class="col-2">
+                  <img [src]=device.icon() style="width: 25px; height: 30px;">
+                </div>
+                <div class="col-10">
+                  <p class="mb-1 car-model">{{device.vehicleModel}}</p>
+                  <p class="car-details border-top"> {{device.speedKPH | number:'1.0-2'}} KM | {{device.activity_time.split(',')[0]}} |
+                    {{device.timestamp * 1000 | date:
+                    'dd/MM/yyyy
+                    HH:mm:ss'}}</p>
+                </div>
               </div>
-              <mat-divider></mat-divider>
-            </mat-list-option>
-          </mat-selection-list>
+            </div>
+            <div class="col-2 m-auto">
+              <input type="checkbox" (click)="onNgModelChange(device.deviceID)" checked>
+            </div>
+          </div>
         </mat-tab>
         <mat-tab>
           <ng-template mat-tab-label>
             <img src="../../assets/status/pin_blue_dot.png">
           </ng-template>
-          <mat-selection-list [ngModel]="devicesSelected">
-            <mat-list-option *ngFor="let device of devices" [value]="device.deviceID"
-              (click)="onNgModelChange(device.deviceID)"
-              [selected]="devicesSelected.indexOf(device.deviceID) == -1 ? false : true">
-              <img matListIcon [src]=device.icon() style="width: 25px; height: 30px; display:inline-flex;">
-              <div class="car-model" matLine>{{device.vehicleModel}} {{devicesSelected.indexOf(device.deviceID) == -1 ?
-                false : true}}</div>
-              <hr />
-              <div class="car-details" matLine>
-                {{device.speedKPH}} KM | {{device.activity_time.split(',')[0]}} | {{device.timestamp * 1000 | date:
-                'dd/MM/yyyy
-                HH:mm:ss'}}
+          <div class="row w-100 m-auto pt-2 border-bottom" *ngFor="let device of devices">
+            <div class="col-10 m-auto">
+              <div class="row">
+                <div class="col-2">
+                  <img [src]=device.icon() style="width: 25px; height: 30px;">
+                </div>
+                <div class="col-10">
+                  <p class="mb-1 car-model">{{device.vehicleModel}}</p>
+                  <p class="car-details border-top"> {{device.speedKPH | number:'1.0-2'}} KM | {{device.activity_time.split(',')[0]}} |
+                    {{device.timestamp * 1000 | date:
+                    'dd/MM/yyyy
+                    HH:mm:ss'}}</p>
+                </div>
               </div>
-              <mat-divider></mat-divider>
-            </mat-list-option>
-          </mat-selection-list>
+            </div>
+            <div class="col-2 m-auto">
+              <input type="checkbox" (click)="onNgModelChange(device.deviceID)" checked>
+            </div>
+          </div>
         </mat-tab>
       </mat-tab-group>
     </div>

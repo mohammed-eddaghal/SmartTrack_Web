@@ -96,6 +96,10 @@ mat-form-field {
   font-size: 12px;
 }
 
+::ng-deep .mat-pseudo-checkbox-checked {
+  background-color: #419873 !important;
+}
+
 @media only screen and (max-width: 600px) {
   .col-3 {
     width: 100vw !important;

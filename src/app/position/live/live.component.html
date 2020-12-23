@@ -1,0 +1,16 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-3 ùmt-10">
+            <div class="chart" id="speedometer"></div>
+            <span class="d-flex justify-content-center">OdometerValue</span><br>
+            <span class="d-flex justify-content-center">TimestampValue</span>
+            <hr>
+            <span class="d-flex justify-content-center">AddressValue</span>
+            <hr>
+            <button class="btn btn-primary">Historique</button>
+        </div>
+        <div class="col-9 pl-0 pr-0">
+            <app-map (map$)="receiveMap($event)" (zoom$)="receiveZoom($event)" id='main-map'></app-map>
+        </div>
+    </div>
+</div>

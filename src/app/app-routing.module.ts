@@ -8,9 +8,10 @@ import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import {ChauffeurComponent} from './chauffeur/chauffeur.component';
+import { ChauffeurComponent } from './chauffeur/chauffeur.component';
 import { ReportComponent } from './report/report.component';
-import {MaintenanceComponent} from './maintenance/maintenance.component';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { LiveComponent } from './position/live/live.component';
 
 
 const routes: Routes = [
@@ -23,6 +24,11 @@ const routes: Routes = [
   {
     path: "position",
     component: PositionComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "live",
+    component: LiveComponent,
     canActivate: [AuthGuard]
   },
   {
