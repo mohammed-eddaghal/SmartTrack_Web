@@ -1,11 +1,4 @@
-<div class="row">
-  <div class="col-9">
-    <div class="map-container" leaflet [leafletOptions]="options" (leafletMapReady)="onMapReady($event)"
+<div class="map-container" leaflet [leafletOptions]="options" (leafletMapReady)="onMapReady($event)"
       (leafletMapZoomEnd)="onMapZoomEnd($event)" [leafletMarkerCluster]="markerClusterData"
       [leafletMarkerClusterOptions]="markerClusterOptions" (leafletMarkerClusterReady)="markerClusterReady($event)">
     </div>
-  </div>
-  <div class="col-3">
-    <div>{{markerClusterData.length}}</div>
-  </div>
-</div>

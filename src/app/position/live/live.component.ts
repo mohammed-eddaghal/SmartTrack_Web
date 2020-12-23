@@ -52,6 +52,7 @@ export class LiveComponent implements OnInit, OnDestroy {
     ).subscribe(
       (response) => {
         this.device = response;
+        this.hand.showValue(this.device.speedKPH);
         this.marker = new Marker([this.device.latitude, this.device.longitude], {
           icon: new Icon({
             //TODO: add in api side activity_time to solo/eventdata

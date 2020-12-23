@@ -2,8 +2,8 @@
     <div class="row">
         <div class="col-3 ùmt-10">
             <div class="chart" id="speedometer"></div>
-            <span class="d-flex justify-content-center">{{device?.speedKPH}} KM/h</span><br>
-            <span class="d-flex justify-content-center">{{device?.odometerKM}} KM</span><br>
+            <span class="d-flex justify-content-center">{{device?.speedKPH | number:'1.0-2'}} KM/h</span><br>
+            <span class="d-flex justify-content-center">{{device?.odometerKM | number:'1.0-2'}} KM</span><br>
             <span class="d-flex justify-content-center">{{device?.timestamp * 1000 | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
             <hr>
             <span class="d-flex justify-content-center">AddressValue</span>
