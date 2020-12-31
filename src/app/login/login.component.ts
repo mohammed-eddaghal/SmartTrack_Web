@@ -49,7 +49,7 @@ export class LoginComponent implements OnInit {
     //kandon hadchi ghitbadal
     this.authService.isAdmin = this.isAdmin;
     if (this.authService.isLoggedIn) {
-      this.router.navigate(['state'])
+      this.router.navigate(['position'])
     }
   }
 
@@ -68,7 +68,7 @@ export class LoginComponent implements OnInit {
 
         if (this.x.isActive) {
           this.authService.isLoggedIn = true;
-          this.router.navigate(["state"]);
+          this.router.navigate(["position"]);
         }
         else { console.log("your account is deactivated") }
       }, error => {
@@ -90,7 +90,7 @@ export class LoginComponent implements OnInit {
 
         if (this.x.isActive) {
           this.authService.isLoggedIn = true;
-          this.router.navigate(["state"]);
+          this.router.navigate(["position"]);
         }
         else { console.log("maakinch") }
 

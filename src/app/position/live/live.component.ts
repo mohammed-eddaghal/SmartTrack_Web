@@ -8,7 +8,7 @@ import { ActivatedRoute } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { interval, Subscription } from 'rxjs';
 import { AdminService } from 'src/app/services/admin.service';
-import { Device } from 'src/app/models/device.model';
+import { EventData } from 'src/app/models/eventdata.model';
 import { map } from "rxjs/operators";
 import { DatePipe, DecimalPipe } from '@angular/common';
 
@@ -24,7 +24,7 @@ export class LiveComponent implements OnInit, OnDestroy {
   private map: Map;
   private zoom: number;
   deviceID: string;
-  device: Device;
+  device: EventData;
   timer: Subscription;
   marker: Marker;
 
@@ -48,7 +48,7 @@ export class LiveComponent implements OnInit, OnDestroy {
 
   getDeviceEventData() {
     this.adminService.getDevicePosition(this.deviceID).pipe(
-      map((device: Device) => new Device().deserialize(device))
+      map((device: EventData) => new EventData().deserialize(device))
     ).subscribe(
       (response) => {
         this.device = response;
@@ -56,8 +56,7 @@ export class LiveComponent implements OnInit, OnDestroy {
         this.marker = new Marker([this.device.latitude, this.device.longitude], {
           icon: new Icon({
             //TODO: add in api side activity_time to solo/eventdata
-            // iconUrl: this.device.icon(),
-            iconUrl: "../../assets/status/marker_green.png",
+            iconUrl: this.device.icon(),
             iconSize: [26, 30],
             iconAnchor: [14, 4],
           })
@@ -68,6 +67,7 @@ export class LiveComponent implements OnInit, OnDestroy {
           + "<span style=''>" + this.transformDecimal(this.device.speedKPH) + " Km/h</span>" + " <br/>"
           + "<span style=''> état: " + (this.device.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"
           + "<span style=''>" + this.transformDecimal(this.device.odometerKM) + " KM</span>");
+        this.marker?.remove();
         this.marker.addTo(this.map);
       },
       (error) => null

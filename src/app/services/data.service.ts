@@ -15,7 +15,8 @@ import { Observable, throwError } from 'rxjs';
 })
 export class DataService {
   
-  protected apiPath = 'https://geotech-gps.com:9090/api/';
+  // protected apiPath = 'https://geotech-gps.com:9090/api/';
+  protected apiPath = 'http://192.168.1.2:9090/api/';
 
   private httpOption = {
     headers: new HttpHeaders({
