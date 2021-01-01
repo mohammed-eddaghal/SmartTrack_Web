@@ -56,8 +56,8 @@ export class LiveComponent implements OnInit, OnDestroy {
         this.marker = new Marker([this.device.latitude, this.device.longitude], {
           icon: new Icon({
             //TODO: add in api side activity_time to solo/eventdata
-            // iconUrl: this.device.icon(),
-            iconUrl: "../../assets/status/marker_green.png",
+            iconUrl: this.device.icon(),
+            // iconUrl: "../../assets/status/marker_green.png",
             iconSize: [26, 30],
             iconAnchor: [14, 4],
           })
