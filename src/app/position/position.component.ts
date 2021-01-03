@@ -1,7 +1,7 @@
 import { AdminService } from "./../services/admin.service";
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AuthService } from "../services/auth.service";
-import { Device } from "../models/device.model";
+import { EventData } from "../models/eventdata.model";
 import { Icon, Map, Marker } from 'leaflet';
 import { Observable, Subscription } from "rxjs";
 import { interval } from "rxjs";
@@ -18,7 +18,7 @@ export class PositionComponent implements OnInit, OnDestroy {
   isAdmin: boolean;
   isSearching: boolean = false;
   searchWord: String = "";
-  devices: Device[] = [];
+  devices: EventData[] = [];
   markers: CMarker[] = [];
   timer: Subscription;
   devicesSelected: any = [];
@@ -87,7 +87,7 @@ export class PositionComponent implements OnInit, OnDestroy {
 
   updateDevices() {
     this.adminService.getDevicesPosition(this.authService.user.accountID, this.authService.user.userID, this.tabContent, this.searchWord).pipe(
-      map((data: Device[]) => data.map(device => new Device(this.http).deserialize(device)))
+      map((data: EventData[]) => data.map(device => new EventData(this.http).deserialize(device)))
     ).subscribe(
       (response) => {
         if (this.devices.length == 0) {

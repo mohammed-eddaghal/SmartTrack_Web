@@ -42,6 +42,7 @@ import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LiveComponent } from './position/live/live.component';
 import {DecimalPipe} from '@angular/common';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
+import { DeviceComponent } from './device/device.component';
 // import { registerLocaleData } from '@angular/common';
 // import localeFr from '@angular/common/locales/fr';
 
@@ -67,6 +68,7 @@ import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluste
     CustomtimeformatterPipe,
     MapComponent,
     LiveComponent,
+    DeviceComponent,
   ],
   imports: [
     BrowserAnimationsModule,

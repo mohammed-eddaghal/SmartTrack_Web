@@ -109,6 +109,16 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'add/driver', body);
   }
 
+  getAllDevices(accountID: string, page: number, groupID?: string) {
+    var body = {
+      "accountID": accountID,
+      "page": page
+    };
+    if (groupID != null && groupID != "") body['groupID'] = groupID;
+
+    return this.postFnc(this.apiPath + 'findall/device', body);
+  }
+
   getAllMaintenances(accountID: string, userID: string) {
     var body = {
       "accountID": accountID

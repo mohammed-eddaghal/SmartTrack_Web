@@ -12,6 +12,7 @@ import { ChauffeurComponent } from './chauffeur/chauffeur.component';
 import { ReportComponent } from './report/report.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { LiveComponent } from './position/live/live.component';
+import { DeviceComponent } from './device/device.component';
 
 
 const routes: Routes = [
@@ -49,6 +50,11 @@ const routes: Routes = [
   {
     path: "action/maintenance",
     component: MaintenanceComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "action/device",
+    component: DeviceComponent,
     canActivate: [AuthGuard]
   },
   {

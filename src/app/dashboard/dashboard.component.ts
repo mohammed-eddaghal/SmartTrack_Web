@@ -10,7 +10,7 @@ import { AdminService } from '../services/admin.service';
 import { MapsAPILoader, AgmMap, GoogleMapsAPIWrapper } from '@agm/core';
 
 import { map } from 'rxjs/operators';
-import { Device } from '../models/device.model';
+import { EventData } from '../models/eventdata.model';
 import { DashboardDistance } from '../models/dahboard.distance.model';
 import { FormBuilder, FormControl } from '@angular/forms';
 import { formatDate } from '@angular/common';
@@ -49,7 +49,7 @@ export class DashboardComponent implements OnInit {
     this.chart = am4core.create("odometerChart", am4charts.XYChart);
 
     this.adminService.getDevices(this.authService.user.accountID, this.authService.user.search).pipe(
-      map((data: Device[]) => data.map(device => new Device().deserialize(device)))
+      map((data: EventData[]) => data.map(device => new EventData().deserialize(device)))
     ).subscribe(
       response => {
         this.devices = response;
@@ -104,7 +104,7 @@ export class DashboardComponent implements OnInit {
   }
 
   getDashboardDistanceStats(accountID, startDate, endDate) {
-    this.adminService.getDashboardDistanceStats("demo", startDate, endDate).pipe(
+    this.adminService.getDashboardDistanceStats(this.authService.user.accountID, startDate, endDate).pipe(
       map((data: DashboardDistance[]) => data.map(dd => new DashboardDistance().deserialize(dd)))
     ).subscribe(
       response => {

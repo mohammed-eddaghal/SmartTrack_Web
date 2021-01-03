@@ -1,0 +1,43 @@
+<div class="card-body">
+    <div class="container">
+        <div class="row m3">
+            <table id="myTable" class="table table-striped">
+                <thead class="thead-black">
+                    <tr>
+                        <th class="text-left">identifiant</th>
+                        <th class="text-left">identifiant unique</th>
+                        <th class="text-left">Date Création</th>
+                        <th class="text-left">Jours Restant</th>
+                        <th class="text-left">description </th>
+                        <th class="text-left">equipement type</th>
+                        <th class="text-left">Numéro de téléphone</th>
+                        <th class="text-center">Actif</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let device of devices">
+                        <td>{{device.deviceID.deviceID}}</td>
+                        <td>{{device.uniqueID}}</td>
+                        <td>{{device.creationTime * 1000 | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                        <td>
+                            {{device.remainingTime / 86400}}
+                            <!-- <div class="progress" *ngIf="v.timestampStart != null" style="width: 200px;">
+                  <div [class]="getProgressClass(v.timestampStart, v.timestampEnd)" role="progressbar"
+                  [style.width.%]="getPourcentageDays(v.timestampStart, v.timestampEnd)"
+                    aria-valuemin="0" aria-valuemax="100"></div>
+                </div> -->
+                        </td>
+                        <td>{{device.description}}</td>
+                        <td>{{device.equipmentType}}</td>
+                        <td>{{device.simPhoneNumber}}</td>
+                        <td>{{device.isActive == 1 ? 'Oui' : 'Non'}}</td>
+                        <!-- <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;"
+                                         (click)="open(content,null,maintenance.key,v)" role="button" aria-pressed="true">modifier</a> -->
+                        <!--<a class="btn btn-outline-dark btn-sm active" role="button" aria-pressed="true"
+                   >archiner</a></td>-->
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
