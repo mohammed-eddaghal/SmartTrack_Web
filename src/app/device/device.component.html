@@ -1,43 +1,191 @@
-<div class="card-body">
-    <div class="container">
-        <div class="row m3">
-            <table id="myTable" class="table table-striped">
-                <thead class="thead-black">
-                    <tr>
-                        <th class="text-left">identifiant</th>
-                        <th class="text-left">identifiant unique</th>
-                        <th class="text-left">Date Création</th>
-                        <th class="text-left">Jours Restant</th>
-                        <th class="text-left">description </th>
-                        <th class="text-left">equipement type</th>
-                        <th class="text-left">Numéro de téléphone</th>
-                        <th class="text-center">Actif</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr *ngFor="let device of devices">
-                        <td>{{device.deviceID.deviceID}}</td>
-                        <td>{{device.uniqueID}}</td>
-                        <td>{{device.creationTime * 1000 | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
-                        <td>
-                            {{device.remainingTime / 86400}}
-                            <!-- <div class="progress" *ngIf="v.timestampStart != null" style="width: 200px;">
-                  <div [class]="getProgressClass(v.timestampStart, v.timestampEnd)" role="progressbar"
-                  [style.width.%]="getPourcentageDays(v.timestampStart, v.timestampEnd)"
-                    aria-valuemin="0" aria-valuemax="100"></div>
-                </div> -->
-                        </td>
-                        <td>{{device.description}}</td>
-                        <td>{{device.equipmentType}}</td>
-                        <td>{{device.simPhoneNumber}}</td>
-                        <td>{{device.isActive == 1 ? 'Oui' : 'Non'}}</td>
-                        <!-- <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;"
-                                         (click)="open(content,null,maintenance.key,v)" role="button" aria-pressed="true">modifier</a> -->
-                        <!--<a class="btn btn-outline-dark btn-sm active" role="button" aria-pressed="true"
-                   >archiner</a></td>-->
-                    </tr>
-                </tbody>
-            </table>
+<ngx-spinner bdColor="rgba(255,255,255,0.8)" size="medium" color="#fd4e02" type="ball-scale-pulse" [fullScreen]="false">
+    <p style="color: black"> Loading... </p>
+</ngx-spinner>
+<div class="row m-3">
+    <div class="col-md-6">
+        <ng-template #content let-modal>
+            <div class="modal-header">
+                <!-- <h4 class="modal-title" id="modal-basic-title">{{isUpdatingOrAdding}}</h4> -->
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form #f="ngForm">
+                    <!-- uniqueID, imeiNumber, deviceID -->
+                    <!-- creation date by default now() -->
+                    <!-- lastUpdateTime by default now() when we modify and null when we're creating new one -->
+                    <div class="form-group">
+                        <label for="imeiNumber">Numéro IMEI</label>
+                        <input type="text" [(ngModel)]="device.imeiNumber" name="imeiNumber" id="imeiNumber"
+                            #imeiNumber="ngModel" class="form-control" placeholder="imeiNumber" minlength="15"
+                            maxlength="15" required alt="imeiNumber" pattern="[0-9]{15}">
+                        <div *ngIf="imeiNumber.invalid && (imeiNumber.dirty || imeiNumber.touched)">
+                            <div *ngIf="imeiNumber.hasError('pattern')" class="error-msg">
+                                L'imei doit être composé de 15 chiffres seulement.
+                            </div>
+                        </div>
+                        <label for="isActive">Actif</label>
+                        <select [(ngModel)]="device.isActive" id="isActive" class="form-control" name="isActive"
+                            required alt="isActive">
+                            <option value="1" [selected]="device.isActive">oui</option>
+                            <option value="0" [selected]="!device.isActive"> non</option>
+                        </select>
+                        <label for="licenseExpire">License Expiration</label>
+                        <input type="datetime-local" name="licenseExpire"
+                            [ngModel]="device.licenseExpireTimestamp * 1000 | date: 'yyyy-MM-ddTHH:mm'"
+                            (ngModel)="device.licenseExpire" #licenseExpire="ngModel" id="licenseExpire"
+                            class="form-control" required alt="licenseExpire">
+                        <label for="Description">Description</label>
+                        <input type="text" [(ngModel)]="device.description" name="Description" id="Description"
+                            #description="ngModel" class="form-control" placeholder="Description" minlength="0"
+                            maxlength="255" required alt="Description">
+                        <div *ngIf="description.invalid && (description.dirty || description.touched)">
+                            <div *ngIf="description.errors.maxlength" class="error-msg">
+                                description ne doit pas passer 255 caractères.
+                            </div>
+                        </div>
+                        <label for="displayName">Display Name</label>
+                        <input type="text" [(ngModel)]="device.displayName" name="displayName" id="displayName"
+                            #displayName="ngModel" class="form-control" placeholder="displayName" minlength="0"
+                            maxlength="100" required alt="displayName">
+                        <div *ngIf="displayName.invalid && (displayName.dirty || displayName.touched)">
+                            <div *ngIf="displayName.errors.maxlength" class="error-msg">
+                                displayName ne doit pas passer 100 caractères.
+                            </div>
+                        </div>
+                        <label for="vehicleModel">Vehicle Model</label>
+                        <input type="text" [(ngModel)]="device.vehicleModel" name="vehicleModel" id="vehicleModel"
+                            class="form-control" placeholder="vehicleModel" minlength="10" maxlength="100" required
+                            alt="vehicleModel" #vehicleModel="ngModel">
+                        <div *ngIf="vehicleModel.invalid && (vehicleModel.dirty || vehicleModel.touched)">
+                            <div *ngIf="vehicleModel.errors.maxlength" class="error-msg">
+                                vehicleModel ne doit pas passer 100 caractères.
+                            </div>
+                            <div *ngIf="vehicleModel.errors.minlength" class="error-msg">
+                                vehicleModel ne doit pas être moins de 10 caractères.
+                            </div>
+                        </div>
+                        <!-- Matricule -->
+                        <label for="vehicleID">Vehicle ID</label>
+                        <input type="text" [(ngModel)]="device.vehicleID" name="VehicleID" id="VehicleID"
+                            #vehicleID="ngModel" class="form-control" placeholder="VehicleID" minlength="5"
+                            maxlength="20" required alt="Vehicle ID" pattern="[0-9]{1,}-[A-Z]{1}-[0-9]{1,}">
+                        <div *ngIf="vehicleID.invalid && (vehicleID.dirty || vehicleID.touched)">
+                            <div *ngIf="vehicleID.errors.maxlength" class="error-msg">
+                                vehicleID ne doit pas passer 20 caractères.
+                            </div>
+                            <div *ngIf="vehicleID.errors.minlength" class="error-msg">
+                                vehicleID ne doit pas être moins de 5 caractères.
+                            </div>
+                            <div *ngIf="vehicleID.hasError('pattern')" class="error-msg">
+                                vehicleID doit respecter cette forme chiffre(s)-lettere-chiffre(s)
+                            </div>
+                        </div>
+                        <label for="equipmentType">Type d'équipement</label>
+                        <input type="text" [(ngModel)]="device.equipmentType" name="equipmentType" id="equipmentType"
+                            #equipmentType="ngModel" class="form-control" placeholder="equipmentType" minlength="5"
+                            maxlength="50" required alt="equipmentType">
+                        <div *ngIf="equipmentType.invalid && (equipmentType.dirty || equipmentType.touched)">
+                            <div *ngIf="equipmentType.errors.maxlength" class="error-msg">
+                                equipmentType ne doit pas passer 50 caractères.
+                            </div>
+                            <div *ngIf="equipmentType.errors.minlength" class="error-msg">
+                                equipmentType ne doit pas être moins de 5 caractères.
+                            </div>
+                        </div>
+                        <label for="serialNumber">Serial Number</label>
+                        <input type="text" [(ngModel)]="device.serialNumber" name="serialNumber" id="serialNumber"
+                            #serialNumber="ngModel" class="form-control" placeholder="serialNumber" minlength="5"
+                            maxlength="10" required alt="serialNumber" pattern="[0-9]{5,10}">
+                        <div *ngIf="serialNumber.invalid && (serialNumber.dirty || serialNumber.touched)">
+                            <div *ngIf="serialNumber.errors.maxlength" class="error-msg">
+                                serialNumber ne doit pas passer 50 caractères.
+                            </div>
+                            <div *ngIf="serialNumber.errors.minlength" class="error-msg">
+                                serialNumber ne doit pas être moins de 5 caractères.
+                            </div>
+                            <div *ngIf="serialNumber.hasError('pattern')" class="error-msg">
+                                serialNumber doit contenir seulement des chiffres.
+                            </div>
+                        </div>
+                        <label for="simPhoneNumber">Numéro de téléphone</label>
+                        <input type="text" [(ngModel)]="device.simPhoneNumber" name="simPhoneNumber" id="simPhoneNumber"
+                            #simPhoneNumber="ngModel" class="form-control" placeholder="simPhoneNumber" minlength="10"
+                            maxlength="10" required alt="simPhoneNumber" pattern="0[0-9]{9}">
+                        <div *ngIf="simPhoneNumber.invalid && (simPhoneNumber.dirty || simPhoneNumber.touched)">
+                            <div *ngIf="simPhoneNumber.errors.maxlength" class="error-msg">
+                                simPhoneNumber ne doit pas passer 10 caractères.
+                            </div>
+                            <div *ngIf="simPhoneNumber.errors.minlength" class="error-msg">
+                                simPhoneNumber ne doit pas être moins de 10 caractères.
+                            </div>
+                            <div *ngIf="simPhoneNumber.hasError('pattern')" class="error-msg">
+                                simPhoneNumber doit respecter la forme suivante 0 suivit de 9 chiffres.
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')"
+                    [disabled]="!f.valid">Save</button>
+            </div>
+        </ng-template>
+
+    </div>
+</div>
+<div class="card m-5">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-11 font-weight-bold">Gestion des véhicules </div>
+            <div class="col-1"><button class="btn btn-sm btn-success" (click)="open(content, null)">Nouveau</button>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                <table id="myTable" class="table table-striped">
+                    <thead class="thead-black">
+                        <tr>
+                            <th class="text-left">identifiant</th>
+                            <th class="text-left">Date Création</th>
+                            <th class="text-left">Jours Restant</th>
+                            <th class="text-left">Jours Restant %</th>
+                            <th class="text-left">description </th>
+                            <th class="text-left">equipement type</th>
+                            <th class="text-left">Numéro de téléphone</th>
+                            <th class="text-left">Actif</th>
+                            <th class="text-center">Modifier</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let device of devices">
+                            <td>{{device.deviceID.deviceID}}</td>
+                            <td>{{device.creationTime * 1000 | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
+                            <td>{{device.remainingTime / 86400 < 0 ? 0 : device.remainingTime / 86400 | number : '1.0-0'
+                                    }}</td>
+                            <td>
+                                <div class="progress" style="width: 100px;">
+                                    <div role="progressbar" [class]="getProgressClass(device)"
+                                        [style.width.%]="getPourcentageDays(device)" aria-valuemin="0"
+                                        aria-valuemax="100">
+                                    </div>
+                                </div>
+                            </td>
+                            <td>{{device.description}}</td>
+                            <td>{{device.equipmentType}}</td>
+                            <td>{{device.simPhoneNumber}}</td>
+                            <td>{{device.isActive == 1 ? 'Oui' : 'Non'}}</td>
+                            <td class="text-center">
+                                <a class="btn btn-success btn-sm active" style="margin:5px;"
+                                    (click)="open(content, device)" role="button" aria-pressed="true">modifier</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

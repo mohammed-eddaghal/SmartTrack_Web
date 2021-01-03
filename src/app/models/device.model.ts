@@ -21,7 +21,8 @@ export class Device implements Deserializable {
     lastUpdateTime: number;
     creationTime: number;
     remainingTime: number;
-    
+    licenseExpireTimestamp: number;
+
     deserialize(input: any) {
         Object.assign(this, input);
         return this;
