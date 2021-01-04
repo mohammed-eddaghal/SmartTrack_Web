@@ -16,11 +16,12 @@ export class DeviceComponent implements OnInit {
   devices: Device[];
   device: Device;
   nextPage: boolean;
+  adding: boolean;
 
   constructor(private modalService: NgbModal,
-              private spinner: NgxSpinnerService,
-              private authService: AuthService,
-              private adminService: AdminService) { }
+    private spinner: NgxSpinnerService,
+    private authService: AuthService,
+    private adminService: AdminService) { }
 
   ngOnInit(): void {
     this.spinner.show();
@@ -48,7 +49,7 @@ export class DeviceComponent implements OnInit {
 
 
   getPourcentageDays(device) {
-    var p = (device.remainingTime) / (device.licenseExpireTimestamp - device.creationTime) * 100;
+    var p = (device.remainingTime) / (device.licenseExpire - device.creationTime) * 100;
     return p < 0 ? 0 : p;
   }
 
@@ -69,11 +70,11 @@ export class DeviceComponent implements OnInit {
   open(content, device?: any) {
     if (device == null) {
       this.device = new Device();
-      console.log("test ajout");
+      this.adding = true;
     }
     else {
       this.device = device;
-      console.log("test modifier");
+      this.adding = false;
     }
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
@@ -81,10 +82,32 @@ export class DeviceComponent implements OnInit {
       // console.log(this.closeResult + " 1")
 
       if (device == null) {
-        // console.log("function d'ajout");
+        this.device.deviceID = {
+          deviceID: this.device.imeiNumber,
+          accountID: this.authService.user.accountID
+        };
+        this.device.uniqueID = this.device.imeiNumber;
+        this.device.licenseExpire = new Date(this.device.licenseExpire).getTime()/1000;
+        this.device.creationTime = new Date(Date.now()).getTime() / 1000;
+        this.adminService.addDevice(this.device, 'g1').subscribe(
+          result => {
+            console.log(result);
+          },
+          error => {
+            console.log(error);
+          }
+        );
       }
       else {
-        // console.log("fenction de modification");
+        this.device.licenseExpire = new Date(this.device.licenseExpire).getTime()/1000;
+        this.adminService.updateDevice(this.device).subscribe(
+          result => {
+            console.log(result);
+          },
+          error => {
+            console.log(error);
+          }
+        );
       }
 
     }, (reason) => {
@@ -92,5 +115,16 @@ export class DeviceComponent implements OnInit {
       // console.log(this.closeResult + " 2");
       // console.log(Date.now())
     });
+  }
+
+  delete(deviceID) {
+    this.adminService.deleteDevice(deviceID, 'g1').subscribe(
+      result => {
+        console.log(result);
+      },
+      error => {
+        console.log(error);
+      }
+    );
   }
 }

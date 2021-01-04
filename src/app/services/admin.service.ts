@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Device, DeviceID } from '../models/device.model';
 import { DataService } from './data.service';
 
 
@@ -109,6 +110,26 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'add/driver', body);
   }
 
+  addDevice(device: Device, groupID?: string) {
+    var path;
+    if (groupID != null) {
+      path = 'add/device?groupID='+ groupID;
+    } else {
+      path = 'add/device';
+    }
+    return this.postFnc(this.apiPath + path, JSON.stringify(device));
+  }
+
+  deleteDevice(deviceID: DeviceID, groupID?: string) {
+    var path;
+    if (groupID != null) {
+      path = 'delete/device?groupID='+ groupID;
+    } else {
+      path = 'delete/device';
+    }
+    return this.postFnc(this.apiPath + path, JSON.stringify(deviceID));
+  }
+
   getAllDevices(accountID: string, page: number, groupID?: string) {
     var body = {
       "accountID": accountID,
@@ -171,6 +192,10 @@ export class AdminService extends DataService {
 
   updateDriver(body: any) {
     return this.putFnc(this.apiPath + "update/driver", body);
+  }
+
+  updateDevice(body: any) {
+    return this.putFnc(this.apiPath + "update/device", body);
   }
   getVeiculs(body: any) {
     return this.postFnc(this.apiPath + 'vehicles', body);

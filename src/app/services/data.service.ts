@@ -16,8 +16,7 @@ import { Observable, throwError } from 'rxjs';
 export class DataService {
   
   // protected apiPath = 'https://geotech-gps.com:9090/api/';
-  // protected apiPath = 'http://192.168.1.2:9090/api/';
-  protected apiPath = 'http://192.168.0.108:9090/api/';
+  protected apiPath = 'http://192.168.1.2:9090/api/';
 
   private httpOption = {
     headers: new HttpHeaders({
@@ -31,8 +30,6 @@ export class DataService {
 
   getFnc() {
     return this.http.get(this.apiPath, this.httpOption).pipe(
-      // eg. "map" without a dot before
-      retry(1),
       // "catchError" instead "catch"
       catchError(this.handelErrors)
     );
@@ -40,8 +37,6 @@ export class DataService {
 
   postFnc(apiPath: string, body) {
     return this.http.post(apiPath, body, this.httpOption).pipe(
-      // eg. "map" without a dot before
-      retry(1),
       // "catchError" instead "catch"
       catchError(this.handelErrors)
     );
@@ -49,8 +44,6 @@ export class DataService {
 
   putFnc(apiPath: string, item) {
     return this.http.put(apiPath, item, this.httpOption).pipe(
-      // eg. "map" without a dot before
-      retry(1),
       // "catchError" instead "catch"
       catchError(this.handelErrors)
     );
@@ -58,8 +51,6 @@ export class DataService {
 
   deleteFnc(apiPath: string, itemID: any) {
     return this.http.delete(apiPath + itemID, this.httpOption).pipe(
-      // eg. "map" without a dot before
-      retry(1),
       // "catchError" instead "catch"
       catchError(this.handelErrors)
     );

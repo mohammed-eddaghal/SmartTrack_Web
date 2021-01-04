@@ -16,11 +16,11 @@
                     <!-- creation date by default now() -->
                     <!-- lastUpdateTime by default now() when we modify and null when we're creating new one -->
                     <div class="form-group">
-                        <label for="imeiNumber">Numéro IMEI</label>
-                        <input type="text" [(ngModel)]="device.imeiNumber" name="imeiNumber" id="imeiNumber"
-                            #imeiNumber="ngModel" class="form-control" placeholder="imeiNumber" minlength="15"
-                            maxlength="15" required alt="imeiNumber" pattern="[0-9]{15}">
-                        <div *ngIf="imeiNumber.invalid && (imeiNumber.dirty || imeiNumber.touched)">
+                        <label *ngIf="adding" for="imeiNumber">Numéro IMEI</label>
+                        <input *ngIf="adding" type="text" [(ngModel)]="device.imeiNumber" name="imeiNumber"
+                            id="imeiNumber" #imeiNumber="ngModel" class="form-control" placeholder="imeiNumber"
+                            minlength="15" maxlength="15" required alt="imeiNumber" pattern="[0-9]{15}">
+                        <div *ngIf="imeiNumber?.invalid && (imeiNumber?.dirty || imeiNumber?.touched)">
                             <div *ngIf="imeiNumber.hasError('pattern')" class="error-msg">
                                 L'imei doit être composé de 15 chiffres seulement.
                             </div>
@@ -33,8 +33,8 @@
                         </select>
                         <label for="licenseExpire">License Expiration</label>
                         <input type="datetime-local" name="licenseExpire"
-                            [ngModel]="device.licenseExpireTimestamp * 1000 | date: 'yyyy-MM-ddTHH:mm'"
-                            (ngModel)="device.licenseExpire" #licenseExpire="ngModel" id="licenseExpire"
+                            [ngModel]="device.licenseExpire * 1000 | date: 'yyyy-MM-ddTHH:mm'"
+                            (ngModelChange)="device.licenseExpire = $event" #licenseExpire="ngModel" id="licenseExpire"
                             class="form-control" required alt="licenseExpire">
                         <label for="Description">Description</label>
                         <input type="text" [(ngModel)]="device.description" name="Description" id="Description"
@@ -109,6 +109,19 @@
                                 serialNumber doit contenir seulement des chiffres.
                             </div>
                         </div>
+                        <label for="odometerOffsetKM">odometerOffsetKM</label>
+                        <input type="text" [(ngModel)]="device.odometerOffsetKM" name="odometerOffsetKM"
+                            id="odometerOffsetKM" #odometerOffsetKM="ngModel" class="form-control"
+                            placeholder="odometerOffsetKM" minlength="0" maxlength="12" required alt="odometerOffsetKM"
+                            pattern="[0-9]{0,12}">
+                        <div *ngIf="serialNumber.invalid && (serialNumber.dirty || serialNumber.touched)">
+                            <div *ngIf="serialNumber.errors.maxlength" class="error-msg">
+                                odometerOffsetKM ne doit pas passer 12 caractères.
+                            </div>
+                            <div *ngIf="serialNumber.hasError('pattern')" class="error-msg">
+                                odometerOffsetKM doit contenir seulement des chiffres.
+                            </div>
+                        </div>
                         <label for="simPhoneNumber">Numéro de téléphone</label>
                         <input type="text" [(ngModel)]="device.simPhoneNumber" name="simPhoneNumber" id="simPhoneNumber"
                             #simPhoneNumber="ngModel" class="form-control" placeholder="simPhoneNumber" minlength="10"
@@ -157,7 +170,7 @@
                             <th class="text-left">equipement type</th>
                             <th class="text-left">Numéro de téléphone</th>
                             <th class="text-left">Actif</th>
-                            <th class="text-center">Modifier</th>
+                            <th class="text-center">Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -181,6 +194,8 @@
                             <td class="text-center">
                                 <a class="btn btn-success btn-sm active" style="margin:5px;"
                                     (click)="open(content, device)" role="button" aria-pressed="true">modifier</a>
+                                <a class="btn btn-danger btn-sm active" role="button" aria-pressed="true"
+                                    (click)="delete(device.deviceID)">supprimer</a>
                             </td>
                         </tr>
                     </tbody>
