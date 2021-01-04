@@ -73,7 +73,7 @@
             </label>
           </div>
           <br>
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="carList">Vehicules</label>
             <select [(ngModel)]="listVehicules" #listV="ngModel" [ngModel]="user?.devices" name="listVehicul" multiple
               class="form-control" id="carList" required>
@@ -85,7 +85,7 @@
                 un utilisateur doit avoir au moins un véhicule
               </div>
             </div>
-          </div>
+          </div> -->
         </form>
       </div>
       <div class="modal-footer">
@@ -117,7 +117,6 @@
               <th>Nom d'utilisateur</th>
               <th class="text-center">Email</th>
               <th class="text-center">Password</th>
-              <th class="text-center">Nbr vehicules</th>
               <th>Active</th>
               <th class="text-center">Action</th>
             </tr>
@@ -128,7 +127,6 @@
               <td>{{user.contactName}}</td>
               <td>{{user.contactEmail}}</td>
               <td class="text-center">{{user.password}}</td>
-              <td class="text-center">{{user.devices.length}}</td>
               <td class="text-center" *ngIf="user.isActive" style="color: green;"><b>OUI</b></td>
               <td class="text-center" *ngIf="!user.isActive" style="color:red;"><b>NON</b></td>
               <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;"
@@ -138,7 +136,7 @@
             </tr>
           </tbody>
         </table>
-        <div *ngIf="taillListUsers==0">
+        <div *ngIf="listUsers?.length == 0">
           <p>il n'y a pas d'utilisateurs</p>
         </div>
       </div>
