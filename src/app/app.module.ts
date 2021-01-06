@@ -43,6 +43,8 @@ import { LiveComponent } from './position/live/live.component';
 import {DecimalPipe} from '@angular/common';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
 import { DeviceComponent } from './device/device.component';
+import { SpeedPercentReportComponent } from './report/speed-percent-report/speed-percent-report.component';
+import { TemperatureReportComponent } from './report/temperature-report/temperature-report.component';
 // import { registerLocaleData } from '@angular/common';
 // import localeFr from '@angular/common/locales/fr';
 
@@ -69,6 +71,8 @@ import { DeviceComponent } from './device/device.component';
     MapComponent,
     LiveComponent,
     DeviceComponent,
+    SpeedPercentReportComponent,
+    TemperatureReportComponent,
   ],
   imports: [
     BrowserAnimationsModule,

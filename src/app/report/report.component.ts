@@ -5,8 +5,10 @@ import { map } from 'rxjs/operators';
 import { Vehicle } from '../models/vehicle.model';
 import { AdminService } from '../services/admin.service';
 import { AuthService } from '../services/auth.service';
+import { SpeedPercentReportComponent } from './speed-percent-report/speed-percent-report.component';
 import { SpeedReportComponent } from './speed-report/speed-report.component';
 import { SummaryReportComponent } from './summary-report/summary-report.component';
+import { TemperatureReportComponent } from './temperature-report/temperature-report.component';
 
 @Component({
   selector: 'app-report',
@@ -59,9 +61,21 @@ export class ReportComponent implements OnInit {
         this.componentRef.instance.deviceID = form.value['deviceID'];
         this.componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
         this.componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
+      } else if (form.value.filter == 3) {
+        this.cvref.clear();
+        this.componentRef = this.cvref.createComponent(this.resolver.resolveComponentFactory(TemperatureReportComponent));
+        this.componentRef.instance.deviceID = form.value['deviceID'];
+        this.componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
+        this.componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
       } else if (form.value.filter == 4) {
         this.cvref.clear();
         this.componentRef = this.cvref.createComponent(this.resolver.resolveComponentFactory(SpeedReportComponent));
+        this.componentRef.instance.deviceID = form.value['deviceID'];
+        this.componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
+        this.componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
+      } else if (form.value.filter == 5) {
+        this.cvref.clear();
+        this.componentRef = this.cvref.createComponent(this.resolver.resolveComponentFactory(SpeedPercentReportComponent));
         this.componentRef.instance.deviceID = form.value['deviceID'];
         this.componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
         this.componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
