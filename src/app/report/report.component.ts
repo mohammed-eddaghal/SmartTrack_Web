@@ -23,6 +23,10 @@ export class ReportComponent implements OnInit {
 
   vehicles: Vehicle[] = [];
 
+  oldestFormValue: number;
+
+  componentRef: ComponentRef<any>;
+
   constructor(
     private adminService: AdminService,
     private authService: AuthService,
@@ -43,21 +47,26 @@ export class ReportComponent implements OnInit {
   }
 
   onSubmit(form: NgForm) {
-    console.log('filter value is ', form.value['filter']);
-    if (form.value.filter == 0) {
-      this.cvref.clear();
-      const componentRef: ComponentRef<SummaryReportComponent> =
-        this.cvref.createComponent(this.resolver.resolveComponentFactory(SummaryReportComponent));
-        componentRef.instance.deviceID = form.value['deviceID'];
-        componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
-        componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
-    } else if (form.value.filter == 4) {
-      this.cvref.clear();
-      const componentRef: ComponentRef<SpeedReportComponent> =
-        this.cvref.createComponent(this.resolver.resolveComponentFactory(SpeedReportComponent));
-        componentRef.instance.deviceID = form.value['deviceID'];
-        componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
-        componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
+    if (this?.oldestFormValue == form.value.filter) {
+      this.componentRef.instance.deviceID = form.value['deviceID'];
+      this.componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
+      this.componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
+      this.componentRef.instance.loadData();
+    } else {
+      if (form.value.filter == 0) {
+        this.cvref.clear();
+        this.componentRef = this.cvref.createComponent(this.resolver.resolveComponentFactory(SummaryReportComponent));
+        this.componentRef.instance.deviceID = form.value['deviceID'];
+        this.componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
+        this.componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
+      } else if (form.value.filter == 4) {
+        this.cvref.clear();
+        this.componentRef = this.cvref.createComponent(this.resolver.resolveComponentFactory(SpeedReportComponent));
+        this.componentRef.instance.deviceID = form.value['deviceID'];
+        this.componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
+        this.componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
+      }
+      this.oldestFormValue = form.value.filter;
     }
   }
 }

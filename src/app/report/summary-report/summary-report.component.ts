@@ -21,7 +21,10 @@ export class SummaryReportComponent implements OnInit {
     private authService: AuthService) { }
 
   ngOnInit(): void {
+    this.loadData();
+  }
 
+  loadData() {
     var web: string = 'false';
     
     if(this.deviceID == '0') {

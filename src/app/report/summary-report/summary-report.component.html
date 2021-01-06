@@ -15,8 +15,8 @@
     <tbody>
       <tr *ngFor="let device of data">
         <td>{{device.vehicleModel}}</td>
-        <td>{{this.startTime | date: 'short'}}</td>
-        <td>{{this.endTime | date: 'short'}}</td>
+        <td>{{this.startTime * 1000 | date: 'short'}}</td>
+        <td>{{this.endTime * 1000 | date: 'short'}}</td>
         <td>{{device.distance| number:'1.0-2'}}</td>
         <td>{{device.speedMax| number:'1.0-2'}}</td>
         <td>{{device.speedAvg| number:'1.0-2'}}</td>
