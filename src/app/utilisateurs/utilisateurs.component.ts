@@ -24,7 +24,6 @@ export class UtilisateursComponent implements OnInit {
   isActive: boolean = false;
   user = null;
   listUsers: any;
-  taillListUsers: number = -1;
 
   constructor(private modalService: NgbModal,
     private spinner: NgxSpinnerService,
@@ -33,7 +32,6 @@ export class UtilisateursComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-    //this.listVehicules=["Citroen 29785-A-17"];
     this.adminService.getVehicles(this.authService.user.accountID, this.authService.user.userID).pipe(
       map((data: Vehicle[]) => data.map(vehicle => new Vehicle().deserialize(vehicle)))
     ).subscribe(
@@ -45,11 +43,6 @@ export class UtilisateursComponent implements OnInit {
       }
     );
     this.getAllUsers();
-    //   this.adminService.getVeiculs({accountID:this.authService.user.accountID}).subscribe(resultat=>{
-    //     this.vehicules=resultat;
-    //     console.log( JSON.stringify( resultat))
-    //   })
-    //  this.getAllUsers();
   }
 
   open(content, user?: any) {
@@ -61,8 +54,6 @@ export class UtilisateursComponent implements OnInit {
       this.passwd = "";
       this.isActive = false;
       let lastDigit = Date.now() % 10000;
-      console.log('The last digit of ', Date.now(), ' is ', lastDigit);
-      console.log("test ajout");
     }
     else {
       this.isUpdatingOrAdding = "Modifier Utilisateur";
@@ -70,34 +61,23 @@ export class UtilisateursComponent implements OnInit {
       this.userName = user.contactName;
       this.passwd = user.password;
       this.isActive = user.isActive;
-      //this.listVehicules=["29557-A-17 peugeot208"];
-      //this.listVehicules=user.devices.userDeviceID.deviceID;
-      //console.log(user);
-
-      console.log(user.devices[0]);
-      console.log("test modifier");
     }
 
     this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
       this.closeResult = `Closed with: ${result}`;
-      console.log(this.closeResult + " 1")
 
       if (user == null) {
         this.ajoutUtilisateur();
         this.getAllUsers();
-        console.log("function d'ajout");
       }
       else {
         this.modifierUtilisateur(user);
-        console.log("fenction de modification");
       }
 
       //this.ajoutUtilisateur();
 
     }, (reason) => {
       this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
-      console.log(this.closeResult + " 2");
-      console.log(Date.now())
     });
   }
 
@@ -118,55 +98,43 @@ export class UtilisateursComponent implements OnInit {
       "password": body.password,
       "name": this.userName,
       "email": this.mail,
-      "active": this.isActive,
-      "devices": this.listVehicules
+      "active": this.isActive
     }
     ).subscribe(rep => {
-      console.log(rep);
     }, error => {
       console.error(error);
     })
     this.getAllUsers();
     this.mail = "";
     this.passwd = "";
-    this.listVehicules = [];
     this.userName = "";
     this.isActive = false;
   }
 
   ajoutUtilisateur() {
-    console.log(this.listVehicules);
     this.adminService.addUser({
       "accountID": this.authService.user.accountID,
       "userID": this.userName + Date.now() % 10000,
       "password": this.passwd,
       "name": this.userName,
       "email": this.mail,
-      "active": this.isActive,
-      "devices": this.listVehicules
+      "active": this.isActive
     }).subscribe(rep => {
       //this.getAllUsers();
-      console.log(rep)
     }, error => {
       console.error(error);
     })
     //this.getAllUsers();
     this.mail = "";
     this.passwd = "";
-    this.listVehicules = [];
     this.userName = "";
     this.isActive = false;
-
-
   }
 
   getAllUsers() {
     this.adminService.getUsers({ "accountID": this.authService.user.accountID }).subscribe(
       rep => {
         this.listUsers = rep;
-        this.taillListUsers = this.listUsers.length;
-        console.log("nv getAllUsers");
-
       }, err => {
         console.error(err)
       }
@@ -174,14 +142,11 @@ export class UtilisateursComponent implements OnInit {
   }
 
   suppUser(userid) {
-    console.log(userid);
     this.adminService.deleteUser({ "accountID": this.authService.user.accountID, "userID": userid }).subscribe(rep => {
-      console.log(rep);
       this.getAllUsers();
     }, err => {
       console.error("delete !!!")
     });
-    console.log("supp button");
   }
 
 }

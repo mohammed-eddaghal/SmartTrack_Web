@@ -430,7 +430,6 @@ export class MaintenanceComponent implements OnInit {
       default:
         return 'progress-bar progress-bar-striped bg-info';
     }
-
   }
 
   getDeviceName(deviceId: any) {
