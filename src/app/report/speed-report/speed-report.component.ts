@@ -31,6 +31,8 @@ export class SpeedReportComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.endTime = Math.floor(new Date(Date.now()).getTime() / 1000);
+    this.startTime = Math.floor(this.endTime - (86400 * 2));
     this.chart = am4core.create("speedChart", am4charts.XYChart);
     if(this.deviceID == '0') {
       Swal.fire('Oops...', "veuillez choisir un véhicule", 'error')
@@ -77,36 +79,31 @@ export class SpeedReportComponent implements OnInit {
 
       // Create series
       var series = this.chart.series.push(new am4charts.LineSeries());
+      series.stroke = am4core.color("#f9b74d"); //color of line
       series.dataFields.valueY = "speedKPH";
       series.dataFields.categoryX = "timestamp";
-      series.dataFields.categoryY = "latitude";
-      series.dataFields.categoryZ = "latitude";
       series.name = "speedKPH";
+
+      this.chart.scrollbarX = new am4core.Scrollbar();
 
       // Add simple bullet
       var circleBullet = series.bullets.push(new am4charts.CircleBullet());
       circleBullet.circle.radius = 4;
+      circleBullet.circle.cursorOverStyle = am4core.MouseCursorStyle.pointer; //on hover change cursor style
+      circleBullet.circle.showTooltipOn = true; //did nothing until now
       circleBullet.circle.fill = am4core.color("orange");
       circleBullet.circle.stroke = am4core.color("orange");
-      circleBullet.events.on("over", function(ev) {
+      circleBullet.tooltipText = "{timestamp}\n{speedKPH} Km/h";
+      circleBullet.events.on("over", function (ev) {
         console.log("Clicked on " + ev.target.dataItem.categories);
       });
-      //tooltip bg color
-      series.tooltip.getFillFromObject = false;
-      series.tooltip.background.fill = am4core.color("#FFFFFF");
-
-      //tooltip text color
-      series.tooltip.autoTextColor = false;
-      series.tooltip.label.fill = am4core.color("#000000");
-
+      // circleBullet.events.on("out", function (ev) {
+      //   // console.log("Clicked on " + ev.target.dataItem.categories);
+      //   var point = categoryAxis.categoryToPoint(ev.target.dataItem.category);
+      //   circleBullet.cursor.triggerMove(point, "none");
+      // });
       //disable logo appearance
       this.chart.logo.__disabled = true;
-
-      //you can use these two lines below to reduce width of columns
-      // categoryAxis.renderer.cellStartLocation = 0.3;
-      // categoryAxis.renderer.cellEndLocation = 0.6;
-
-      // this.chart = chart;
     });
   }
 
