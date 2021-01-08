@@ -175,7 +175,7 @@
                     </thead>
                     <tbody>
                         <tr *ngFor="let device of devices">
-                            <td>{{device.deviceID.deviceID}}</td>
+                            <td>{{device.deviceID.deviceID || device['deviceID']}}</td>
                             <td>{{device.creationTime * 1000 | date: 'dd/MM/yyyy HH:mm:ss'}}</td>
                             <td>{{device.remainingTime / 86400 < 0 ? 0 : device.remainingTime / 86400 | number : '1.0-0'
                                     }}</td>

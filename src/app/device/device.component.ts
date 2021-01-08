@@ -25,11 +25,11 @@ export class DeviceComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-    this.adminService.getAllDevices(this.authService.user.accountID, 0)
+    this.adminService.getAllDevices(this.authService.user.accountID, 0, this.authService.groupID)
       .pipe(
         map((data: any) => {
           console.log('data is ', data);
-          this.nextPage = data['last'];
+          // this.nextPage = data['last'];
           return data['content'].map(device => new Device().deserialize(device));
         },
         )

@@ -13,17 +13,22 @@ import { DataService } from './data.service';
 })
 export class SubUserService extends DataService {
 
-  constructor(http: HttpClient) { 
+  constructor(http: HttpClient) {
     super(http);
   }
-  
+
   login(body) {
     return this.postFnc(this.apiPath + 'user/login', body);
   }
 
-  etatUser(body:any){
-    return this.postFnc(this.apiPath+'user/devices',body)
+  etatUser(body: any) {
+    return this.postFnc(this.apiPath + 'user/devices', body)
   }
 
-  
+  getGroupID(accountID: string, userID: string) {
+    var body = {
+      'groupID': { 'accountID': accountID, 'userID': userID }
+    }
+    return this.postFnc(this.apiPath + 'user/group', body);
+  }
 }

@@ -131,7 +131,7 @@ export class AdminService extends DataService {
   addDevice(device: Device, groupID?: string) {
     var path;
     if (groupID != null) {
-      path = 'add/device?groupID='+ groupID;
+      path = 'add/device?groupID=' + groupID;
     } else {
       path = 'add/device';
     }
@@ -141,7 +141,7 @@ export class AdminService extends DataService {
   deleteDevice(deviceID: DeviceID, groupID?: string) {
     var path;
     if (groupID != null) {
-      path = 'delete/device?groupID='+ groupID;
+      path = 'delete/device?groupID=' + groupID;
     } else {
       path = 'delete/device';
     }
@@ -149,12 +149,18 @@ export class AdminService extends DataService {
   }
 
   getAllDevices(accountID: string, page: number, groupID?: string) {
-    var body = {
-      "accountID": accountID,
-      "page": page
-    };
-    if (groupID != null && groupID != "") body['groupID'] = groupID;
-
+    var body;
+    if (groupID != null && groupID != "") {
+      body = {
+        "groupID": groupID,
+        "page": page
+      };
+    } else {
+      body = {
+        "accountID": accountID,
+        "page": page
+      };
+    }
     return this.postFnc(this.apiPath + 'findall/device', body);
   }
 

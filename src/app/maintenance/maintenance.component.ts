@@ -6,7 +6,7 @@ import { AuthService } from '../services/auth.service';
 import { AdminService } from '../services/admin.service';
 import { map } from 'rxjs/operators';
 import { time } from '@amcharts/amcharts4/core';
-import {DatePipe} from '@angular/common';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-maintenance',
@@ -45,7 +45,7 @@ export class MaintenanceComponent implements OnInit {
   dateCartGrise: string;
 
   constructor(private modalService: NgbModal,
-    private datePipe:DatePipe,
+    private datePipe: DatePipe,
     private spinner: NgxSpinnerService,
     private authService: AuthService,
     private adminService: AdminService) { }
@@ -79,7 +79,7 @@ export class MaintenanceComponent implements OnInit {
 
   open(content, index?: number, mintKey?: string, maint?: any) {
 
-    if(maint==null){
+    if (maint == null) {
       switch (index) {
         case 0: {
           this.typeOfForm = index;
@@ -102,7 +102,7 @@ export class MaintenanceComponent implements OnInit {
           break;
         }
       }
-    }else {
+    } else {
       switch (this.getMaintType(mintKey)) {
         case 0: {
           this.typeOfForm = 0;
@@ -111,7 +111,7 @@ export class MaintenanceComponent implements OnInit {
           this.assurance(content, maint);
           break;
         }
-        case 1: console.log(2);break;
+        case 1: console.log(2); break;
         case 4: {
           this.typeOfForm = 4;
           console.log("////**************/////////////");
@@ -121,18 +121,18 @@ export class MaintenanceComponent implements OnInit {
         }
         default: console.log("xx");
       }
-      console.log(JSON.stringify(maint)+" / "+mintKey);
+      console.log(JSON.stringify(maint) + " / " + mintKey);
     }
 
 
 
   }
 
-  private getMaintType(maint:any):number{
+  private getMaintType(maint: any): number {
     console.log(maint);
-    if(maint==="insurance")return 0;
-    if(maint==="technicalVisit")return 1;
-    if(maint==="entretien")return 4;
+    if (maint === "insurance") return 0;
+    if (maint === "technicalVisit") return 1;
+    if (maint === "entretien") return 4;
     else return -1;
   }
 
@@ -181,8 +181,8 @@ export class MaintenanceComponent implements OnInit {
     }
     else {
       console.log(row);
-      let dateS=new Date(row.timestampStart*1000);
-      let dateF=new Date(row.timestampEnd*1000);
+      let dateS = new Date(row.timestampStart * 1000);
+      let dateF = new Date(row.timestampEnd * 1000);
       this.datePipe.transform(dateS, 'dd/MM/yyyy');
       //console.log(new Date(row.timestampEnd*1000))
       this.isUpdatingOrAdding = "Modifier Assurance";
@@ -205,7 +205,7 @@ export class MaintenanceComponent implements OnInit {
         console.log("function d'ajout");
       }
       else {
-        console.log(this.dateDebut+" / "+this.dateFin);
+        console.log(this.dateDebut + " / " + this.dateFin);
         this.modifieAssurance(row);
         console.log("fenction de modification");
 
@@ -260,8 +260,8 @@ export class MaintenanceComponent implements OnInit {
     }
     else {
       console.log(row);
-      let dateS=new Date(row.timestampStart*1000);
-      let dateF=new Date(row.timestampEnd*1000);
+      let dateS = new Date(row.timestampStart * 1000);
+      let dateF = new Date(row.timestampEnd * 1000);
       this.datePipe.transform(dateS, 'dd/MM/yyyy');
       //console.log(new Date(row.timestampEnd*1000))
       this.isUpdatingOrAdding = "Modifier Entretien";
@@ -284,7 +284,7 @@ export class MaintenanceComponent implements OnInit {
         console.log("function d'ajout");
       }
       else {
-        console.log(this.dateDebut+" / "+this.dateFin);
+        console.log(this.dateDebut + " / " + this.dateFin);
         //this.modifieAssurance(row);
         console.log("fenction de modification");
 
@@ -329,14 +329,14 @@ export class MaintenanceComponent implements OnInit {
     this.prixMaint = null;
   }
 
-  modifieAssurance(row:any) {
+  modifieAssurance(row: any) {
     console.log("///////////")
-    console.log("1 "+row.id);
+    console.log("1 " + row.id);
     this.modelCar = row.deviceID;
-    console.log("1 "+this.MaintName);
-    console.log("1 "+new Date(this.dateDebut).getTime() / 1000);
-    console.log("1 "+new Date(this.dateFin).getTime() / 1000);
-    console.log("1 "+this.modelCar);
+    console.log("1 " + this.MaintName);
+    console.log("1 " + new Date(this.dateDebut).getTime() / 1000);
+    console.log("1 " + new Date(this.dateFin).getTime() / 1000);
+    console.log("1 " + this.modelCar);
     this.adminService.updateMaintenaceAssurance({
       "id": row.id,
       "deviceID": this.modelCar,
@@ -415,18 +415,19 @@ export class MaintenanceComponent implements OnInit {
   }
 
   getPourcentageDays(timestampStart, timestampEnd) {
-    return (timestampEnd - timestampStart) / Math.abs(Math.floor(new Date().getTime() / 1000) - timestampEnd);
+    var p= Math.abs(timestampEnd - Math.floor(new Date().getTime() / 1000)) / (timestampEnd - timestampStart) * 100;
+    return p < 0 ? 0 : p;
   }
 
   getProgressClass(timestampStart, timestampEnd) {
     var p = this.getPourcentageDays(timestampStart, timestampEnd);
     switch (true) {
       case p < 25:
-        return 'progress-bar progress-bar-striped  bg-success';
-      case p < 50:
-        return 'progress-bar progress-bar-striped  bg-warning';
-      case p < 75:
         return 'progress-bar progress-bar-striped  bg-danger';
+      case p < 75:
+        return 'progress-bar progress-bar-striped  bg-warning';
+      case p < 100:
+        return 'progress-bar progress-bar-striped  bg-success';
       default:
         return 'progress-bar progress-bar-striped bg-info';
     }
