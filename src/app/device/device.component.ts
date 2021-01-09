@@ -87,7 +87,7 @@ export class DeviceComponent implements OnInit {
           accountID: this.authService.user.accountID
         };
         this.device.uniqueID = this.device.imeiNumber;
-        this.device.licenseExpire = new Date(this.device.licenseExpire).getTime()/1000;
+        this.device.licenseExpire = new Date(this.device.licenseExpire).getTime() / 1000;
         this.device.creationTime = new Date(Date.now()).getTime() / 1000;
         this.adminService.addDevice(this.device, 'g1').subscribe(
           result => {
@@ -99,7 +99,7 @@ export class DeviceComponent implements OnInit {
         );
       }
       else {
-        this.device.licenseExpire = new Date(this.device.licenseExpire).getTime()/1000;
+        this.device.licenseExpire = new Date(this.device.licenseExpire).getTime() / 1000;
         this.adminService.updateDevice(this.device).subscribe(
           result => {
             console.log(result);
@@ -117,8 +117,17 @@ export class DeviceComponent implements OnInit {
     });
   }
 
-  delete(deviceID) {
-    this.adminService.deleteDevice(deviceID, 'g1').subscribe(
+  delete(dID) {
+    var deviceID;
+    if (dID.accountID != null) {
+      deviceID = dID;
+    }else {
+      deviceID = {
+        deviceID: dID,
+        accountID: this.authService.user.accountID
+      };
+    }
+    this.adminService.deleteDevice(deviceID, this.authService.groupID).subscribe(
       result => {
         console.log(result);
       },

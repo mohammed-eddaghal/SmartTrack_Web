@@ -140,7 +140,7 @@ export class AdminService extends DataService {
 
   deleteDevice(deviceID: DeviceID, groupID?: string) {
     var path;
-    if (groupID != null) {
+    if (groupID != null && groupID != '') {
       path = 'delete/device?groupID=' + groupID;
     } else {
       path = 'delete/device';
