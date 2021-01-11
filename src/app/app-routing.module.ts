@@ -10,9 +10,9 @@ import { AuthGuard } from './guards/auth.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChauffeurComponent } from './chauffeur/chauffeur.component';
 import { ReportComponent } from './report/report.component';
-import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { LiveComponent } from './position/live/live.component';
 import { DeviceComponent } from './device/device.component';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
 
 
 const routes: Routes = [

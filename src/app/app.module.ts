@@ -23,7 +23,6 @@ import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 import { ChauffeurComponent } from './chauffeur/chauffeur.component';
 import { ReportComponent } from './report/report.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
-import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { BrowserAnimationsModule, NoopAnimationsModule } from '@angular/platform-browser/animations';
 import { SummaryReportComponent } from './report/summary-report/summary-report.component';
 import { SpeedReportComponent } from './report/speed-report/speed-report.component';
@@ -45,6 +44,7 @@ import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluste
 import { DeviceComponent } from './device/device.component';
 import { SpeedPercentReportComponent } from './report/speed-percent-report/speed-percent-report.component';
 import { TemperatureReportComponent } from './report/temperature-report/temperature-report.component';
+import { MaintenanceComponent } from './maintenance/maintenance.component';
 // import { registerLocaleData } from '@angular/common';
 // import localeFr from '@angular/common/locales/fr';
 
@@ -64,7 +64,6 @@ import { TemperatureReportComponent } from './report/temperature-report/temperat
     UtilisateursComponent,
     ChauffeurComponent,
     ReportComponent,
-    MaintenanceComponent,
     SummaryReportComponent,
     SpeedReportComponent,
     CustomtimeformatterPipe,
@@ -73,6 +72,7 @@ import { TemperatureReportComponent } from './report/temperature-report/temperat
     DeviceComponent,
     SpeedPercentReportComponent,
     TemperatureReportComponent,
+    MaintenanceComponent,
   ],
   imports: [
     BrowserAnimationsModule,

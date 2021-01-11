@@ -164,11 +164,15 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'findall/device', body);
   }
 
-  getAllMaintenances(accountID: string, userID: string) {
+  getAllMaintenances(accountID: string, query?: string, page?: number, asc?: boolean, sortBy?: string, size?: number) {
     var body = {
-      "accountID": accountID
+      "accountID": accountID,
+      "asc": asc ?? true,
+      "sortBy": sortBy ?? "timestampStart",
+      "size": size ?? 10,
+      "page": page ?? 0,
+      "search": query ?? ''
     };
-    if (userID != null && userID != "") body['userID'] = userID;
 
     return this.postFnc(this.apiPath + 'findall/maintenance', body);
   }
