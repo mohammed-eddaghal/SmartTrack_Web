@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Device, DeviceID } from '../models/device.model';
+import { Maintenance } from '../models/maintenance.model';
 import { DataService } from './data.service';
 
 
@@ -164,6 +165,24 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'findall/device', body);
   }
 
+  getAllDevicesShortDetail(accountID: string, page: number, groupID?: string) {
+    var body;
+    if (groupID != null && groupID != "") {
+      body = {
+        "groupID": groupID,
+        "page": page,
+        "short" : true
+      };
+    } else {
+      body = {
+        "accountID": accountID,
+        "page": page,
+        "short" : true
+      };
+    }
+    return this.postFnc(this.apiPath + 'findall/device', body);
+  }
+
   getAllMaintenances(accountID: string, query?: string, page?: number, asc?: boolean, sortBy?: string, size?: number) {
     var body = {
       "accountID": accountID,
@@ -177,25 +196,58 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'findall/maintenance', body);
   }
 
-  updateMaintenaceAssurance(body: any) {
-    console.log("json send is: ", body);
-    return this.putFnc(this.apiPath + 'update/insurance', body);
-  }
-
-  addMaitenanceAssurance(body: any) {
-    return this.postFnc(this.apiPath + 'add/insurance', body);
-  }
-
   /*addMaintenanceCartGrise(body:any){
     return this.postFnc(this.apiPath+'add/insurance',body);
   }*/
 
-  addMaintenanceVisitTechnique(body: any) {
+  addMaintenance(maintenance: Maintenance) {
+    switch(maintenance.maintenance_Type) {
+      case 'Draining': return this.addDraining(maintenance);
+      case 'TechnicalVisit': return this.addTechnicalVisit(maintenance);
+      case 'Insurance': return this.addInsurance(maintenance);
+      case 'Entretien': return this.addEntretien(maintenance);
+    }
+  }
+  
+  updateMaintenance(maintenance: Maintenance) {
+    switch(maintenance.maintenance_Type) {
+      case 'Draining': return this.updateDraining(maintenance);
+      case 'TechnicalVisit': return this.updateTechnicalVisit(maintenance);
+      case 'Insurance': return this.updateInsurance(maintenance);
+      case 'Entretien': return this.updateEntretien(maintenance);
+    }
+  }
+
+  addDraining(body: any) {
+    return this.postFnc(this.apiPath + 'add/draining', body);
+  }
+
+  addInsurance(body: any) {
+    return this.postFnc(this.apiPath + 'add/insurance', body);
+  }
+
+  addTechnicalVisit(body: any) {
     return this.postFnc(this.apiPath + 'add/technicalVisit', body);
   }
 
-  addMaintenanceEntretien(body: any) {
+  addEntretien(body: any) {
     return this.postFnc(this.apiPath + 'add/entretien', body);
+  }
+
+  updateInsurance(body: Maintenance) {
+    return this.putFnc(this.apiPath + 'update/insurance', body);
+  }
+  
+  updateDraining(body: Maintenance) {
+    return this.putFnc(this.apiPath + 'update/draining', body);
+  }
+  
+  updateEntretien(body: Maintenance) {
+    return this.putFnc(this.apiPath + 'update/entretien', body);
+  }
+
+  updateTechnicalVisit(body: Maintenance) {
+    return this.putFnc(this.apiPath + 'update/technicalVisit', body);
   }
 
   getUsers(body: any) {

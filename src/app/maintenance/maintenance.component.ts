@@ -3,6 +3,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { NgxSpinnerService } from 'ngx-spinner';
 import { map } from 'rxjs/operators';
 import { Maintenance } from '../models/maintenance.model';
+import { Vehicle } from '../models/vehicle.model';
 import { AdminService } from '../services/admin.service';
 import { AuthService } from '../services/auth.service';
 
@@ -14,6 +15,9 @@ import { AuthService } from '../services/auth.service';
 export class MaintenanceComponent implements OnInit {
 
   maintenances: Maintenance[];
+  vehicles: Vehicle[];
+  maintenance: Maintenance;
+  adding: boolean;
   last: boolean;
   sortBy: string = "timestampStart";
   asc: boolean = true;
@@ -48,10 +52,25 @@ export class MaintenanceComponent implements OnInit {
       },
       error => null
     );
+    this.adminService.getAllDevicesShortDetail(this.authService.user.accountID, 0, this.authService.groupID).pipe(
+      map((data: any) => data['content'].map(vehicle => new Vehicle().deserialize(vehicle)))
+    ).subscribe(
+      response => {
+        this.spinner.hide();
+        this.vehicles = response;
+      },
+      error => {
+      }
+    );
   }
 
   getPourcentageDays(timestampStart, timestampEnd) {
-    var p = Math.abs(timestampEnd - Math.floor(new Date().getTime() / 1000)) / (timestampEnd - timestampStart) * 100;
+    var p = (timestampEnd - Math.floor(new Date().getTime() / 1000)) / (timestampEnd - timestampStart) * 100;
+    return p < 0 ? 0 : p;
+  }
+
+  getRemainingDays(timestampEnd) {
+    var p = (timestampEnd - Math.floor(new Date().getTime() / 1000)) / 86400;
     return p < 0 ? 0 : p;
   }
 
@@ -125,6 +144,55 @@ export class MaintenanceComponent implements OnInit {
       },
       error => null
     );
+  }
+
+  open(content, type: string, maintenance?: Maintenance) {
+    if (maintenance == null) {
+      this.maintenance = new Maintenance();
+      this.maintenance.maintenance_Type = type;
+      this.adding = true;
+    }
+    else {
+      this.maintenance = new Maintenance().deserialize(maintenance);
+      this.adding = false;
+    }
+
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      // this.closeResult = `Closed with: ${result}`;
+      // console.log(this.closeResult + " 1")
+      if (maintenance?.timestampStart != this.maintenance.timestampStart) {
+        this.maintenance.timestampStart = new Date(this.maintenance.timestampStart).getTime() / 1000;
+      }
+      if (maintenance?.timestampEnd != this.maintenance?.timestampEnd) {
+        this.maintenance.timestampEnd = new Date(this.maintenance?.timestampEnd).getTime() / 1000;
+      }
+      if (this.adding) {
+        this.adminService.addMaintenance(this.maintenance).subscribe(
+          result => {
+            console.log(result);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
+      else {
+        console.log('maintenance deviceID is: ' + this.maintenance);
+        this.adminService.updateMaintenance(this.maintenance).subscribe(
+          result => {
+            console.log(result);
+          },
+          error => {
+            console.log(error);
+          }
+        );
+      }
+
+    }, (reason) => {
+      // this.closeResult = `Dismissed ${this.getDismissReason(reason)}`;
+      // console.log(this.closeResult + " 2");
+      // console.log(Date.now())
+    });
   }
 }
 

@@ -1,15 +1,167 @@
 <ngx-spinner bdColor="rgba(255,255,255,0.8)" size="medium" color="#fd4e02" type="ball-scale-pulse" [fullScreen]="false">
     <p style="color: black"> Loading... </p>
 </ngx-spinner>
-<div class="card m-5">
+<div class="row m-3">
+    <div class="col-md-6">
+        <ng-template #content let-modal>
+            <div class="modal-header">
+                <h4 class="modal-title" id="modal-basic-title">{{adding ? 'Ajouter' : 'Modifier'}}</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                <form #f="ngForm">
+                    <div>
+                        <div class="form-group">
+                            <label class="mr-sm-2" for="inlineFormCustomSelect">Balise / Vehicule</label>
+                            <select [(ngModel)]="maintenance.deviceID" #modelC="ngModel" name="modelC"
+                                class="custom-select mr-sm-2" id="inlineFormCustomSelect" required>
+                                <option *ngFor="let vehicle of vehicles" value="{{vehicle.deviceID}}">
+                                    {{vehicle.vehicleModel}}
+                                </option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="nomMaint">Nom</label>
+                            <input type="text" [(ngModel)]="maintenance.name" name="nom" id="nomMaint"
+                                class="form-control" placeholder="Nom" #nom="ngModel" minlength="4" maxlength="100"
+                                required alt="Nom">
+                            <div *ngIf="nom.invalid && (nom.dirty || nom.touched)">
+                                <div *ngIf="nom.errors.required" class="error-msg">
+                                    nom est requis
+                                </div>
+                                <div *ngIf="nom.errors.minlength" class="error-msg">
+                                    nom doit contenir au moins 4 caractères
+                                </div>
+                                <div *ngIf="nom.errors.maxlength" class="error-msg">
+                                    nom ne doit pas dépasser 100 caractères
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="prix">Prix</label>
+                            <input type="number" [(ngModel)]="maintenance.price" name="prix" id="prix"
+                                class="form-control" placeholder="Prix..." #prix="ngModel" min="0" required alt="Prix">
+                            <div *ngIf="prix.invalid && (prix.dirty || prix.touched)">
+                                <div *ngIf="prix.errors.required" class="error-msg">
+                                    Le Prix est requis
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="dateDeb">Date Debut</label>
+                            <input type="datetime-local" name="dateD" id="dateDeb" class="form-control"
+                                [ngModel]="maintenance.timestampStart * 1000 | date: 'yyyy-MM-ddTHH:mm'"
+                                (ngModelChange)="maintenance.timestampStart = $event" #datDeb="ngModel" required
+                                alt="Date de Debut">
+                            <div *ngIf="datDeb.invalid && (datDeb.dirty || datDeb.touched)">
+                                <div *ngIf="datDeb.errors.required" class="error-msg">
+                                    La Date de Depart est requis
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group"
+                            *ngIf="maintenance.maintenance_Type != 'Draining' && maintenance.maintenance_Type != 'Entretien'">
+                            <label for="dateF">Date de Fin</label>
+                            <input type="datetime-local"
+                                [ngModel]="maintenance.timestampEnd * 1000 | date: 'yyyy-MM-ddTHH:mm'"
+                                (ngModelChange)="maintenance.timestampEnd = $event" name="datFin" id="dateF"
+                                class="form-control" placeholder="dd/mm/yyyy" #dateF="ngModel" required
+                                alt="Date de Fin">
+                            <div *ngIf="dateF.invalid && (dateF.dirty || dateF.touched)">
+                                <div *ngIf="dateF.errors.required" class="error-msg">
+                                    La Date de Fin est requis
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="maintenance.maintenance_Type == 'Draining'">
+                            <label for="kmStart">Km début</label>
+                            <input type="number" [(ngModel)]="maintenance.kmStart" name="kmStart" id="kmStart"
+                                class="form-control" placeholder="Prix..." #kmStart="ngModel" min="0" required
+                                alt="Km début">
+                            <div *ngIf="kmStart.invalid && (kmStart.dirty || kmStart.touched)">
+                                <div *ngIf="kmStart.errors.required" class="error-msg">
+                                    ce champ est requis
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group" *ngIf="maintenance.maintenance_Type == 'Draining'">
+                            <label for="kmEnd">Km fin</label>
+                            <input type="number" [(ngModel)]="maintenance.kmEnd" name="kmEnd" id="kmEnd"
+                                class="form-control" placeholder="Prix..." #kmEnd="ngModel" min="0" required
+                                alt="Km fin">
+                            <div *ngIf="kmEnd.invalid && (kmEnd.dirty || kmEnd.touched)">
+                                <div *ngIf="kmEnd.errors.required" class="error-msg">
+                                    ce champ est requis
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-check" *ngIf="maintenance.maintenance_Type == 'Draining'">
+                            <!-- [(ngModel)]="maintenance.oilFilterChanged" #oilFilterChanged="ngModel" -->
+                            <input class="form-check-input" type="checkbox" name="oilFilterChanged"
+                                id="oilFilterChanged" [(ngModel)]="maintenance.oilFilterChanged"
+                                [checked]="maintenance.oilFilterChanged ? true : false">
+                            <label class="form-check-label" for="oilFilterChanged">
+                                Filtre à huile changé
+                            </label>
+                        </div>
+                        <div class="form-check" *ngIf="maintenance.maintenance_Type == 'Draining'">
+                            <input class="form-check-input" type="checkbox" name="airFilterChanged"
+                                id="airFilterChanged" [(ngModel)]="maintenance.airFilterChanged"
+                                [checked]="maintenance.airFilterChanged ? true : false">
+                            <label class="form-check-label" for="airFilterChanged">
+                                Filtre à air changé
+                            </label>
+                        </div>
+                        <div class="form-check" *ngIf="maintenance.maintenance_Type == 'Draining'">
+                            <input class="form-check-input" type="checkbox" name="fuelFilterChanged"
+                                id="fuelFilterChanged" [(ngModel)]="maintenance.fuelFilterChanged"
+                                [checked]="maintenance.fuelFilterChanged ? true : false">
+                            <label class="form-check-label" for="fuelFilterChanged">
+                                Filtre à carburant changé
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')"
+                    [disabled]="!f.valid">Save</button>
+            </div>
+        </ng-template>
+    </div>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-8"></div>
+        <div class="col-4 form-group">
+            <input type="text" #query class="form-control" (keyup)="onSearsh(query.value.toLowerCase())"
+                aria-describedby="helpId" placeholder="">
+        </div>
+    </div>
+</div>
+<div class="card m-2">
     <div class="card-header">
         <div class="row">
-            <div class="col-7 font-weight-bold">Gestion des maintenances </div>
-            <div class="form-group col-4">
-                <input type="text" #query  class="form-control" (keyup)="onSearsh(query.value.toLowerCase())"
-                    aria-describedby="helpId" placeholder="">
-            </div>
-            <div class="col-1"><button class="btn btn-sm btn-success">Nouveau</button>
+            <div class="col-10 font-weight-bold">Gestion des maintenances </div>
+            <div class="col-2">
+                <div ngbDropdown class="d-inline-block">
+                    <button class="btn btn-outline-warning" id="dropdownBasic1" ngbDropdownToggle>Ajouter
+                        Nouveau</button>
+                    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+                        <button class="btn-sm" (click)="open(content, 'Draining')" ngbDropdownItem>Vidange</button>
+                        <button class="btn-sm" (click)="open(content, 'Entretien')" ngbDropdownItem>Entretien</button>
+                        <button class="btn-sm" (click)="open(content, 'TechnicalVisit')" ngbDropdownItem>Visite
+                            Technique</button>
+                        <button class="btn-sm" (click)="open(content, 'Insurance')" ngbDropdownItem>Assurance</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -24,7 +176,7 @@
                             <th class="text-left sortable" (click)="sort('maintenance_type')"
                                 [class]="sortBy == 'maintenance_type' && asc ? 'asc' : 'desc'">Type</th>
                             <th class="text-left sortable" (click)="sort('d.vehicleModel')"
-                                [class]="sortBy == 'vehicleModel' && asc ? 'asc' : 'desc'">Balise/vehicules</th>
+                                [class]="sortBy == 'd.vehicleModel' && asc ? 'asc' : 'desc'">Balise/vehicules</th>
                             <th class="text-left sortable" (click)="sort('timestampStart')"
                                 [class]="sortBy == 'timestampStart' && asc ? 'asc' : 'desc'">Date Création</th>
                             <th class="text-left sortable" (click)="sort('timestampEnd')"
@@ -43,7 +195,7 @@
                             <td>{{m.maintenance_Type}}</td>
                             <td>{{m.vehicleModel}}</td>
                             <td>{{m.timestampStart * 1000 | date: 'dd/MM/yyyy'}}</td>
-                            <td>{{m.timestampEnd ? (m?.timestampEnd - m?.timestampStart) / 86400 : ''}}</td>
+                            <td>{{m?.timestampEnd ? (getRemainingDays(m.timestampEnd) | number:'1.0-0'): ''}}</td>
                             <td>
                                 <div class="progress" *ngIf="m.timestampEnd != null" style="width: 200px;">
                                     <div [class]="getProgressClass(m.timestampStart, m.timestampEnd)" role="progressbar"
@@ -53,7 +205,8 @@
                             </td>
                             <td>{{m.price}}</td>
                             <td class="text-center"><a class="btn btn-success btn-sm active" style="margin:5px;"
-                                    role="button" aria-pressed="true">modifier</a>
+                                    (click)="open(content, m.maintenance_Type, m)" role="button"
+                                    aria-pressed="true">modifier</a>
                                 <!--<a class="btn btn-outline-dark btn-sm active" role="button" aria-pressed="true"
                              >archiner</a></td>-->
                         </tr>

@@ -10,9 +10,9 @@ export class Maintenance implements Deserializable {
     timestampEnd: number;
     kmStart: number;
     kmEnd: number;
-    oilFilterChanged: boolean;
-    fuelFilterChanged: boolean;
-    airFilterChanged: boolean;
+    oilFilterChanged: number;
+    fuelFilterChanged: number;
+    airFilterChanged: number;
     maintenance_Type: string;
     vehicleModel: string;
 
