@@ -6,6 +6,7 @@ import { Maintenance } from '../models/maintenance.model';
 import { Vehicle } from '../models/vehicle.model';
 import { AdminService } from '../services/admin.service';
 import { AuthService } from '../services/auth.service';
+import { Pager } from '../utilities/pager';
 
 @Component({
   selector: 'app-maintenance',
@@ -194,11 +195,4 @@ export class MaintenanceComponent implements OnInit {
       // console.log(Date.now())
     });
   }
-}
-
-export interface Pager {
-  pageCount: number;
-  currentPage: number;
-  size: number;
-  pages: number[];
 }

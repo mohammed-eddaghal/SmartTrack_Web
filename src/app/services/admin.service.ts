@@ -149,17 +149,25 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + path, JSON.stringify(deviceID));
   }
 
-  getAllDevices(accountID: string, page: number, groupID?: string) {
+  getAllDevices(accountID: string, query?: string, page?: number, asc?: boolean, sortBy?: string, size?: number, groupID?: string) {
     var body;
     if (groupID != null && groupID != "") {
       body = {
         "groupID": groupID,
-        "page": page
+        "asc": asc ?? true,
+        "sortBy": sortBy ?? "timestampStart",
+        "size": size ?? 10,
+        "page": page ?? 0,
+        "search": query ?? ''
       };
     } else {
       body = {
         "accountID": accountID,
-        "page": page
+        "asc": asc ?? true,
+        "sortBy": sortBy ?? "timestampStart",
+        "size": size ?? 10,
+        "page": page ?? 0,
+        "search": query ?? ''
       };
     }
     return this.postFnc(this.apiPath + 'findall/device', body);
@@ -171,13 +179,13 @@ export class AdminService extends DataService {
       body = {
         "groupID": groupID,
         "page": page,
-        "short" : true
+        "short": true
       };
     } else {
       body = {
         "accountID": accountID,
         "page": page,
-        "short" : true
+        "short": true
       };
     }
     return this.postFnc(this.apiPath + 'findall/device', body);
@@ -201,16 +209,16 @@ export class AdminService extends DataService {
   }*/
 
   addMaintenance(maintenance: Maintenance) {
-    switch(maintenance.maintenance_Type) {
+    switch (maintenance.maintenance_Type) {
       case 'Draining': return this.addDraining(maintenance);
       case 'TechnicalVisit': return this.addTechnicalVisit(maintenance);
       case 'Insurance': return this.addInsurance(maintenance);
       case 'Entretien': return this.addEntretien(maintenance);
     }
   }
-  
+
   updateMaintenance(maintenance: Maintenance) {
-    switch(maintenance.maintenance_Type) {
+    switch (maintenance.maintenance_Type) {
       case 'Draining': return this.updateDraining(maintenance);
       case 'TechnicalVisit': return this.updateTechnicalVisit(maintenance);
       case 'Insurance': return this.updateInsurance(maintenance);
@@ -237,11 +245,11 @@ export class AdminService extends DataService {
   updateInsurance(body: Maintenance) {
     return this.putFnc(this.apiPath + 'update/insurance', body);
   }
-  
+
   updateDraining(body: Maintenance) {
     return this.putFnc(this.apiPath + 'update/draining', body);
   }
-  
+
   updateEntretien(body: Maintenance) {
     return this.putFnc(this.apiPath + 'update/entretien', body);
   }

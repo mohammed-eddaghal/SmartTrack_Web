@@ -1,7 +1,8 @@
 import { Deserializable } from "./deserializable.model";
 
 export class Device implements Deserializable {
-    deviceID: DeviceID;
+    deviceID: string;
+    accountID: string;
     equipmentType: string;
     equipmentStatus: string;
     vehicleModel: string;

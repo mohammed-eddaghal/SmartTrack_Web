@@ -5,6 +5,7 @@ import { map } from 'rxjs/operators';
 import { Device } from '../models/device.model';
 import { AdminService } from '../services/admin.service';
 import { AuthService } from '../services/auth.service';
+import { Pager } from '../utilities/pager';
 
 @Component({
   selector: 'app-device',
@@ -15,8 +16,19 @@ export class DeviceComponent implements OnInit {
 
   devices: Device[];
   device: Device;
-  nextPage: boolean;
   adding: boolean;
+  last: boolean;
+  sortBy: string = "creationTime";
+  asc: boolean = true;
+  query: string = '';
+  page: number = 0;
+  // pager object
+  pager: Pager = {
+    pageCount: 0,
+    currentPage: 0,
+    size: 10,
+    pages: []
+  };
 
   constructor(private modalService: NgbModal,
     private spinner: NgxSpinnerService,
@@ -25,21 +37,20 @@ export class DeviceComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-    this.adminService.getAllDevices(this.authService.user.accountID, 0, this.authService.groupID)
+    this.adminService.getAllDevices(this.authService.user.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size, this.authService.groupID)
       .pipe(
         map((data: any) => {
-          console.log('data is ', data);
-          // this.nextPage = data['last'];
+          this.last = data['last'];
+          this.pager.pageCount = data['totalPages'];
+          this.pager.currentPage = data['pageable']['pageNumber'];
+          this.pager.pages = Array.from({ length: this.pager.pageCount }, (v, k) => k);
           return data['content'].map(device => new Device().deserialize(device));
         },
         )
       )
       .subscribe(
         result => {
-          // console.log(result);
           this.devices = result;
-          console.log(this.devices);
-          console.log(this.nextPage);
           this.spinner.hide();
         },
         error => null
@@ -67,13 +78,57 @@ export class DeviceComponent implements OnInit {
     }
   }
 
+  setPage(page: number) {
+    this.page = page;
+    this.adminService.getAllDevices(this.authService.user.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size, this.authService.groupID)
+      .pipe(
+        map((data: any) => {
+          this.last = data['last'];
+          this.pager.pageCount = data['totalPages'];
+          this.pager.currentPage = data['pageable']['pageNumber'];
+          this.pager.pages = Array.from({ length: this.pager.pageCount }, (v, k) => k);
+          return data['content'].map(device => new Device().deserialize(device));
+        },
+        )
+      )
+      .subscribe(
+        result => {
+          this.devices = result;
+          this.spinner.hide();
+        },
+        error => null
+      );
+  }
+
+  onSearsh(query: string) {
+    this.query = query;
+    this.adminService.getAllDevices(this.authService.user.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size, this.authService.groupID)
+      .pipe(
+        map((data: any) => {
+          this.last = data['last'];
+          this.pager.pageCount = data['totalPages'];
+          this.pager.currentPage = data['pageable']['pageNumber'];
+          this.pager.pages = Array.from({ length: this.pager.pageCount }, (v, k) => k);
+          return data['content'].map(device => new Device().deserialize(device));
+        },
+        )
+      )
+      .subscribe(
+        result => {
+          this.devices = result;
+          this.spinner.hide();
+        },
+        error => null
+      );
+  }
+
   open(content, device?: any) {
     if (device == null) {
       this.device = new Device();
       this.adding = true;
     }
     else {
-      this.device = device;
+      this.device = new Device().deserialize(device);
       this.adding = false;
     }
 
@@ -82,16 +137,15 @@ export class DeviceComponent implements OnInit {
       // console.log(this.closeResult + " 1")
 
       if (device == null) {
-        this.device.deviceID = {
-          deviceID: this.device.imeiNumber,
-          accountID: this.authService.user.accountID
-        };
+        this.device.deviceID = this.device.imeiNumber;
+        this.device.accountID = this.authService.user.accountID;
         this.device.uniqueID = this.device.imeiNumber;
         this.device.licenseExpire = new Date(this.device.licenseExpire).getTime() / 1000;
         this.device.creationTime = new Date(Date.now()).getTime() / 1000;
         this.adminService.addDevice(this.device, 'g1').subscribe(
           result => {
             console.log(result);
+            this.updatePage();
           },
           error => {
             console.log(error);
@@ -99,10 +153,13 @@ export class DeviceComponent implements OnInit {
         );
       }
       else {
-        this.device.licenseExpire = new Date(this.device.licenseExpire).getTime() / 1000;
+        if (device?.licenseExpire != this.device.licenseExpire) {
+          this.device.licenseExpire = new Date(this.device.licenseExpire).getTime() / 1000;
+        }
         this.adminService.updateDevice(this.device).subscribe(
           result => {
             console.log(result);
+            this.updatePage();
           },
           error => {
             console.log(error);
@@ -117,23 +174,43 @@ export class DeviceComponent implements OnInit {
     });
   }
 
-  delete(dID) {
+  delete(deviceID, accountID) {
     var deviceID;
-    if (dID.accountID != null) {
-      deviceID = dID;
-    }else {
-      deviceID = {
-        deviceID: dID,
-        accountID: this.authService.user.accountID
-      };
-    }
+
+    deviceID = {
+      deviceID: deviceID,
+      accountID: accountID
+    };
+
     this.adminService.deleteDevice(deviceID, this.authService.groupID).subscribe(
       result => {
         console.log(result);
+        this.updatePage();
       },
       error => {
         console.log(error);
       }
     );
+  }
+
+  updatePage() {
+    this.adminService.getAllDevices(this.authService.user.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size, this.authService.groupID)
+      .pipe(
+        map((data: any) => {
+          this.last = data['last'];
+          this.pager.pageCount = data['totalPages'];
+          this.pager.currentPage = data['pageable']['pageNumber'];
+          this.pager.pages = Array.from({ length: this.pager.pageCount }, (v, k) => k);
+          return data['content'].map(device => new Device().deserialize(device));
+        },
+        )
+      )
+      .subscribe(
+        result => {
+          this.devices = result;
+          this.spinner.hide();
+        },
+        error => null
+      );
   }
 }

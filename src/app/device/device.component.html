@@ -159,6 +159,15 @@
     <div class="card-body">
         <div class="container">
             <div class="row">
+                <div class="col-8"></div>
+                <div class="col-4 form-group">
+                    <input type="text" #query class="form-control" (keyup)="onSearsh(query.value.toLowerCase())"
+                        aria-describedby="helpId" placeholder="cherche ...">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
                 <table id="myTable" class="table table-striped">
                     <thead class="thead-black">
                         <tr>
@@ -196,13 +205,36 @@
                                     (click)="open(content, device)" role="button" aria-pressed="true">modifier</a>
                                 <!-- original<a class="btn btn-danger btn-sm active" role="button" aria-pressed="true"
                                     (click)="delete(device.deviceID)">supprimer</a> -->
-                                <!-- fake -->  <a class="btn btn-danger btn-sm active" role="button" aria-pressed="true"
-                                    (click)="delete(device.deviceID)">supprimer</a>
+                                <!-- fake --> <a class="btn btn-danger btn-sm active" role="button" aria-pressed="true"
+                                    (click)="delete(device.deviceID, device.accountID)">supprimer</a>
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
+    </div>
+</div>
+<div class="container">
+    <div>
+        <nav aria-label="Page navigation example">
+            <ul *ngIf="pager.pages && pager.pages.length" class="pagination justify-content-center">
+                <!-- <li class="page-item" [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a class="page-link btn-sm" (click)="setPage(1)">First</a>
+                </li> -->
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === 0}">
+                    <a class="page-link btn-sm" (click)="setPage(pager.currentPage - 1)">Précedent</a>
+                </li>
+                <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                    <a class="page-link btn-sm" (click)="setPage(page)">{{page}}</a>
+                </li>
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.pageCount - 1}">
+                    <a class="page-link btn-sm" (click)="setPage(pager.currentPage + 1)">Suivant</a>
+                </li>
+                <!-- <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a class="page-link btn-sm" (click)="setPage(pager.totalPages)">Last</a>
+                </li> -->
+            </ul>
+        </nav>
     </div>
 </div>
