@@ -52,6 +52,24 @@ export class AuthService {
     return this._groupID;
   }
 
+  get User() {
+    var userID;
+    var accountID;
+    if (localStorage.getItem('userID') != null) {
+      userID = localStorage.getItem('userID');
+    } else {
+      userID = this.user.userID;
+    }
+    if (localStorage.getItem('accountID') != null) {
+      accountID = localStorage.getItem('accountID');
+    } else {
+      accountID = this.user.accountID;
+    }
+    this.user.accountID = accountID;
+    this.user.userID = userID;
+    return this.user;
+  }
+
   constructor() {
     if (localStorage.getItem('accountID') != '') {
       this.user.accountID = localStorage.getItem('accountID');

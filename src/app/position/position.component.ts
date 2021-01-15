@@ -86,7 +86,7 @@ export class PositionComponent implements OnInit, OnDestroy {
   }
 
   updateDevices() {
-    this.adminService.getDevicesPosition(this.authService.user.accountID, this.authService.user.userID, this.tabContent, this.searchWord).pipe(
+    this.adminService.getDevicesPosition(this.authService.User.accountID, this.tabContent, this.searchWord, this.authService.groupID).pipe(
       map((data: EventData[]) => data.map(device => new EventData(this.http).deserialize(device)))
     ).subscribe(
       (response) => {

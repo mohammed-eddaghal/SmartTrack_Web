@@ -38,16 +38,29 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'vehicles', body);
   }
 
-  getDevicesPosition(accountID: string, userID: string, tabContent: String, search?: String) {
-    var body = {
-      "accountID": accountID,
-      "userID": userID,
-      "search": search ?? ''
-    };
-    if (tabContent == '') {
-      var link = 'account/devices';
+  getDevicesPosition(accountID: string, tabContent: String, search?: String, groupID ?: string) {
+    var body;
+    if(groupID != null && groupID != '') {
+      body = {
+        "accountID": accountID,
+        "groupID" : groupID,
+        "search": search ?? ''
+      };
+      if (tabContent == '') {
+        var link = 'user/devices';
+      } else {
+        var link = 'user/' + tabContent + '/vehicles';
+      }
     } else {
-      var link = 'account/' + tabContent + '/vehicles';
+      body = {
+        "accountID": accountID,
+        "search": search ?? ''
+      };
+      if (tabContent == '') {
+        var link = 'account/devices';
+      } else {
+        var link = 'account/' + tabContent + '/vehicles';
+      }
     }
     return this.postFnc(this.apiPath + link, body);
   }
