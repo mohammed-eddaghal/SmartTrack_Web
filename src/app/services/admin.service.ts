@@ -38,12 +38,12 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'vehicles', body);
   }
 
-  getDevicesPosition(accountID: string, tabContent: String, search?: String, groupID ?: string) {
+  getDevicesPosition(accountID: string, tabContent: String, search?: String, groupID?: string) {
     var body;
-    if(groupID != null && groupID != '') {
+    if (groupID != null && groupID != '') {
       body = {
         "accountID": accountID,
-        "groupID" : groupID,
+        "groupID": groupID,
         "search": search ?? ''
       };
       if (tabContent == '') {
@@ -186,22 +186,33 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'findall/device', body);
   }
 
-  getAllDevicesShortDetail(accountID: string, page: number, groupID?: string) {
+  getAllDevicesShortDetail(accountID: string, page: number, groupID?: string, sortBy?: string) {
     var body;
     if (groupID != null && groupID != "") {
       body = {
         "groupID": groupID,
         "page": page,
-        "short": true
+        "short": true,
+        "sortBy": sortBy ?? "vehicleModel"
       };
     } else {
       body = {
         "accountID": accountID,
         "page": page,
-        "short": true
+        "short": true,
+        "sortBy": sortBy ?? "vehicleModel"
       };
     }
     return this.postFnc(this.apiPath + 'findall/device', body);
+  }
+
+  getAlarmConfig(accountID: string, deviceID: string, userID?: string) {
+    var body = {
+      "accountID": accountID,
+      "deviceID": deviceID,
+      "userID": userID ?? "",
+    };;
+    return this.postFnc(this.apiPath + 'find/alarm', body);
   }
 
   getAllMaintenances(accountID: string, query?: string, page?: number, asc?: boolean, sortBy?: string, size?: number) {

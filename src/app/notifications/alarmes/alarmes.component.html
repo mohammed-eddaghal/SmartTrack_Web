@@ -1,0 +1,26 @@
+<div class="container-fluid">
+    <div class="row mt-2">
+        <div class="col-sm-12 col-md-12 col-lg-12">
+            <ul class="list-group" *ngFor="let vehicle of vehicles">
+                <li class="list-group-item mt-2" (click)="getAlarmConfig(vehicle.deviceID);">
+                    {{vehicle.vehicleModel}}
+                    <i class="fas fa-plus float-right"
+                        *ngIf="this.tlOld?.reversed() || vehicle.deviceID.toString() != alarm?.alarmID?.deviceID.toString()"></i>
+                    <i class="fas fa-minus float-right"
+                        *ngIf="!this.tlOld?.reversed() && vehicle.deviceID.toString() == alarm?.alarmID?.deviceID.toString()"></i>
+                </li>
+                <div class="alarm-config" [attr.id]="vehicle.deviceID">
+                    <div class="card card-body">
+                        <p>{{alarm?.alarmID?.deviceID}}</p>
+                        <label for="capot">tirer capot</label>
+                        <label class="rocker rocker-small">
+                            <input type="checkbox" id="capot">
+                            <span class="switch-left">Yes</span>
+                            <span class="switch-right">No</span>
+                        </label>
+                    </div>
+                </div>
+            </ul>
+        </div>
+    </div>
+</div>

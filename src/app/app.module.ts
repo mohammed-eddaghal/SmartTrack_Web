@@ -45,6 +45,8 @@ import { DeviceComponent } from './device/device.component';
 import { SpeedPercentReportComponent } from './report/speed-percent-report/speed-percent-report.component';
 import { TemperatureReportComponent } from './report/temperature-report/temperature-report.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { AlarmesComponent } from './notifications/alarmes/alarmes.component';
+import { NotificationsComponent } from './notifications/notifications/notifications.component';
 // import { registerLocaleData } from '@angular/common';
 // import localeFr from '@angular/common/locales/fr';
 
@@ -73,6 +75,8 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
     SpeedPercentReportComponent,
     TemperatureReportComponent,
     MaintenanceComponent,
+    AlarmesComponent,
+    NotificationsComponent,
   ],
   imports: [
     BrowserAnimationsModule,

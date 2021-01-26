@@ -13,6 +13,8 @@ import { ReportComponent } from './report/report.component';
 import { LiveComponent } from './position/live/live.component';
 import { DeviceComponent } from './device/device.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
+import { NotificationsComponent } from './notifications/notifications/notifications.component';
+import { AlarmesComponent } from './notifications/alarmes/alarmes.component';
 
 
 const routes: Routes = [
@@ -35,6 +37,16 @@ const routes: Routes = [
   {
     path: "dashboard",
     component: DashboardComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "notifications/alarmes",
+    component: AlarmesComponent,
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "notifications/notifications",
+    component: NotificationsComponent,
     canActivate: [AuthGuard]
   },
   {
