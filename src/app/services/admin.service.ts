@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Alarm } from '../models/alarm.model';
 import { Device, DeviceID } from '../models/device.model';
 import { Maintenance } from '../models/maintenance.model';
 import { DataService } from './data.service';
@@ -211,8 +212,12 @@ export class AdminService extends DataService {
       "accountID": accountID,
       "deviceID": deviceID,
       "userID": userID ?? "",
-    };;
+    };
     return this.postFnc(this.apiPath + 'find/alarm', body);
+  }
+
+  setAlarmConfig(alarm : Alarm) {
+    return this.postFnc(this.apiPath + 'add/alarm', alarm);
   }
 
   getAllMaintenances(accountID: string, query?: string, page?: number, asc?: boolean, sortBy?: string, size?: number) {

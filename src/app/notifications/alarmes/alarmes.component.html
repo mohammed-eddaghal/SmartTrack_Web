@@ -1,26 +1,144 @@
-<div class="container-fluid">
-    <div class="row mt-2">
-        <div class="col-sm-12 col-md-12 col-lg-12">
-            <ul class="list-group" *ngFor="let vehicle of vehicles">
-                <li class="list-group-item mt-2" (click)="getAlarmConfig(vehicle.deviceID);">
-                    {{vehicle.vehicleModel}}
-                    <i class="fas fa-plus float-right"
-                        *ngIf="this.tlOld?.reversed() || vehicle.deviceID.toString() != alarm?.alarmID?.deviceID.toString()"></i>
-                    <i class="fas fa-minus float-right"
-                        *ngIf="!this.tlOld?.reversed() && vehicle.deviceID.toString() == alarm?.alarmID?.deviceID.toString()"></i>
-                </li>
-                <div class="alarm-config" [attr.id]="vehicle.deviceID">
-                    <div class="card card-body">
-                        <p>{{alarm?.alarmID?.deviceID}}</p>
-                        <label for="capot">tirer capot</label>
+<div class="row">
+    <div class="col-md-6">
+        <ng-template #content let-modal>
+            <div class="model-header mt-1">
+                <h6 class="modal-title border-bottom text-center">Cofigurer les alarmes</h6>
+            </div>
+            <div class="model-body w-75">
+                <form #f="ngForm">
+                    <div>
+                        <label for="startUP" class="w-75 mt-2">Démarrage du véhicule</label>
                         <label class="rocker rocker-small">
-                            <input type="checkbox" id="capot">
+                            <input type="checkbox" id="startUP" name="startUP" [(ngModel)]="alarm.startUp"
+                                [checked]="alarm.startUp ? true : false">
                             <span class="switch-left">Yes</span>
                             <span class="switch-right">No</span>
                         </label>
                     </div>
-                </div>
-            </ul>
+                    <div>
+                        <label for="battery" class="w-75">Batterie faible</label>
+                        <label class="rocker rocker-small">
+                            <input type="checkbox" id="battery" name="battery" [(ngModel)]="alarm.battery"
+                                [checked]="alarm.battery ? true : false">
+                            <span class="switch-left">Yes</span>
+                            <span class="switch-right">No</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="disconnect" class="w-75">GPS débranché</label>
+                        <label class="rocker rocker-small">
+                            <input type="checkbox" id="disconnect" name="disconnect" [(ngModel)]="alarm.disconnect"
+                                [checked]="alarm.disconnect ? true : false">
+                            <span class="switch-left">Yes</span>
+                            <span class="switch-right">No</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="bonnet" class="w-75">Capot ouvert</label>
+                        <label class="rocker rocker-small">
+                            <input type="checkbox" id="bonnet" name="bonnet" [(ngModel)]="alarm.bonnet"
+                                [checked]="alarm.bonnet ? true : false">
+                            <span class="switch-left">Yes</span>
+                            <span class="switch-right">No</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="towing" class="w-75">Dépannage</label>
+                        <label class="rocker rocker-small">
+                            <input type="checkbox" id="towing" name="towing" [(ngModel)]="alarm.towing"
+                                [checked]="alarm.towing ? true : false">
+                            <span class="switch-left">Yes</span>
+                            <span class="switch-right">No</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="crash" class="w-75">Choc</label>
+                        <label class="rocker rocker-small">
+                            <input type="checkbox" id="crash" name="crash" [(ngModel)]="alarm.crash"
+                                [checked]="alarm.crash ? true : false">
+                            <span class="switch-left">Yes</span>
+                            <span class="switch-right">No</span>
+                        </label>
+                    </div>
+                    <div>
+                        <label for="driver" class="w-75">Chauffeur changé</label>
+                        <label class="rocker rocker-small">
+                            <input type="checkbox" id="driver" name="driver" [(ngModel)]="alarm.driver"
+                                [checked]="alarm.driver ? true : false">
+                            <span class="switch-left">Yes</span>
+                            <span class="switch-right">No</span>
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxSpeed">Vitesse maximale</label>
+                        <input type="text" name="maxSpeed" id="maxSpeed" #maxSpeed="ngModel"
+                            placeholder="Vitesse maximale" class="form-control input-lg" [(ngModel)]="alarm.maxSpeed"
+                            pattern="[0-9]{1,}\.*[0-9]{0,}" minlength="0" maxlength="6">
+                        <div *ngIf="(maxSpeed?.dirty || maxSpeed?.touched)">
+                            <div *ngIf="maxSpeed.hasError('pattern')" class="error-msg">
+                                La vitesse maximale doit être un nombre décimal
+                            </div>
+                            <div *ngIf="maxSpeed.control.value * 1 > 200" class="error-msg">
+                                La vitesse maximale doit être un nombre décimal entre 0 et 200.00
+                            </div>
+                            <div *ngIf="maxSpeed.control.value * 1 < 0" class="error-msg">
+                                La vitesse maximale doit être un nombre décimal entre 0 et 200.00
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="minTemp">Température minimale</label>
+                        <input type="text" name="minTemp" id="minTemp" #minTemp="ngModel"
+                            placeholder="Température minimale" class="form-control input-lg" [(ngModel)]="alarm.minTemp"
+                            pattern="[0-9]{1,}\.*[0-9]{0,}" minlength="0" maxlength="6">
+                        <div *ngIf="(minTemp?.dirty || minTemp?.touched)">
+                            <div *ngIf="minTemp.hasError('pattern')" class="error-msg">
+                                La température minimale doit être un nombre décimal
+                            </div>
+                            <div *ngIf="minTemp.control.value * 1 > 300" class="error-msg">
+                                La température minimale doit être un nombre décimal entre 0 et 300.00
+                            </div>
+                            <div *ngIf="minTemp.control.value * 1 < 0" class="error-msg">
+                                La température minimale doit être un nombre décimal entre 0 et 200.00
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="maxTemp">Température maximale</label>
+                        <input type="text" name="maxTemp" id="maxTemp" #maxTemp="ngModel"
+                            placeholder="Température maximale" class="form-control input-lg" [(ngModel)]="alarm.maxTemp"
+                            pattern="[0-9]{1,}\.*[0-9]{0,}" minlength="0" maxlength="6">
+                        <div *ngIf="(maxTemp?.dirty || maxTemp?.touched)">
+                            <div *ngIf="maxTemp.hasError('pattern')" class="error-msg">
+                                La température maximale doit être un nombre décimal
+                            </div>
+                            <div *ngIf="maxTemp.control.value * 1 > 300" class="error-msg">
+                                La température maximale doit être un nombre décimal entre 0 et 300.00
+                            </div>
+                            <div *ngIf="maxTemp.control.value * 1 < 0" class="error-msg">
+                                La température maximale doit être un nombre décimal entre 0 et 200.00
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')"
+                    [disabled]="!f.valid">Save</button>
+            </div>
+        </ng-template>
+    </div>
+</div>
+<div class="container-fluid">
+    <div class="row">
+        <div [class]="this.vehicles.length > 5 ? 'card' : 'card fit-screen'" *ngFor="let vehicle of vehicles">
+            <div [class]="this.vehicles.length > 5 ? 'card-header' : 'card-header fit-screen'" (click)="getAlarmConfig(content, vehicle.deviceID);">
+                {{vehicle.vehicleModel}}
+                <i class="fas fa-plus float-right"
+                    *ngIf="vehicle.deviceID.toString() != alarm?.alarmID?.deviceID.toString()"></i>
+                <i class="fas fa-minus float-right"
+                    *ngIf="vehicle.deviceID.toString() == alarm?.alarmID?.deviceID.toString()"></i>
+            </div>
         </div>
     </div>
 </div>
