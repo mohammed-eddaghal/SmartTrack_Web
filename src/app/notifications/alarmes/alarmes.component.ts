@@ -5,7 +5,7 @@ import { Vehicle } from 'src/app/models/vehicle.model';
 import { AdminService } from 'src/app/services/admin.service';
 import { AuthService } from 'src/app/services/auth.service';
 import Swal from 'sweetalert2';
-import { Alarm } from '../../models/alarm.model';
+import { Alarm, AlarmID } from '../../models/alarm.model';
 
 @Component({
   selector: 'app-alarmes',
@@ -55,7 +55,12 @@ export class AlarmesComponent implements OnInit {
       map((alarm: any) => new Alarm().deserialize(alarm))
     ).subscribe(
       response => {
-        this.alarm = response;
+        if(response.alarmID != null) {
+          this.alarm = response;
+        } else {
+          this.alarm = new Alarm();
+          this.alarm.alarmID = new AlarmID(this.authService.user.accountID, this.authService.user.userID, deviceID);
+        }
         this.open(content);
       },
       error => {
