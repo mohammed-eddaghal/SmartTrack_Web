@@ -1,1 +1,29 @@
-<p>notifications works!</p>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8 col-md-8 col-lg-8">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Balise / Véhicule</th>
+                            <th scope="col">Type</th>
+                            <th scope="col">Message</th>
+                            <th class="text-center"><i class="fa fa-filter"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let notification of notifications">
+                            <td>{{ notification.timestamp* 1000 | date: 'short' }}</td>
+                            <td>{{ notification.vehicleModel }}</td>
+                            <td>{{ notification.getType() }}</td>
+                            <td>{{ notification.message }}</td>
+                            <td><img src="../../../assets/icon_maps.png" alt=""></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div class="col-sm-4 col-md-4 col-lg-4"></div>
+    </div>
+</div>

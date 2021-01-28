@@ -1,0 +1,15 @@
+* {
+    font-size: small;
+}
+
+thead tr {
+  background-color: #00c853;
+}
+
+th>i:hover {
+    cursor: pointer;
+}
+
+td>img:hover {
+    cursor: pointer;
+}

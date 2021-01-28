@@ -216,7 +216,7 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'find/alarm', body);
   }
 
-  setAlarmConfig(alarm : Alarm) {
+  setAlarmConfig(alarm: Alarm) {
     return this.postFnc(this.apiPath + 'add/alarm', alarm);
   }
 
@@ -231,6 +231,21 @@ export class AdminService extends DataService {
     };
 
     return this.postFnc(this.apiPath + 'findall/maintenance', body);
+  }
+
+  getAllNotifications(accountID: string, userID: string, deviceIDs: String[], timestampStart?: number, timestampEnd?: number, 
+    filters?: String[], page?: number) {
+    var body = {
+      "accountID": accountID,
+      "userID": userID,
+      "deviceIDs": deviceIDs,
+      "timestampStart": timestampStart,
+      "timestampEnd": timestampEnd,
+      "filters": filters,
+      "page": page
+    };
+
+    return this.postFnc(this.apiPath + 'findall/notification', body);
   }
 
   /*addMaintenanceCartGrise(body:any){
