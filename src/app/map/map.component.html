@@ -1,4 +1,5 @@
 <div class="map-container" leaflet [leafletOptions]="options" (leafletMapReady)="onMapReady($event)"
-      (leafletMapZoomEnd)="onMapZoomEnd($event)" [leafletMarkerCluster]="markerClusterData"
-      [leafletMarkerClusterOptions]="markerClusterOptions" (leafletMarkerClusterReady)="markerClusterReady($event)">
-    </div>
+  (leafletMapZoomEnd)="onMapZoomEnd($event)" [leafletMarkerCluster]="markerClusterData"
+  [leafletMarkerClusterOptions]="markerClusterOptions" (leafletMarkerClusterReady)="markerClusterReady($event)">
+  <!-- <button id="changeMap" class="button primary-button" (click)="switchMapsProvider()">Changer la carte</button> -->
+</div>

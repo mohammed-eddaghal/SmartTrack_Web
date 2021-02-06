@@ -1,3 +1,11 @@
+#changeMap {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  z-index: 400;
+}
+
 .map-container {
   /* width:100vw; */
   height: 89vh;
