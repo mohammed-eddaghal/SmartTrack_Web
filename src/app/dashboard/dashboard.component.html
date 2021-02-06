@@ -31,12 +31,12 @@
                                     class="fa fa-map-o"></i></a>
                         </div>
                         <div class="line">
-                            <span class="date"><i
-                                    class="fa fa-clock-o"></i>{{device['timestamp'] * 1000 | date: 'short' }}</span>
-                            <span class="odometer-today"><i class="fa fa-dashboard"></i>
+                            <span class="date" data-toggle="tooltip" data-placement="top" title="Dernière connexion"><i
+                                    class="fa fa-clock-o"></i>{{device['timestamp'] * 1000 | date: 'yyyy-MM-dd HH:mm' }}</span>
+                            <span class="odometer-today" data-toggle="tooltip" data-placement="top" title="Kilométrage du jour"><i class="fa fa-dashboard"></i>
                                 {{device['distanceKM'] | number:'1.0-2'}}
                                 Km</span>
-                            <span class="fuel-level-consumption"><i class="fa fa-cube"></i> 0.0L</span>
+                            <span class="fuel-level-consumption" data-toggle="tooltip" data-placement="top" title="Consommation du carburant"><i class="fa fa-cube"></i> 0.0L</span>
                         </div>
                         <div class="line">
                             <span class="address"><span
@@ -59,8 +59,8 @@
 
         <div class="col-md-8 ml-0 mt-2">
             <div class="shadow-sm panel-stats">
-                <div class="panel-heading">Kilométrage | Du {{this.startDate | date: 'short'}} Au
-                    {{this.endDate | date: 'short'}} </div>
+                <div class="panel-heading">Kilométrage | Du {{this.startDate | date: 'yyyy-MM-dd HH:mm'}} Au
+                    {{this.endDate | date: 'yyyy-MM-dd HH:mm'}} </div>
                 <div class="panel-body">
                     <table class="table table-hover">
                         <tbody>
