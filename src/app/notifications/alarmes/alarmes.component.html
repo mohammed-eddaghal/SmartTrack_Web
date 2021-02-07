@@ -2,7 +2,7 @@
     <div class="col-md-6">
         <ng-template #content let-modal>
             <div class="model-header mt-1">
-                <h6 class="modal-title border-bottom text-center">Cofigurer les alarmes</h6>
+                <h6 class="modal-title border-bottom text-center">Cofigurer les alarmes: {{vehicleModel}}</h6>
             </div>
             <div class="model-body w-75">
                 <form #f="ngForm">
@@ -132,7 +132,7 @@
 <div class="container-fluid">
     <div class="row">
         <div [class]="this.vehicles.length > 5 ? 'card' : 'card fit-screen'" *ngFor="let vehicle of vehicles">
-            <div [class]="this.vehicles.length > 5 ? 'card-header' : 'card-header fit-screen'" (click)="getAlarmConfig(content, vehicle.deviceID);">
+            <div [class]="this.vehicles.length > 5 ? 'card-header' : 'card-header fit-screen'" (click)="getAlarmConfig(content, vehicle.deviceID, vehicle.vehicleModel);">
                 {{vehicle.vehicleModel}}
                 <i class="fas fa-plus float-right"
                     *ngIf="vehicle.deviceID.toString() != alarm?.alarmID?.deviceID.toString()"></i>
