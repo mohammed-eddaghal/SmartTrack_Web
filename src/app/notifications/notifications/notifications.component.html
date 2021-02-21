@@ -1,3 +1,48 @@
+<div class="row m-3">
+    <div class="col-md-6">
+        <ng-template #content let-modal>
+            <div class="modal-header">
+                <!-- <h4 class="modal-title" id="modal-basic-title">{{isUpdatingOrAdding}}</h4> -->
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form [formGroup]="myForm">
+                    <!-- uniqueID, imeiNumber, deviceID -->
+                    <!-- creation date by default now() -->
+                    <!-- lastUpdateTime by default now() when we modify and null when we're creating new one -->
+                    <div class="form-group">
+                        <label for="devices">Vehicules</label>
+                        <ng-multiselect-dropdown [settings]="vehiclesDropdownSettings" name="devices" [data]="vehicles"
+                            formControlName="devices" (onSelect)="onItemSelect($event)">
+
+                        </ng-multiselect-dropdown>
+                        <!-- <select [(ngModel)]="vehicles" #devices="ngModel" name="devices" [ngModel]="deviceIDs" multiple
+                            class="form-control" id="devices" required>
+                            <option *ngFor="let vehicle of vehicles" value="{{vehicle.deviceID}}">
+                                {{vehicle.vehicleModel}}</option>
+                        </select> -->
+                        <!-- <div *ngIf="devices?.invalid && (devices?.dirty || devices?.touched)">
+                            <div *ngIf="devices.hasError('pattern')" class="error-msg">
+                                
+                            </div>
+                        </div> -->
+                        <label for="events" class="mt-2">Events</label>
+                        <ng-multiselect-dropdown [settings]="filtersDropdownSettings" [placeholder]="'filtres'"
+                            [data]="filters" [(ngModel)]="events" (onSelect)="onItemSelect($event)"
+                            formControlName="filters">
+                        </ng-multiselect-dropdown>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="modal.close('Save click')">Save</button>
+            </div>
+        </ng-template>
+
+    </div>
+</div>
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-8 col-md-8 col-lg-8">
@@ -9,7 +54,7 @@
                             <th scope="col">Balise / Véhicule</th>
                             <th scope="col">Type</th>
                             <th scope="col">Message</th>
-                            <th class="text-center"><i class="fa fa-filter"></i></th>
+                            <th class="text-center" (click)="open(content)"><i class="fa fa-filter"></i></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -18,7 +63,8 @@
                             <td>{{ notification.vehicleModel }}</td>
                             <td>{{ notification.getType() }}</td>
                             <td>{{ notification.message }}</td>
-                            <td (click)="updateMarkerState(notification.deviceID, notification.timestamp)"><img src="../../../assets/icon_maps.png" alt=""></td>
+                            <td (click)="updateMarkerState(notification.deviceID, notification.timestamp)"><img
+                                    src="../../../assets/icon_maps.png" alt=""></td>
                         </tr>
                     </tbody>
                 </table>

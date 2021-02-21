@@ -7,6 +7,9 @@ import { Notification } from '../../models/notification.model';
 import { Icon, Map, Marker } from 'leaflet';
 import { Vehicle } from 'src/app/models/vehicle.model';
 import { EventData } from 'src/app/models/eventdata.model';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'app-notifications',
@@ -28,12 +31,53 @@ export class NotificationsComponent implements OnInit {
   private map: Map;
   private marker: Marker;
   private zoom: number;
-  private vehicles: Vehicle[];
-  private deviceIDs: String[];
+  vehicles: Vehicle[];
+  deviceIDs: String[];
+  private device: EventData;
+  events: String[];
+  vehiclesDropdownSettings: any = {};
+  filtersDropdownSettings: any = {};
+  ShowFilter = true;
+  myForm: FormGroup;
+  filters = [
+    {filterName: "battery", filterID: "BA"},
+    {filterName: "bonnet", filterID: "BO"},
+    {filterName: "crash", filterID: "CR"},
+    {filterName: "disconnect", filterID: "DI"},
+    {filterName: "driver", filterID: "DR"},
+    {filterName: "speed", filterID: "SP"},
+    {filterName: "maxTemp", filterID: "TMAX"},
+    {filterName: "mintTemp", filterID: "TMIN"},
+    {filterName: "startUp", filterID: "SU"},
+    {filterName: "towing", filterID: "TO"},
+  ];
 
-  constructor(private authService: AuthService, private adminService: AdminService) { }
+  constructor(private authService: AuthService, private adminService: AdminService, 
+    private _decimalPipe: DecimalPipe, private modalService: NgbModal, private fb: FormBuilder) { }
 
   ngOnInit(): void {
+    this.vehiclesDropdownSettings = {
+      singleSelection: false,
+      idField: 'deviceID',
+      textField: 'vehicleModel',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 5,
+      allowSearchFilter: this.ShowFilter
+    };
+    this.filtersDropdownSettings = {
+      singleSelection: false,
+      idField: 'filterID',
+      textField: 'filterName',
+      selectAllText: 'Select All',
+      unSelectAllText: 'UnSelect All',
+      itemsShowLimit: 5,
+      allowSearchFilter: this.ShowFilter
+    };
+    this.myForm = this.fb.group({
+      devices: new FormControl(),
+      filters: this.filters,
+    });
     this.user = this.authService.User;
     this.adminService.getAllDevicesShortDetail(this.authService.user.accountID, 0, this.authService.groupID).pipe(
       map((data: any) => data['content'].map(vehicle => new Vehicle().deserialize(vehicle)))
@@ -94,7 +138,9 @@ export class NotificationsComponent implements OnInit {
       map((device: EventData) => new EventData().deserialize(device))
     ).subscribe(
       result => {
-        console.log(result)
+        this.device = result;
+        console.log(result);
+        this.marker?.remove();
         this.marker = new Marker(
           [result.latitude, result.longitude], {
           icon: new Icon({
@@ -104,11 +150,41 @@ export class NotificationsComponent implements OnInit {
           })
         }
         );
+        this.marker.bindPopup(
+          "<span style='color:#089200;font-weight:bold;'>" + this.device.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
+          + "<span style=''>" + this.device.address + "</span>" + " <br/>"
+          + "<span style=''>" + new DatePipe('en-US').transform(new Date(this.device.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
+          + "<span style=''>" + this.transformDecimal(this.device.speedKPH) + " Km/h</span>" + " <br/>"
+          + "<span style=''> état: " + this.device.activity_time.split(',')[1] + "</span>" + " <br/>"
+          + "<span style=''>" + this.transformDecimal(this.device.odometerKM) + " KM</span>"
+        );
         this.marker.addTo(this.map);
       },
       err => {
         console.log(err);
       }
     );
+  }
+  transformDecimal(num) {
+    return this._decimalPipe.transform(num, '1.2-2');
+  }
+  open(content) {
+    this.deviceIDs = [];
+    this.events = [];
+    this.modalService.open(content, { ariaLabelledBy: 'modal-basic-title' }).result.then((result) => {
+      console.log("modal result: " + result);
+      console.log("deviceIDs: " + this.deviceIDs);
+      console.log("events: " + this.events);
+    }, err => {
+      console.log("model err: " + err);
+    });
+  }
+
+  onItemSelect(item: any) {
+    if(item.deviceID != null) {
+      this.deviceIDs.push(item.deviceID);
+    } else {
+      this.events.push(item.filterID);
+    }
   }
 }

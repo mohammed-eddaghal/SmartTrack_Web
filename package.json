@@ -38,6 +38,7 @@
     "jquery": "^3.5.1",
     "leaflet": "^1.6.0",
     "leaflet.markercluster": "^1.4.1",
+    "ng-multiselect-dropdown": "^0.2.14",
     "ngx-spinner": "^10.0.1",
     "popper.js": "^1.16.1",
     "rxjs": "~6.5.5",

@@ -47,6 +47,7 @@ import { TemperatureReportComponent } from './report/temperature-report/temperat
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { AlarmesComponent } from './notifications/alarmes/alarmes.component';
 import { NotificationsComponent } from './notifications/notifications/notifications.component';
+import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 // import { registerLocaleData } from '@angular/common';
 // import localeFr from '@angular/common/locales/fr';
 
@@ -79,6 +80,7 @@ import { NotificationsComponent } from './notifications/notifications/notificati
     NotificationsComponent,
   ],
   imports: [
+    NgMultiSelectDropDownModule.forRoot(),
     BrowserAnimationsModule,
     NoopAnimationsModule,
     MatToolbarModule,
