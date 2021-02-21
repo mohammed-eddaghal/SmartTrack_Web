@@ -248,6 +248,15 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'findall/notification', body);
   }
 
+  getPosition(deviceID: String, timestamp: number) {
+    var body = {
+      "deviceID": deviceID,
+      "timestamp": timestamp
+    };
+
+    return this.postFnc(this.apiPath + 'position', body);
+  }
+
   /*addMaintenanceCartGrise(body:any){
     return this.postFnc(this.apiPath+'add/insurance',body);
   }*/

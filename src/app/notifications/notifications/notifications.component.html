@@ -18,12 +18,15 @@
                             <td>{{ notification.vehicleModel }}</td>
                             <td>{{ notification.getType() }}</td>
                             <td>{{ notification.message }}</td>
-                            <td><img src="../../../assets/icon_maps.png" alt=""></td>
+                            <td (click)="updateMarkerState(notification.deviceID, notification.timestamp)"><img src="../../../assets/icon_maps.png" alt=""></td>
                         </tr>
                     </tbody>
                 </table>
             </div>
         </div>
-        <div class="col-sm-4 col-md-4 col-lg-4"></div>
+        <div class="col-sm-4 col-md-4 col-lg-4">
+            <app-map (map$)="receiveMap($event)" (zoom$)="receiveZoom($event)" id='main-map'>
+            </app-map>
+        </div>
     </div>
 </div>
