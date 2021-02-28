@@ -15,7 +15,8 @@
                     <div class="form-group">
                         <label for="devices">Vehicules</label>
                         <ng-multiselect-dropdown [settings]="vehiclesDropdownSettings" name="devices" [data]="vehicles"
-                            formControlName="devices" (onSelect)="onItemSelect($event)">
+                            formControlName="devices" (onSelect)="onItemSelect($event)"
+                            (onSelectAll)="onSelectAllDeviceIDs($event)">
 
                         </ng-multiselect-dropdown>
                         <!-- <select [(ngModel)]="vehicles" #devices="ngModel" name="devices" [ngModel]="deviceIDs" multiple
@@ -30,9 +31,17 @@
                         </div> -->
                         <label for="events" class="mt-2">Events</label>
                         <ng-multiselect-dropdown [settings]="filtersDropdownSettings" [placeholder]="'filtres'"
-                            [data]="filters" [(ngModel)]="events" (onSelect)="onItemSelect($event)"
-                            formControlName="filters">
+                            [data]="filters" (onSelect)="onItemSelect($event)"
+                            (onSelectAll)="onSelectAllFilters($event)" formControlName="filters">
                         </ng-multiselect-dropdown>
+
+                        <label for="startTime">Date début:</label>
+                        <input type="datetime-local" name="startTime" id="startTime" [(ngModel)]="startTime"
+                            class="form-control" formControlName="startTime">
+
+                        <label for="endTime">Date fin:</label>
+                        <input type="datetime-local" name="endTime" id="endTime" [(ngModel)]="endTime" class="form-control"
+                            formControlName="endTime">
                     </div>
                 </form>
             </div>
@@ -45,7 +54,7 @@
 </div>
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-8 col-md-8 col-lg-8">
+        <div class="col-sm-8 col-md-8 col-lg-8 overflow-auto tab" (scroll)="onElementScroll($event)">
             <div class="table-responsive">
                 <table class="table">
                     <thead>

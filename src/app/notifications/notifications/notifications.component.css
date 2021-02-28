@@ -13,3 +13,7 @@ th>i:hover {
 td>img:hover {
     cursor: pointer;
 }
+
+.tab{
+    height: 89vh;
+}

@@ -33,26 +33,28 @@ export class NotificationsComponent implements OnInit {
   private zoom: number;
   vehicles: Vehicle[];
   deviceIDs: String[];
+  startTime = new Date().setHours(0, 0, 0, 0);
+  endTime = new Date().setHours(23, 59, 59, 999);
   private device: EventData;
-  events: String[];
+  events: String[] = ["BA", "BO", "CR", "DI", "DR", "SP", "TMAX", "TMIN", "SU", "TO"];
   vehiclesDropdownSettings: any = {};
   filtersDropdownSettings: any = {};
   ShowFilter = true;
   myForm: FormGroup;
   filters = [
-    {filterName: "battery", filterID: "BA"},
-    {filterName: "bonnet", filterID: "BO"},
-    {filterName: "crash", filterID: "CR"},
-    {filterName: "disconnect", filterID: "DI"},
-    {filterName: "driver", filterID: "DR"},
-    {filterName: "speed", filterID: "SP"},
-    {filterName: "maxTemp", filterID: "TMAX"},
-    {filterName: "mintTemp", filterID: "TMIN"},
-    {filterName: "startUp", filterID: "SU"},
-    {filterName: "towing", filterID: "TO"},
+    { filterName: "battery", filterID: "BA" },
+    { filterName: "bonnet", filterID: "BO" },
+    { filterName: "crash", filterID: "CR" },
+    { filterName: "disconnect", filterID: "DI" },
+    { filterName: "driver", filterID: "DR" },
+    { filterName: "speed", filterID: "SP" },
+    { filterName: "maxTemp", filterID: "TMAX" },
+    { filterName: "mintTemp", filterID: "TMIN" },
+    { filterName: "startUp", filterID: "SU" },
+    { filterName: "towing", filterID: "TO" },
   ];
 
-  constructor(private authService: AuthService, private adminService: AdminService, 
+  constructor(private authService: AuthService, private adminService: AdminService,
     private _decimalPipe: DecimalPipe, private modalService: NgbModal, private fb: FormBuilder) { }
 
   ngOnInit(): void {
@@ -77,6 +79,8 @@ export class NotificationsComponent implements OnInit {
     this.myForm = this.fb.group({
       devices: new FormControl(),
       filters: this.filters,
+      startTime: new Date().toISOString().substring(0, 16),
+      endTime: new FormControl(new Date().toISOString().substring(0, 16)),
     });
     this.user = this.authService.User;
     this.adminService.getAllDevicesShortDetail(this.authService.user.accountID, 0, this.authService.groupID).pipe(
@@ -97,9 +101,11 @@ export class NotificationsComponent implements OnInit {
     //1609459200 start
     //1611568460 end
     //"SP" filters
+    // var startTime = this.startTime != null ? this.startTime.mi : ~~(Date.now() / 1000) - 86400;
+    // var endTime = this.endTime != null ? : ~~(Date.now() / 1000);
     this.adminService.getAllNotifications(this.user.accountID, this.user.userID,
-      this.deviceIDs, ~~(Date.now() / 1000) - 86400, ~~(Date.now() / 1000),
-      ["SP"], this.pager.currentPage++).pipe(
+      this.deviceIDs, ~~(new Date(this.startTime).getTime() / 1000), ~~(new Date(this.endTime).getTime() / 1000),
+      this.events, this.pager.currentPage + 1).pipe(
         map((data: any) => {
           this.last = data['last'];
           this.pager.pageCount = data['totalPages'];
@@ -109,13 +115,15 @@ export class NotificationsComponent implements OnInit {
         },
         )
       ).subscribe(
-        result => this.notifications.push(...result),
+        result => {
+          this.notifications.push(...result);
+        },
         error => null,
       );
   }
 
-  @HostListener("window:scroll", ["$event"])
-  onWindowScroll() {
+  @HostListener('scroll', ['$event'])
+  onElementScroll($event) {
     //In chrome and some browser scroll is given to body tag
     let pos = (document.documentElement.scrollTop || document.body.scrollTop) + document.documentElement.offsetHeight;
     let max = document.documentElement.scrollHeight;
@@ -175,16 +183,30 @@ export class NotificationsComponent implements OnInit {
       console.log("modal result: " + result);
       console.log("deviceIDs: " + this.deviceIDs);
       console.log("events: " + this.events);
+      console.log("startTime: " + this.startTime);
+      console.log("end time" + this.endTime);
+      this.notifications = [];
+      this.getNotifications();
     }, err => {
       console.log("model err: " + err);
     });
   }
 
   onItemSelect(item: any) {
-    if(item.deviceID != null) {
+    if (item.deviceID != null) {
       this.deviceIDs.push(item.deviceID);
     } else {
       this.events.push(item.filterID);
     }
+  }
+
+  onSelectAllFilters(items) {
+    this.events = [];
+    this.events = items.map(i => i.filterID);
+  }
+
+  onSelectAllDeviceIDs(items) {
+    this.deviceIDs = [];
+    this.deviceIDs = items.map(i => i.deviceID);
   }
 }
