@@ -33,7 +33,9 @@ export class MapComponent implements OnInit, OnDestroy {
   @Input() options: MapOptions = {
     layers: [this.openStreetMapLayer, this.gMapLayer],
     zoom: 1,
-    center: latLng(0, 0)
+    center: latLng(0, 0),
+    //this line very important because when it's enabled then the markers will be drawn on canvas and this is good for performance
+    preferCanvas: true,
   };
 
   public map: Map;

@@ -257,6 +257,26 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'position', body);
   }
 
+  getHistoryTimeLine(deviceID: String, startTime: number, endTime:number) {
+    var body = {
+      "deviceID": deviceID,
+      "startTime": startTime,
+      "endTime": endTime
+    };
+
+    return this.postFnc(this.apiPath + 'history/timeline', body);
+  }
+
+  getHistory(deviceID: String, startTime: number, endTime:number) {
+    var body = {
+      "deviceID": deviceID,
+      "startTime": startTime,
+      "endTime": endTime
+    };
+
+    return this.postFnc(this.apiPath + 'solo/eventdataList', body);
+  }
+
   /*addMaintenanceCartGrise(body:any){
     return this.postFnc(this.apiPath+'add/insurance',body);
   }*/

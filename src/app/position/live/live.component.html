@@ -1,17 +1,65 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-3 ùmt-10">
+        <div class="col-3 mt-10 overflow-auto side">
             <div class="chart" id="speedometer"></div>
+            <span class="d-flex justify-content-center">{{device?.vehicleModel}}</span><br>
             <span class="d-flex justify-content-center">{{device?.speedKPH | number:'1.0-2'}} KM/h</span><br>
             <span class="d-flex justify-content-center">{{device?.odometerKM | number:'1.0-2'}} KM</span><br>
-            <span class="d-flex justify-content-center">{{device?.timestamp * 1000 | date: 'dd/MM/yyyy HH:mm:ss'}}</span>
+            <span class="d-flex justify-content-center">{{device?.timestamp * 1000 | date: 'dd/MM/yyyy
+                HH:mm:ss'}}</span>
             <hr>
             <span class="d-flex justify-content-center">AddressValue</span>
             <hr>
-            <button class="btn btn-primary">Historique</button>
+            <button class="btn btn-primary" (click)="showHistoryParams = !showHistoryParams">Historique</button>
+            <div *ngIf="playedDevice" class="player-tracker">
+                <section layout="row" class="layout-align-center-center layout-row">
+                    <button class="btn btn-light mr-2" type="button" (click)="play()"><i class="fa fa-play"></i></button>
+                    <button class="btn btn-light mr-2" type="button"><i class="fa fa-pause"></i></button>
+                    <button class="btn btn-light mr-2" type="button"><i class="fa fa-stop"></i></button>
+                    <button class="btn btn-light mr-2" type="button"><i class="fa fa-step-backward"></i></button>
+                    <button class="btn btn-light mr-2" type="button"><i class="fa fa-step-forward"></i></button>
+                    <button class="btn btn-light mr-2" type="button"><i class="fa fa-map-marker"></i></button>
+                </section>
+            </div>
+            <div class="periodes-list">
+                <div class="periode-group" *ngFor="let timeline of timelines">
+                    <a class="periode-line" (click)="playHistory(timeline['engineOnTime'], timeline['engineOffTime'])">
+                        <span>{{timeline['engineOnTime'] | date: 'dd/MM/yyyy'}}</span>
+                        <b>{{timeline['engineOnTime'] * 1000 | date: 'HH:mm:ss'}} - {{timeline['engineOffTime'] * 1000 |
+                            date: 'HH:mm:ss'}}</b>
+                    </a>
+                    <span class="distance">{{timeline['distanceKM'] | number:'1.0-2'}} - km</span>
+                </div>
+            </div>
         </div>
-        <div class="col-9 pl-0 pr-0">
+        <div class="pl-0 pr-0" [class.col-9]="!showHistoryParams" [class.col-6]="showHistoryParams">
             <app-map (map$)="receiveMap($event)" (zoom$)="receiveZoom($event)" id='main-map'></app-map>
+        </div>
+        <div class="col-3" [class.d-none]="!showHistoryParams">
+            <span class="date-title p-2">
+                Historique
+            </span>
+            <div class="border border-primary mt-2 p-2 rounded">
+                <div class="form-group">
+                    <label for="day" class="mt-2">Par jour:</label>
+                    <input type="date" name="day" id="day" class="form-control" (change)="day=$event.target.value">
+                </div>
+                <input type="button" value="Rechercher" class="btn btn-primary" (click)="byDay()">
+            </div>
+            <div class="border border-primary mt-2 p-2 rounded">
+                <div class="mt-2 mb-2">Par date:</div>
+                <div class="form-group">
+                    <label for="startTime">Date début:</label>
+                    <input type="datetime-local" name="startTime" id="startTime" class="form-control"
+                        (change)="startTime=$event.target.value">
+                </div>
+                <div class="form-group">
+                    <label for="endTime">Date fin:</label>
+                    <input type="datetime-local" name="endTime" id="endTime" class="form-control"
+                        (change)="endTime=$event.target.value">
+                </div>
+                <input type="button" value="Rechercher" class="btn btn-primary" (click)="byInterval()">
+            </div>
         </div>
     </div>
 </div>
