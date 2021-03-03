@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, OnDestroy, Input, Output, EventEmitter, ViewEncapsulation } from '@angular/core';
 import { control, MarkerClusterGroupOptions } from 'leaflet';
 import { MarkerClusterGroup } from 'leaflet';
 import 'leaflet.markercluster';
@@ -7,7 +7,9 @@ import { Map, ZoomAnimEvent, MapOptions, tileLayer, latLng, Marker } from 'leafl
 @Component({
   selector: 'app-map',
   templateUrl: './map.component.html',
-  styleUrls: ['./map.component.css']
+  styleUrls: ['./map.component.css'],
+  //this line is very imprtant it allows to override leaflet css
+  encapsulation: ViewEncapsulation.None
 })
 export class MapComponent implements OnInit, OnDestroy {
   openStreetMapLayer = tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {

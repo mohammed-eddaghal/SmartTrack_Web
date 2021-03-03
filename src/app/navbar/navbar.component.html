@@ -163,7 +163,8 @@
           Notifications
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" routerLink="/notifications/alarmes" routerLinkActive="active">Configuration d'alarmes</a>
+          <a class="dropdown-item" routerLink="/notifications/alarmes" routerLinkActive="active">Configuration
+            d'alarmes</a>
           <a class="dropdown-item" routerLink="/notifications/notifications" routerLinkActive="active">Notifications</a>
         </div>
       </li>
@@ -182,11 +183,19 @@
           <a class="dropdown-item" routerLink="/action/maintenance" routerLinkActive="active">Maintenances</a>
         </div>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" routerLink="" (click)="logout()">logout</a>
+    </ul>
+    <ul class="navbar-nav justify-content-end">
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown"
+          aria-haspopup="true" aria-expanded="false" routerLinkActive="active">
+          username
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" routerLink="/profile" routerLinkActive="active">Profile</a>
+          <div class="dropdown-divider"></div>
+          <a class="nav-link" routerLink="" (click)="logout()">Se déconnecter</a>
+        </div>
       </li>
     </ul>
-
   </div>
 </nav>
-

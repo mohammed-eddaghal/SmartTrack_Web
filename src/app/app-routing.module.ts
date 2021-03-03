@@ -15,6 +15,7 @@ import { DeviceComponent } from './device/device.component';
 import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { NotificationsComponent } from './notifications/notifications/notifications.component';
 import { AlarmesComponent } from './notifications/alarmes/alarmes.component';
+import { ProfileComponent } from './profile/profile.component';
 
 
 const routes: Routes = [
@@ -72,7 +73,12 @@ const routes: Routes = [
   {
     path: "report",
     component: ReportComponent,
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
+  },
+  {
+    path: "profile",
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
   },
 ];
 

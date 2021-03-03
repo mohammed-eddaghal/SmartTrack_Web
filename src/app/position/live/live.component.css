@@ -100,5 +100,7 @@ button.btn.btn-primary {
 }
 
 .marker {
-  background:url(http://maps.gstatic.com/mapfiles/markers2/marker.png) no-repeat;
+  /* background:url(http://maps.gstatic.com/mapfiles/markers2/marker.png) no-repeat; */
+  color: #3877c8;
+  background-color: red;
 }

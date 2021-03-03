@@ -48,6 +48,7 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { AlarmesComponent } from './notifications/alarmes/alarmes.component';
 import { NotificationsComponent } from './notifications/notifications/notifications.component';
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
+import { ProfileComponent } from './profile/profile.component';
 // import { registerLocaleData } from '@angular/common';
 // import localeFr from '@angular/common/locales/fr';
 
@@ -78,6 +79,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
     MaintenanceComponent,
     AlarmesComponent,
     NotificationsComponent,
+    ProfileComponent,
   ],
   imports: [
     NgMultiSelectDropDownModule.forRoot(),

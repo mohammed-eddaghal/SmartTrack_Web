@@ -1,3 +1,7 @@
+.leaflet-right {
+  right: 65vw !important;
+}
+
 #changeMap {
   position: absolute;
   top: 20px;
