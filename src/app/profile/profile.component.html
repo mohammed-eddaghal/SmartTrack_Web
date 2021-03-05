@@ -1,1 +1,108 @@
-<p>profile works!</p>
+<div class="container-fluid bg-light">
+    <div class="row justify-content-center">
+        <div class="side col-4">
+            <div class="card mt-2">
+                <div class="card-body m-auto">
+                    Username <i class="fas fa-pen edit" (click)="showForm=true"></i>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-6">
+                    <div class="card bg-warning">
+                        <span class="card-body text-white text-center">
+                            <p>Tous</p>
+                            <b>{{data?.firstRow?.all}}</b>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card bg-warning">
+                        <span class="card-body text-white text-center">
+                            <p>En marche</p>
+                            <b>{{data?.firstRow?.moving}}</b>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-6">
+                    <div class="card bg-warning">
+                        <span class="card-body text-white text-center">
+                            <p>En parking</p>
+                            <b>{{data?.firstRow?.parked}}</b>
+                        </span>
+                    </div>
+                </div>
+
+                <div class="col-6">
+                    <div class="card bg-warning">
+                        <span class="card-body text-white text-center">
+                            <p>En retard</p>
+                            <b>{{data?.firstRow?.late}}</b>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-6">
+                    <div class="card renewal bg-success">
+                        <span class="card-body text-white text-center">
+                            <p>Renouvellement</p>
+                            <b>{{data?.firstRow?.renewal}}</b>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card bg-success">
+                        <span class="card-body text-white text-center">
+                            <p>max T. en marche</p>
+                            <p>{{data?.maxRunningTime?.vehicleModel}}</p>
+                            <b>{{data?.maxRunningTime?.maxRunningTime}}</b>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-6">
+                    <div class="card bg-success">
+                        <span class="card-body text-white text-center">
+                            <p>max Distance</p>
+                            <p>{{data?.maxDistance?.vehicleModel}}</p>
+                            <b>{{data?.maxDistance?.maxDistance | number:'1.0-2'}} Km</b>
+                        </span>
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="card bg-success">
+                        <span class="card-body text-white text-center">
+                            <p>max Vitesse</p>
+                            <p>{{data?.maxSpeed?.vehicleModel}}</p>
+                            <b>{{data?.maxSpeed?.maxSpeed | number:'1.0-2'}} Km/h</b>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="chart" id="vehiclesPercentChart"></div>
+        </div>
+        <div class="col-8">
+            <form *ngIf="showForm">
+                <div class="form-group">
+                    <label for="exampleInputEmail1">Username</label>
+                    <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+                        placeholder="Enter Username">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Mot de passe</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Mot de passe">
+                </div>
+                <div class="form-group">
+                    <label for="exampleInputPassword1">Réentrer le mot de passe</label>
+                    <input type="password" class="form-control" id="exampleInputPassword1" placeholder="Mot de passe">
+                </div>
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success m-auto">Valider</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+.container-fluid.bg-dark {
+  min-height: 90%;
+}
+
+.edit {
+  cursor: pointer;
+}
+
+.renewal::ng-deep {
+  height: 100%;
+}
+
+form {
+    margin: 12% 25%;
+    padding: 2%;
+    width: 50%;
+    background-color: white;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+b {
+    font-size: 15px;
+}
+
+p {
+    font-size: 14px;
+}
+
+.card {
+    max-height: 130px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}

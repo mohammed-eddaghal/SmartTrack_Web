@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { groupBy } from 'rxjs/operators';
 import { Alarm } from '../models/alarm.model';
 import { Device, DeviceID } from '../models/device.model';
 import { Maintenance } from '../models/maintenance.model';
@@ -233,7 +234,7 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'findall/maintenance', body);
   }
 
-  getAllNotifications(accountID: string, userID: string, deviceIDs: String[], timestampStart?: number, timestampEnd?: number, 
+  getAllNotifications(accountID: string, userID: string, deviceIDs: String[], timestampStart?: number, timestampEnd?: number,
     filters?: String[], page?: number) {
     var body = {
       "accountID": accountID,
@@ -257,7 +258,7 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'position', body);
   }
 
-  getHistoryTimeLine(deviceID: String, startTime: number, endTime:number) {
+  getHistoryTimeLine(deviceID: String, startTime: number, endTime: number) {
     var body = {
       "deviceID": deviceID,
       "startTime": startTime,
@@ -267,7 +268,7 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'history/timeline', body);
   }
 
-  getHistory(deviceID: String, startTime: number, endTime:number) {
+  getHistory(deviceID: String, startTime: number, endTime: number) {
     var body = {
       "deviceID": deviceID,
       "startTime": startTime,
@@ -275,6 +276,22 @@ export class AdminService extends DataService {
     };
 
     return this.postFnc(this.apiPath + 'solo/eventdataList', body);
+  }
+
+  getStatsProfile(accountID: string, groupID?: string) {
+    var body;
+    if (groupID == null || groupID == "") {
+      body = {
+        "accountID": accountID
+      }
+      return this.postFnc(this.apiPath + 'account/vehicles', body);
+    } else {
+      body = {
+        "accountID": accountID,
+        "groupID": groupID
+      }
+      return this.postFnc(this.apiPath + 'user/vehicles', body);
+    }
   }
 
   /*addMaintenanceCartGrise(body:any){

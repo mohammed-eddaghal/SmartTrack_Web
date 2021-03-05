@@ -28,7 +28,7 @@ export class LiveComponent implements OnInit, OnDestroy {
   points: EventData[];
   timer: Subscription;
   marker: Marker;
-  showHistoryParams = true;
+  showHistoryParams = false;
   day;
   startTime;
   endTime;
@@ -176,7 +176,7 @@ export class LiveComponent implements OnInit, OnDestroy {
       map((data: EventData[]) => data.map(point => {
         var point : EventData = new EventData().deserialize(point);
         var marker : CircleMarker = new CircleMarker([point.latitude, point.longitude], {
-          color: 'transparent',
+          // color: 'transparent',
           // icon: new Icon({
           //   //TODO: add in api side activity_time to solo/eventdata
           //   iconUrl: point.icon(),
