@@ -113,3 +113,8 @@ mat-form-field {
     margin: 5px !important;
   }
 }
+
+.mat-tab-body.mat-tab-body-active ::ng-deep{
+  height: 88vh !important;
+  overflow-y: scroll !important;
+}

@@ -186,6 +186,12 @@ export class NotificationsComponent implements OnInit {
       console.log("startTime: " + this.startTime);
       console.log("end time" + this.endTime);
       this.notifications = [];
+      this.pager = {
+        pageCount: 0,
+        currentPage: 0,
+        size: 10,
+        pages: []
+      };
       this.getNotifications();
     }, err => {
       console.log("model err: " + err);

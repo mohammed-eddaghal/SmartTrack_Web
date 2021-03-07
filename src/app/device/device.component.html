@@ -56,24 +56,24 @@
                         </div>
                         <label for="vehicleModel">Vehicle Model</label>
                         <input type="text" [(ngModel)]="device.vehicleModel" name="vehicleModel" id="vehicleModel"
-                            class="form-control" placeholder="vehicleModel" minlength="10" maxlength="100" required
+                            class="form-control" placeholder="vehicleModel" minlength="4" maxlength="100" required
                             alt="vehicleModel" #vehicleModel="ngModel">
                         <div *ngIf="vehicleModel.invalid && (vehicleModel.dirty || vehicleModel.touched)">
                             <div *ngIf="vehicleModel.errors.maxlength" class="error-msg">
                                 vehicleModel ne doit pas passer 100 caractères.
                             </div>
                             <div *ngIf="vehicleModel.errors.minlength" class="error-msg">
-                                vehicleModel ne doit pas être moins de 10 caractères.
+                                vehicleModel ne doit pas être moins de 4 caractères.
                             </div>
                         </div>
                         <!-- Matricule -->
                         <label for="vehicleID">Vehicle ID</label>
                         <input type="text" [(ngModel)]="device.vehicleID" name="VehicleID" id="VehicleID"
                             #vehicleID="ngModel" class="form-control" placeholder="VehicleID" minlength="5"
-                            maxlength="20" required alt="Vehicle ID" pattern="[0-9]{1,}-[A-Z]{1}-[0-9]{1,}">
+                            maxlength="30" required alt="Vehicle ID" pattern="[0-9]{1,}-[A-Z]{1}-[0-9]{1,}">
                         <div *ngIf="vehicleID.invalid && (vehicleID.dirty || vehicleID.touched)">
                             <div *ngIf="vehicleID.errors.maxlength" class="error-msg">
-                                vehicleID ne doit pas passer 20 caractères.
+                                vehicleID ne doit pas passer 30 caractères.
                             </div>
                             <div *ngIf="vehicleID.errors.minlength" class="error-msg">
                                 vehicleID ne doit pas être moins de 5 caractères.
@@ -97,7 +97,7 @@
                         <label for="serialNumber">Serial Number</label>
                         <input type="text" [(ngModel)]="device.serialNumber" name="serialNumber" id="serialNumber"
                             #serialNumber="ngModel" class="form-control" placeholder="serialNumber" minlength="5"
-                            maxlength="10" required alt="serialNumber" pattern="[0-9]{5,10}">
+                            maxlength="10" required alt="serialNumber" pattern="[0-9]{0,10}">
                         <div *ngIf="serialNumber.invalid && (serialNumber.dirty || serialNumber.touched)">
                             <div *ngIf="serialNumber.errors.maxlength" class="error-msg">
                                 serialNumber ne doit pas passer 50 caractères.
@@ -113,7 +113,7 @@
                         <input type="text" [(ngModel)]="device.odometerOffsetKM" name="odometerOffsetKM"
                             id="odometerOffsetKM" #odometerOffsetKM="ngModel" class="form-control"
                             placeholder="odometerOffsetKM" minlength="0" maxlength="12" required alt="odometerOffsetKM"
-                            pattern="[0-9]{0,12}">
+                            pattern="[+-]?([0-9]*[.])?[0-9]+">
                         <div *ngIf="serialNumber.invalid && (serialNumber.dirty || serialNumber.touched)">
                             <div *ngIf="serialNumber.errors.maxlength" class="error-msg">
                                 odometerOffsetKM ne doit pas passer 12 caractères.
