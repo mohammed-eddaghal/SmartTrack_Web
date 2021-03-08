@@ -6,6 +6,7 @@ import { AuthService } from '../services/auth.service';
 import { Vehicle } from '../models/vehicle.model';
 import { map } from 'rxjs/operators';
 import { NgxSpinnerService } from "ngx-spinner";
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-utilisateurs',
@@ -49,16 +50,13 @@ export class UtilisateursComponent implements OnInit {
     this.user = user;
     if (user == null) {
       this.isUpdatingOrAdding = "Nouveau Utilisateur";
-      this.mail = "";
       this.userName = "";
       this.passwd = "";
       this.isActive = false;
-      let lastDigit = Date.now() % 10000;
     }
     else {
       this.isUpdatingOrAdding = "Modifier Utilisateur";
-      this.mail = user.contactEmail;
-      this.userName = user.contactName;
+      this.userName = user.displayName;
       this.passwd = user.password;
       this.isActive = user.isActive;
     }
@@ -95,17 +93,15 @@ export class UtilisateursComponent implements OnInit {
     this.adminService.updateUser({
       "accountID": this.authService.User.accountID,
       "userID": body.userID.userID,
-      "password": body.password,
+      "password": this.passwd,
       "name": this.userName,
-      "email": this.mail,
       "active": this.isActive
     }
     ).subscribe(rep => {
+      this.getAllUsers();
     }, error => {
       console.error(error);
     })
-    this.getAllUsers();
-    this.mail = "";
     this.passwd = "";
     this.userName = "";
     this.isActive = false;
@@ -117,15 +113,13 @@ export class UtilisateursComponent implements OnInit {
       "userID": this.userName + Date.now() % 10000,
       "password": this.passwd,
       "name": this.userName,
-      "email": this.mail,
       "active": this.isActive
     }).subscribe(rep => {
-      //this.getAllUsers();
+      this.getAllUsers();
     }, error => {
       console.error(error);
     })
     //this.getAllUsers();
-    this.mail = "";
     this.passwd = "";
     this.userName = "";
     this.isActive = false;
@@ -142,10 +136,24 @@ export class UtilisateursComponent implements OnInit {
   }
 
   suppUser(userid) {
-    this.adminService.deleteUser({ "accountID": this.authService.User.accountID, "userID": userid }).subscribe(rep => {
-      this.getAllUsers();
-    }, err => {
-      console.error("delete !!!")
+    Swal.fire({
+      title: 'Êtes-vous sûr?',
+      text: "Vous ne pourrez pas revenir en arrière!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Oui, supprimez-le!',
+      cancelButtonText: 'Non'
+    }).then((result) => {
+      /* Read more about isConfirmed, isDenied below */
+      if (result.isConfirmed) {
+        this.adminService.deleteUser({ "accountID": this.authService.User.accountID, "userID": userid }).subscribe(rep => {
+          this.getAllUsers();
+        }, err => {
+          console.error("delete !!!")
+        });
+      }
     });
   }
 

@@ -132,7 +132,7 @@ export class AccountComponent implements OnInit {
 
   deleteAccount(accountID) {
     Swal.fire({
-      title: 'Are you sure?',
+      title: 'Êtes-vous sûr?',
       text: "Vous ne pourrez pas revenir en arrière!",
       icon: 'warning',
       showCancelButton: true,
