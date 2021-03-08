@@ -16,7 +16,7 @@
         </mat-form-field>
       </mat-toolbar>
       <mat-tab-group #tabRef (selectedTabChange)="onTabChanged(tabRef.selectedIndex)">
-        <mat-tab label="TOUS" class="tab">
+        <mat-tab label="TOUS">
           <div class="row w-100 m-auto pt-2 border-bottom" *ngFor="let device of devices">
             <div class="col-10 m-auto" [routerLink]="['/live', device.deviceID, device.vehicleModel]" routerLinkActive="active">
               <div class="row">

@@ -24,7 +24,7 @@ export class NotificationsComponent implements OnInit {
   // pager object
   pager: Pager = {
     pageCount: 0,
-    currentPage: 0,
+    currentPage: -1,
     size: 10,
     pages: []
   };
@@ -83,7 +83,7 @@ export class NotificationsComponent implements OnInit {
       endTime: new FormControl(new Date().toISOString().substring(0, 16)),
     });
     this.user = this.authService.User;
-    this.adminService.getAllDevicesShortDetail(this.authService.user.accountID, 0, this.authService.groupID).pipe(
+    this.adminService.getAllDevicesShortDetail(this.authService.User.accountID, 0, this.authService.groupID).pipe(
       map((data: any) => data['content'].map(vehicle => new Vehicle().deserialize(vehicle)))
     ).subscribe(
       response => {

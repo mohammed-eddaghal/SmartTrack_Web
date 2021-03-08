@@ -32,7 +32,7 @@ export class UtilisateursComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-    this.adminService.getVehicles(this.authService.user.accountID, this.authService.user.userID).pipe(
+    this.adminService.getVehicles(this.authService.User.accountID, this.authService.User.userID).pipe(
       map((data: Vehicle[]) => data.map(vehicle => new Vehicle().deserialize(vehicle)))
     ).subscribe(
       response => {
@@ -92,8 +92,8 @@ export class UtilisateursComponent implements OnInit {
   }
 
   modifierUtilisateur(body) {
-    this.adminService.updatUser({
-      "accountID": this.authService.user.accountID,
+    this.adminService.updateUser({
+      "accountID": this.authService.User.accountID,
       "userID": body.userID.userID,
       "password": body.password,
       "name": this.userName,
@@ -113,7 +113,7 @@ export class UtilisateursComponent implements OnInit {
 
   ajoutUtilisateur() {
     this.adminService.addUser({
-      "accountID": this.authService.user.accountID,
+      "accountID": this.authService.User.accountID,
       "userID": this.userName + Date.now() % 10000,
       "password": this.passwd,
       "name": this.userName,
@@ -132,7 +132,7 @@ export class UtilisateursComponent implements OnInit {
   }
 
   getAllUsers() {
-    this.adminService.getUsers({ "accountID": this.authService.user.accountID }).subscribe(
+    this.adminService.getUsers({ "accountID": this.authService.User.accountID }).subscribe(
       rep => {
         this.listUsers = rep;
       }, err => {
@@ -142,7 +142,7 @@ export class UtilisateursComponent implements OnInit {
   }
 
   suppUser(userid) {
-    this.adminService.deleteUser({ "accountID": this.authService.user.accountID, "userID": userid }).subscribe(rep => {
+    this.adminService.deleteUser({ "accountID": this.authService.User.accountID, "userID": userid }).subscribe(rep => {
       this.getAllUsers();
     }, err => {
       console.error("delete !!!")

@@ -38,7 +38,7 @@ export class MaintenanceComponent implements OnInit {
     private adminService: AdminService) { }
 
   ngOnInit(): void {
-    this.adminService.getAllMaintenances(this.authService.user.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size).pipe(
+    this.adminService.getAllMaintenances(this.authService.User.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size).pipe(
       map((data: any) => {
         this.last = data['last'];
         this.pager.pageCount = data['totalPages'];
@@ -53,7 +53,7 @@ export class MaintenanceComponent implements OnInit {
       },
       error => null
     );
-    this.adminService.getAllDevicesShortDetail(this.authService.user.accountID, 0, this.authService.groupID).pipe(
+    this.adminService.getAllDevicesShortDetail(this.authService.User.accountID, 0, this.authService.groupID).pipe(
       map((data: any) => data['content'].map(vehicle => new Vehicle().deserialize(vehicle)))
     ).subscribe(
       response => {
@@ -92,7 +92,7 @@ export class MaintenanceComponent implements OnInit {
   sort(sortBy: string) {
     this.sortBy = sortBy;
     this.asc = !this.asc;
-    this.adminService.getAllMaintenances(this.authService.user.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size).pipe(
+    this.adminService.getAllMaintenances(this.authService.User.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size).pipe(
       map((data: any) => {
         this.last = data['last'];
         this.pager.pageCount = data['totalPages'];
@@ -111,7 +111,7 @@ export class MaintenanceComponent implements OnInit {
 
   setPage(page: number) {
     this.page = page;
-    this.adminService.getAllMaintenances(this.authService.user.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size).pipe(
+    this.adminService.getAllMaintenances(this.authService.User.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size).pipe(
       map((data: any) => {
         this.last = data['last'];
         this.pager.pageCount = data['totalPages'];
@@ -130,7 +130,7 @@ export class MaintenanceComponent implements OnInit {
 
   onSearsh(query: string) {
     this.query = query;
-    this.adminService.getAllMaintenances(this.authService.user.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size).pipe(
+    this.adminService.getAllMaintenances(this.authService.User.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size).pipe(
       map((data: any) => {
         this.last = data['last'];
         this.pager.pageCount = data['totalPages'];

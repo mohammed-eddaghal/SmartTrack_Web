@@ -23,12 +23,23 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'account/login', body);
   }
 
-  getDevices(accountID: string, search: string) {
-    var body = {
-      "accountID": accountID,
-      "search": search
-    };
-    return this.postFnc(this.apiPath + 'account/devices', body);
+  getDevices(accountID: string, search: string, groupID?: string) {
+    var body, api;
+    if (groupID != null && groupID != "") {
+      body = {
+        "accountID": accountID,
+        "groupID": groupID,
+        "search": search
+      };
+      api = this.apiPath + 'user/devices';
+    } else {
+      body = {
+        "accountID": accountID,
+        "search": search
+      };
+      api = this.apiPath + 'account/devices';
+    }
+    return this.postFnc(api, body);
   }
 
   getVehicles(accountID: string, userID: string, search?: string) {
@@ -119,12 +130,22 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'report/temperature', body);
   }
 
-  getDashboardDistanceStats(accountID: string, startTime: number, endTime: number) {
-    var body = {
-      "accountID": accountID,
-      "startTime": startTime,
-      "endTime": endTime
-    };
+  getDashboardDistanceStats(accountID: string, startTime: number, endTime: number, groupID?: string) {
+    var body;
+    if (groupID != null && groupID != "") {
+      body = {
+        "accountID": accountID,
+        "groupID": groupID,
+        "startTime": startTime,
+        "endTime": endTime
+      };
+    } else {
+      body = {
+        "accountID": accountID,
+        "startTime": startTime,
+        "endTime": endTime
+      };
+    }
     return this.postFnc(this.apiPath + 'dashboard/distance', body);
   }
 
@@ -138,6 +159,10 @@ export class AdminService extends DataService {
 
   addUser(body: any) {
     return this.postFnc(this.apiPath + 'add/user', body);
+  }
+
+  addAccount(body: any) {
+    return this.postFnc(this.apiPath + 'add/account', body);
   }
 
   addDriver(body: any) {
@@ -352,20 +377,33 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'findall/user', body);
   }
 
+  getAccounts(body: any) {
+    return this.postFnc(this.apiPath + 'findall/account', body);
+  }
+
   getChauffeurs(body: any) {
     return this.postFnc(this.apiPath + 'findall/driver', body);
   }
 
   deleteUser(body: any) {
-    return this.postFnc(this.apiPath + "delete/user/", body);
+    return this.postFnc(this.apiPath + "delete/user", body);
+  }
+
+
+  deleteAccount(accountID: string) {
+    return this.deleteFnc(this.apiPath + "delete/account/", accountID);
   }
 
   deleteDriver(body: any) {
     return this.postFnc(this.apiPath + "delete/driver/", body);
   }
 
-  updatUser(body: any) {
+  updateUser(body: any) {
     return this.putFnc(this.apiPath + "update/user", body);
+  }
+
+  updateAccount(body: any) {
+    return this.putFnc(this.apiPath + "update/account", body);
   }
 
   updateDriver(body: any) {

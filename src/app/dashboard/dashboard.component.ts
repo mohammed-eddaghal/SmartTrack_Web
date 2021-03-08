@@ -48,7 +48,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.chart = am4core.create("odometerChart", am4charts.XYChart);
 
-    this.adminService.getDevices(this.authService.user.accountID, this.authService.user.search).pipe(
+    this.adminService.getDevices(this.authService.User.accountID, this.authService.User.search, this.authService.groupID).pipe(
       map((data: EventData[]) => data.map(device => new EventData().deserialize(device)))
     ).subscribe(
       response => {
@@ -64,7 +64,7 @@ export class DashboardComponent implements OnInit {
     this.startDate.setHours(0, 0, 0, 0);
     this.endDate.setHours(23, 59, 59, 999);
 
-    this.getDashboardDistanceStats(this.authService.user.accountID, Math.floor(this.startDate.getTime() / 1000), Math.floor(this.endDate.getTime() / 1000));
+    this.getDashboardDistanceStats(Math.floor(this.startDate.getTime() / 1000), Math.floor(this.endDate.getTime() / 1000));
 
     this.dateForm = this.formBuilder.group(
       {
@@ -98,24 +98,30 @@ export class DashboardComponent implements OnInit {
       this.dateErrorHidden = false;
     } else {
       if (!this.dateErrorHidden) this.dateErrorHidden = true;
-      this.getDashboardDistanceStats(this.authService.user.accountID, startTimestamp, endTimestamp);
+      this.getDashboardDistanceStats(startTimestamp, endTimestamp);
     }
 
   }
 
-  getDashboardDistanceStats(accountID, startDate, endDate) {
-    this.adminService.getDashboardDistanceStats(this.authService.user.accountID, startDate, endDate).pipe(
+  getDashboardDistanceStats(startDate, endDate) {
+    this.adminService.getDashboardDistanceStats(this.authService.User.accountID, startDate, endDate, this.authService.groupID).pipe(
       map((data: DashboardDistance[]) => data.map(dd => new DashboardDistance().deserialize(dd)))
     ).subscribe(
       response => {
         this.dashboardDistance = response;
         this.chart.data = response;
-        this.totalDuration = response.map(rt => rt.running_time).reduce(function (x, y) {
-          return x + y;
-        });
-        this.totalDistance = response.map(d => d.distance).reduce(function (x, y) {
-          return x + y;
-        });
+        if(response.length != 0) {
+          this.totalDuration = response.map(rt => rt.running_time).reduce(function (x, y) {
+            return x + y;
+          });
+          this.totalDistance = response.map(d => d.distance).reduce(function (x, y) {
+            return x + y;
+          });
+        } else {
+          //Normally we must display an info alert with message : pas de données pour le moment
+          this.totalDuration = 0;
+          this.totalDistance = 0;
+        }
         this.averageDistance = this.totalDistance / (this.totalDuration / 60);
 
       },

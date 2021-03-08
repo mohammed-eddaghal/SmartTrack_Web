@@ -57,8 +57,8 @@ export class LoginComponent implements OnInit {
   signIn() {
     //ila kan is_subUser =true => rah subuser
     //sinon rah admin
-    this.subUser.userID.accountID = this.authService.user.accountID = this.userName;
-    this.subUser.userID.userID = this.authService.user.userID = this.subuser;
+    this.subUser.userID.accountID = this.authService.User.accountID = this.userName;
+    this.subUser.userID.userID = this.authService.User.userID = this.subuser;
     this.subUser.password = this.passowrd;
     this.authService.isAdmin=false;
     this.subUserService.login(this.subUser)
@@ -85,7 +85,8 @@ export class LoginComponent implements OnInit {
 
   signInAsAdmin() {
     console.log(this.passowrd, " / ", this.userName);
-    this.admin.accountID=this.authService.user.accountID = this.userName;
+    this.admin.accountID=this.authService.User.accountID = this.userName;
+    this.authService.User.userID = "";
     this.admin.password = this.passowrd;
     this.authService.isAdmin=true;
     this.adminService.login(this.admin)

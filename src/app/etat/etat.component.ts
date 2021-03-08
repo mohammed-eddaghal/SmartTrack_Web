@@ -34,11 +34,11 @@ export class EtatComponent implements OnInit {
 
   ngOnInit(): void {
     var test = { "accountID": "admin", "userID": "", "search": "" };
-    test=this.authService.user;
+    test=this.authService.User;
     if (!this.authService.isAdmin) {
-     // test=this.authService.user;
+     // test=this.authService.User;
       //this.subUserService.etatUser(test).subscribe(
-      this.subUserService.etatUser(this.authService.user).subscribe(
+      this.subUserService.etatUser(this.authService.User).subscribe(
         (response: Etat[]) => {
           //normalement x ghtafficta liha return d api
           this.shershEtat=this.etats = response
@@ -56,7 +56,7 @@ export class EtatComponent implements OnInit {
         })
     } else {
       //this.adminService.etatAdmin(test).subscribe(
-      this.adminService.etatAdmin(this.authService.user).subscribe(
+      this.adminService.etatAdmin(this.authService.User).subscribe(
         (response: Etat[]) => {
           //normalement x ghtafficta liha return d api
           this.shershEtat=this.etats = response

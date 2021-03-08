@@ -37,7 +37,7 @@ export class ReportComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.adminService.getVehicles(this.authService.user.accountID, this.authService.user.userID, this.authService.user.search).pipe(
+    this.adminService.getVehicles(this.authService.User.accountID, this.authService.User.userID, this.authService.User.search).pipe(
       map((data: Vehicle[]) => data.map(vehicle => new Vehicle().deserialize(vehicle)))
     ).subscribe(
       response => {

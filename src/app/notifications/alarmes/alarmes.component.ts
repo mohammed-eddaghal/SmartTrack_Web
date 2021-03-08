@@ -21,7 +21,7 @@ export class AlarmesComponent implements OnInit {
   constructor(private adminService: AdminService, private authService: AuthService, private modalService: NgbModal) { }
 
   ngOnInit(): void {
-    this.adminService.getAllDevicesShortDetail(this.authService.user.accountID, 0, this.authService.groupID).pipe(
+    this.adminService.getAllDevicesShortDetail(this.authService.User.accountID, 0, this.authService.groupID).pipe(
       map((data: any) => data['content'].map(vehicle => new Vehicle().deserialize(vehicle)))
     ).subscribe(
       response => {
@@ -52,7 +52,7 @@ export class AlarmesComponent implements OnInit {
   }
 
   getAlarmConfig(content, deviceID: string, vehicleModel: string) {
-    this.adminService.getAlarmConfig(this.authService.user.accountID, deviceID, this.authService.user.userID).pipe(
+    this.adminService.getAlarmConfig(this.authService.User.accountID, deviceID, this.authService.User.userID).pipe(
       map((alarm: any) => new Alarm().deserialize(alarm))
     ).subscribe(
       response => {
@@ -60,7 +60,7 @@ export class AlarmesComponent implements OnInit {
           this.alarm = response;
         } else {
           this.alarm = new Alarm();
-          this.alarm.alarmID = new AlarmID(this.authService.user.accountID, this.authService.user.userID, deviceID);
+          this.alarm.alarmID = new AlarmID(this.authService.User.accountID, this.authService.User.userID, deviceID);
         }
         this.vehicleModel = vehicleModel;
         this.open(content);

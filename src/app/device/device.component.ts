@@ -37,7 +37,7 @@ export class DeviceComponent implements OnInit {
 
   ngOnInit(): void {
     this.spinner.show();
-    this.adminService.getAllDevices(this.authService.user.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size, this.authService.groupID)
+    this.adminService.getAllDevices(this.authService.User.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size, this.authService.groupID)
       .pipe(
         map((data: any) => {
           this.last = data['last'];
@@ -80,7 +80,7 @@ export class DeviceComponent implements OnInit {
 
   setPage(page: number) {
     this.page = page;
-    this.adminService.getAllDevices(this.authService.user.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size, this.authService.groupID)
+    this.adminService.getAllDevices(this.authService.User.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size, this.authService.groupID)
       .pipe(
         map((data: any) => {
           this.last = data['last'];
@@ -102,7 +102,7 @@ export class DeviceComponent implements OnInit {
 
   onSearsh(query: string) {
     this.query = query;
-    this.adminService.getAllDevices(this.authService.user.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size, this.authService.groupID)
+    this.adminService.getAllDevices(this.authService.User.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size, this.authService.groupID)
       .pipe(
         map((data: any) => {
           this.last = data['last'];
@@ -138,7 +138,7 @@ export class DeviceComponent implements OnInit {
 
       if (device == null) {
         this.device.deviceID = this.device.imeiNumber;
-        this.device.accountID = this.authService.user.accountID;
+        this.device.accountID = this.authService.User.accountID;
         this.device.uniqueID = this.device.imeiNumber;
         this.device.licenseExpire = new Date(this.device.licenseExpire).getTime() / 1000;
         this.device.creationTime = new Date(Date.now()).getTime() / 1000;
@@ -194,7 +194,7 @@ export class DeviceComponent implements OnInit {
   }
 
   updatePage() {
-    this.adminService.getAllDevices(this.authService.user.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size, this.authService.groupID)
+    this.adminService.getAllDevices(this.authService.User.accountID, this.query, this.page, this.asc, this.sortBy, this.pager.size, this.authService.groupID)
       .pipe(
         map((data: any) => {
           this.last = data['last'];

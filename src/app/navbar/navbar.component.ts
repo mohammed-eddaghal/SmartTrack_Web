@@ -8,6 +8,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class NavbarComponent implements OnInit {
 
+  sysadmin: boolean = false
+  
   admin: boolean = false
 
   constructor(private authService: AuthService) { }
@@ -17,6 +19,7 @@ export class NavbarComponent implements OnInit {
   isNavbarCollapsed: boolean = true;
 
   ngOnInit(): void {
+    this.sysadmin = this.authService.User.accountID == 'sysadmin' ? true : false;
     this.admin = this.authService.isAdmin;
   }
 
@@ -26,6 +29,7 @@ export class NavbarComponent implements OnInit {
 
   logout() {
     this.authService.isLoggedIn = false;
+    this.authService.groupID = "";
     localStorage.clear();
   }
 

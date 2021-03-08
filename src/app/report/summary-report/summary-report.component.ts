@@ -33,7 +33,7 @@ export class SummaryReportComponent implements OnInit {
       web = 'false';
     }
 
-    this.adminService.getSummaryReport(this.authService.user.accountID, this.authService.user.userID,
+    this.adminService.getSummaryReport(this.authService.User.accountID, this.authService.User.userID,
       this.deviceID, this.startTime, this.endTime, web)
       .pipe(
         map((data: AllSummaryReport[]) => data.map(report => new AllSummaryReport().deserialize(report)))

@@ -7,6 +7,8 @@ import { NgModule, Component } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth.guard';
+import { SysadminGuard } from './guards/sysadmin.guard';
+import { AdminGuard } from './guards/admin.guard';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { ChauffeurComponent } from './chauffeur/chauffeur.component';
 import { ReportComponent } from './report/report.component';
@@ -16,6 +18,7 @@ import { MaintenanceComponent } from './maintenance/maintenance.component';
 import { NotificationsComponent } from './notifications/notifications/notifications.component';
 import { AlarmesComponent } from './notifications/alarmes/alarmes.component';
 import { ProfileComponent } from './profile/profile.component';
+import { AccountComponent } from './accounts/account/account.component';
 
 
 const routes: Routes = [
@@ -53,7 +56,12 @@ const routes: Routes = [
   {
     path: "action/users",
     component: UtilisateursComponent,
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard, AdminGuard]
+  },
+  {
+    path: "action/accounts",
+    component: AccountComponent,
+    canActivate: [AuthGuard, SysadminGuard]
   },
   {
     path: "action/chauffeur",
