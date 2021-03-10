@@ -51,8 +51,7 @@
           <div class="form-group">
             <label for="password">Mot de Passe</label>
             <input type="password" [(ngModel)]="passwd" name="passwd" id="password" class="form-control"
-              placeholder="mot de passe" #passWd="ngModel" required alt="mot de passe" minlength=5
-              pattern="(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[$@$!%*?&])[A-Za-z\d$@$!%*?&].{4,}">
+              placeholder="mot de passe" #passWd="ngModel" required alt="mot de passe" minlength=5>
             <div *ngIf="passWd.invalid && (passWd.dirty || passWd.touched)">
               <div *ngIf="passWd.errors.required" class="error-msg">
                 mot de passe est requis
@@ -60,9 +59,9 @@
               <div *ngIf="passWd.errors.minlength" class="error-msg">
                 mote de passe doit contenir au moins 4 caractères
               </div>
-              <div *ngIf="passWd.hasError('pattern')" class="error-msg">
+              <!-- <div *ngIf="passWd.hasError('pattern')" class="error-msg">
                 mot de passe doit être fort: utiliser maj/min/caractère spécial/chiffre
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="form-check">
