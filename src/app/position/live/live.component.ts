@@ -61,23 +61,23 @@ export class LiveComponent implements OnInit, OnDestroy {
       (response) => {
         this.device = response;
         this.hand.showValue(this.device.speedKPH);
-        // this.marker?.remove();
-        // this.marker = new Marker([this.device.latitude, this.device.longitude], {
-        //   icon: new Icon({
-        //     //TODO: add in api side activity_time to solo/eventdata
-        //     iconUrl: this.device.icon(),
-        //     // iconUrl: "../../assets/status/marker_green.png",
-        //     iconSize: [26, 30],
-        //     iconAnchor: [14, 4],
-        //   })
-        // });
-        // this.marker.bindPopup("<span style='color:#089200;font-weight:bold;'>" + this.device.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
-        //   + "<span style=''>" + this.device.address + "</span>" + " <br/>"
-        //   + "<span style=''>" + new DatePipe('en-US').transform(new Date(this.device.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
-        //   + "<span style=''>" + this.transformDecimal(this.device.speedKPH) + " Km/h</span>" + " <br/>"
-        //   + "<span style=''> état: " + (this.device.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"
-        //   + "<span style=''>" + this.transformDecimal(this.device.odometerKM) + " KM</span>");
-        // this.marker.addTo(this.map);
+        this.marker?.remove();
+        this.marker = new Marker([this.device.latitude, this.device.longitude], {
+          icon: new Icon({
+            //TODO: add in api side activity_time to solo/eventdata
+            iconUrl: this.device.icon(),
+            // iconUrl: "../../assets/status/marker_green.png",
+            iconSize: [26, 30],
+            iconAnchor: [14, 4],
+          })
+        });
+        this.marker.bindPopup("<span style='color:#089200;font-weight:bold;'>" + this.device.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
+          + "<span style=''>" + this.device.address + "</span>" + " <br/>"
+          + "<span style=''>" + new DatePipe('en-US').transform(new Date(this.device.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
+          + "<span style=''>" + this.transformDecimal(this.device.speedKPH) + " Km/h</span>" + " <br/>"
+          + "<span style=''> état: " + (this.device.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"
+          + "<span style=''>" + this.transformDecimal(this.device.odometerKM) + " KM</span>");
+        this.marker.addTo(this.map);
       },
       (error) => null
     );
@@ -134,13 +134,13 @@ export class LiveComponent implements OnInit, OnDestroy {
     // }, 1000);
   }
 
-  // receiveMap(map: Map) {
-  //   this.map = map;
-  // }
+  receiveMap(map: Map) {
+    this.map = map;
+  }
 
-  // receiveZoom(zoom: number) {
-  //   this.zoom = zoom;
-  // }
+  receiveZoom(zoom: number) {
+    this.zoom = zoom;
+  }
 
   transformDecimal(num) {
     return this._decimalPipe.transform(num, '1.2-2');
@@ -176,7 +176,7 @@ export class LiveComponent implements OnInit, OnDestroy {
       map((data: EventData[]) => data.map(point => {
         var point : EventData = new EventData().deserialize(point);
         var marker : CircleMarker = new CircleMarker([point.latitude, point.longitude], {
-          // color: 'transparent',
+          color: 'transparent',
           // icon: new Icon({
           //   //TODO: add in api side activity_time to solo/eventdata
           //   iconUrl: point.icon(),
