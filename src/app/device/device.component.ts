@@ -142,7 +142,7 @@ export class DeviceComponent implements OnInit {
         this.device.uniqueID = this.device.imeiNumber;
         this.device.licenseExpire = new Date(this.device.licenseExpire).getTime() / 1000;
         this.device.creationTime = new Date(Date.now()).getTime() / 1000;
-        this.adminService.addDevice(this.device, 'g1').subscribe(
+        this.adminService.addDevice(this.device, this.authService.groupID).subscribe(
           result => {
             console.log(result);
             this.updatePage();
