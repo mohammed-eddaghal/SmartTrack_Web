@@ -3,9 +3,8 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import { CircleMarker, Icon, Map, Marker, Path } from 'leaflet';
+import { CircleMarker, Icon, Map, Marker } from 'leaflet';
 import { ActivatedRoute } from '@angular/router';
-import { switchMap } from 'rxjs/operators';
 import { interval, Subscription } from 'rxjs';
 import { AdminService } from 'src/app/services/admin.service';
 import { EventData } from 'src/app/models/eventdata.model';
@@ -172,41 +171,51 @@ export class LiveComponent implements OnInit, OnDestroy {
     this.markers = [];
     this.marker?.remove();
     this.timer.unsubscribe();
-    this.adminService.getHistory(this.deviceID, startTime, endTime).pipe(
-      map((data: EventData[]) => data.map(point => {
-        var point : EventData = new EventData().deserialize(point);
-        var marker : CircleMarker = new CircleMarker([point.latitude, point.longitude], {
-          color: 'transparent',
-          // icon: new Icon({
-          //   //TODO: add in api side activity_time to solo/eventdata
-          //   iconUrl: point.icon(),
-          //   // iconUrl: "../../assets/status/marker_green.png",
-          //   iconSize: [26, 30],
-          //   iconAnchor: [14, 4],
-          // })
-        });
-        marker.setStyle({className: 'marker'});
-        marker.bindPopup("<span style='color:#089200;font-weight:bold;'>" + point.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
-          + "<span style=''>" + point.address + "</span>" + " <br/>"
-          + "<span style=''>" + new DatePipe('en-US').transform(new Date(point.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
-          + "<span style=''>" + this.transformDecimal(point.speedKPH) + " Km/h</span>" + " <br/>"
-          + "<span style=''> état: " + (point.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"
-          + "<span style=''>" + this.transformDecimal(point.odometerKM) + " KM</span>");
-        this.markers?.push(marker);
-        marker.addTo(this.map);
-        return point;
-      }))
-    ).subscribe(
-      (response) => {
-        console.log(response);
-        this.points = response;
-      },
-      (error) => null
-    );
+    this.adminService.getHistory(this.deviceID, startTime, endTime)
+      .subscribe(
+        (response: EventData[]) => {
+          console.log(response);
+          this.points = response;
+          this.showHistoryMarkers();
+        },
+        (error) => null
+      );
+  }
+
+  showHistoryMarkers() {
+    this.points.forEach(point => {
+      var marker: CircleMarker = new CircleMarker([point.latitude, point.longitude], {
+        // color: 'transparent',
+        // icon: new Icon({
+        //   //TODO: add in api side activity_time to solo/eventdata
+        //   iconUrl: point.icon(),
+        //   // iconUrl: "../../assets/status/marker_green.png",
+        //   iconSize: [26, 30],
+        //   iconAnchor: [14, 4],
+        // })
+      });
+      // marker.setStyle({ className: 'marker' });
+      marker.bindPopup("<span style='color:#089200;font-weight:bold;'>" + point.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
+        + "<span style=''>" + point.address + "</span>" + " <br/>"
+        + "<span style=''>" + new DatePipe('en-US').transform(new Date(point.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
+        + "<span style=''>" + this.transformDecimal(point.speedKPH) + " Km/h</span>" + " <br/>"
+        + "<span style=''> état: " + (point.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"
+        + "<span style=''>" + this.transformDecimal(point.odometerKM) + " KM</span>");
+      this.markers?.push(marker);
+      marker.addTo(this.map);
+    });
   }
 
   playHistory(startTime, endTime) {
     this.getHistory(startTime, endTime);
   }
 
+  goLive() {
+    if (!this.showHistoryParams) {
+      this.timer = interval(60000).subscribe(() => {
+        // console.log('say hello baby');
+        this.getDeviceEventData();
+      });
+    }
+  }
 }

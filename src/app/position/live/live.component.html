@@ -10,7 +10,7 @@
             <hr>
             <span class="d-flex justify-content-center">AddressValue</span>
             <hr>
-            <button class="btn btn-primary" (click)="showHistoryParams = !showHistoryParams">Historique</button>
+            <button class="btn btn-primary" (click)="showHistoryParams = !showHistoryParams; goLive();">Historique</button>
             <div *ngIf="playedDevice" class="player-tracker">
                 <section layout="row" class="layout-align-center-center layout-row">
                     <button class="btn btn-light mr-2" type="button" (click)="play()"><i class="fa fa-play"></i></button>

@@ -97,7 +97,6 @@ import { AccountComponent } from './accounts/account/account.component';
     MatGridListModule,
     LeafletModule,
     LeafletModule.forRoot(),
-    LeafletModule,
     LeafletMarkerClusterModule,
     BrowserModule,
     AppRoutingModule,
