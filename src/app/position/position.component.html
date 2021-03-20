@@ -43,7 +43,7 @@
             <img src="../../assets/status/pin_green.png">
           </ng-template>
           <div class="row w-100 m-auto pt-2 border-bottom" *ngFor="let device of devices">
-            <div class="col-10 m-auto" [routerLink]="['/live', device.deviceID]" routerLinkActive="active">
+            <div class="col-10 m-auto" [routerLink]="['/live', device.deviceID, device.vehicleModel]" routerLinkActive="active">
               <div class="row">
                 <div class="col-2">
                   <img [src]=device.icon() style="width: 25px; height: 30px;">
@@ -68,7 +68,7 @@
             <img src="../../assets/status/pin_blue_dot.png">
           </ng-template>
           <div class="row w-100 m-auto pt-2 border-bottom" *ngFor="let device of devices">
-            <div class="col-10 m-auto" [routerLink]="['/live', device.deviceID]" routerLinkActive="active">
+            <div class="col-10 m-auto" [routerLink]="['/live', device.deviceID, device.vehicleModel]" routerLinkActive="active">
               <div class="row">
                 <div class="col-2">
                   <img [src]=device.icon() style="width: 25px; height: 30px;">
