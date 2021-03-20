@@ -3,13 +3,13 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import { Icon, latLngBounds, Map, Marker } from 'leaflet';
+import { Icon, latLngBounds, Map, Marker, Polyline } from 'leaflet';
 import { ActivatedRoute } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
 import { AdminService } from 'src/app/services/admin.service';
 import { EventData } from 'src/app/models/eventdata.model';
 import { map } from "rxjs/operators";
-import { DatePipe, DecimalPipe } from '@angular/common';
+import { DatePipe, DecimalPipe, getCurrencySymbol } from '@angular/common';
 
 @Component({
   selector: 'app-live',
@@ -36,6 +36,10 @@ export class LiveComponent implements OnInit, OnDestroy {
   markers: Marker[] = [];
   indexOfCurrentMarker: number = 0;
   isPlaying: boolean = false;
+  canPlay: boolean = false;
+  polylinePoints: any[] = [];
+  polyline: Polyline;
+  polylineDisplayed: boolean = false;
 
   constructor(private route: ActivatedRoute, private adminService: AdminService, private _decimalPipe: DecimalPipe) { }
 
@@ -77,6 +81,12 @@ export class LiveComponent implements OnInit, OnDestroy {
           + "<span style=''> état: " + (this.device.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"
           + "<span style=''>" + this.transformDecimal(this.device.odometerKM) + " KM</span>");
         this.marker.addTo(this.map);
+        let latLngs = [this.marker.getLatLng()];
+        let markerBounds = latLngBounds(latLngs);
+        this.map.fitBounds(markerBounds, {
+          animate: true,
+          maxZoom: 15
+        });
       },
       (error) => null
     );
@@ -163,6 +173,7 @@ export class LiveComponent implements OnInit, OnDestroy {
   }
 
   getHistory(startTime, endTime) {
+    this.canPlay = false;
     this.marker?.remove();
     this.timer.unsubscribe();
     this.isPlaying = false;
@@ -198,7 +209,18 @@ export class LiveComponent implements OnInit, OnDestroy {
         + "<span style=''> état: " + (point.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"
         + "<span style=''>" + this.transformDecimal(point.odometerKM) + " KM</span>");
       this.markers?.push(marker);
+      this.polylinePoints.push([point.latitude, point.longitude]);
       marker.addTo(this.map);
+    });
+    this.canPlay = true;
+    this.polyline = new Polyline(this.polylinePoints, {
+      color: 'green',
+    });
+    let latLngs = [this.markers[~~(this.markers.length / 2)].getLatLng()];
+    let markerBounds = latLngBounds(latLngs);
+    this.map.fitBounds(markerBounds, {
+      animate: true,
+      maxZoom: 5
     });
   }
 
@@ -207,11 +229,23 @@ export class LiveComponent implements OnInit, OnDestroy {
   }
 
   goLive() {
-    if (!this.showHistoryParams) {
-      this.timer = interval(60000).subscribe(() => {
-        this.getDeviceEventData();
-      });
+    this.showHistoryParams = false;
+    this.canPlay = false;
+    this.isPlaying = false;
+    if (!this.timer.closed) {
+      this.timer.unsubscribe();
     }
+    if (this.markers.length != 0) {
+      this.markers?.forEach(marker => marker.remove());
+    }
+    if (this.timelines.length != 0) {
+      this.timelines = [];
+    }
+    this.hand.showValue(0);
+    this.getDeviceEventData();
+    this.timer = interval(60000).subscribe(() => {
+      this.getDeviceEventData();
+    });
   }
 
   play() {
@@ -248,13 +282,48 @@ export class LiveComponent implements OnInit, OnDestroy {
   }
 
   initHistoryAnimation() {
-    if (this.indexOfCurrentMarker != 0) {
-      this.hand.showValue(0);
-      this.isPlaying = false;
-      this.markers.forEach(marker => marker.remove());
-      this.timer?.unsubscribe();
-      this.indexOfCurrentMarker = 0;
-    }
+    this.hand.showValue(0);
+    this.isPlaying = false;
+    this.markers.forEach(marker => marker.remove());
+    this.timer?.unsubscribe();
+    this.indexOfCurrentMarker = 0;
+    this.markers[this.indexOfCurrentMarker++].addTo(this.map);
   }
 
+  nextMarker() {
+    if (this.isPlaying) {
+      this.pause();
+    }
+    let latLngs = [this.markers[this.indexOfCurrentMarker].getLatLng()];
+    let markerBounds = latLngBounds(latLngs);
+    this.map.fitBounds(markerBounds, {
+      animate: true,
+      maxZoom: 15
+    });
+    this.markers[this.indexOfCurrentMarker++].addTo(this.map);
+  }
+
+  previousMarker() {
+    if (this.isPlaying) {
+      this.pause();
+    }
+    let latLngs = [this.markers[this.indexOfCurrentMarker].getLatLng()];
+    let markerBounds = latLngBounds(latLngs);
+    this.map.fitBounds(markerBounds, {
+      animate: true,
+      maxZoom: 15
+    });
+    this.markers[this.indexOfCurrentMarker--].remove();
+  }
+
+  showPolyline() {
+    if (this.polylineDisplayed) {
+      this.map?.removeLayer(this.polyline);
+      this.markers.forEach(marker => marker.addTo(this.map));
+    } else {
+      this.polyline.addTo(this.map);
+      this.markers.forEach(marker => marker.remove());
+    }
+    this.polylineDisplayed = !this.polylineDisplayed;
+  }
 }
