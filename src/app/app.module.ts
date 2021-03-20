@@ -6,7 +6,7 @@ import { DataService } from './services/data.service';
 import { AdminService } from './services/admin.service';
 import { SubUserService } from './services/subuser.service';
 import { BrowserModule } from '@angular/platform-browser';
-import { LOCALE_ID, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -16,8 +16,6 @@ import { PositionComponent } from './position/position.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { AgmCoreModule, GoogleMapsAPIWrapper } from '@agm/core';
 import { EtatComponent } from './etat/etat.component';
 import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 import { ChauffeurComponent } from './chauffeur/chauffeur.component';
@@ -39,7 +37,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MapComponent } from './map/map.component';
 import { LeafletModule } from '@asymmetrik/ngx-leaflet';
 import { LiveComponent } from './position/live/live.component';
-import {DecimalPipe} from '@angular/common';
+import { DecimalPipe } from '@angular/common';
 import { LeafletMarkerClusterModule } from '@asymmetrik/ngx-leaflet-markercluster';
 import { DeviceComponent } from './device/device.component';
 import { SpeedPercentReportComponent } from './report/speed-percent-report/speed-percent-report.component';
@@ -50,6 +48,7 @@ import { NotificationsComponent } from './notifications/notifications/notificati
 import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ProfileComponent } from './profile/profile.component';
 import { AccountComponent } from './accounts/account/account.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 // import { registerLocaleData } from '@angular/common';
 // import localeFr from '@angular/common/locales/fr';
 
@@ -105,9 +104,6 @@ import { AccountComponent } from './accounts/account/account.component';
     HttpClientModule,
     NgbModule,
     NgxSpinnerModule,
-    AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyCHVQYBlEDRUG-832fnRV9mzMcavXR84Kg',
-    })
   ],
   providers: [
     SubUserService,
@@ -116,7 +112,6 @@ import { AccountComponent } from './accounts/account/account.component';
     AuthService,
     AuthGuard,
     DeauthGuard,
-    GoogleMapsAPIWrapper,
     PagerService,
     DatePipe,
     DecimalPipe

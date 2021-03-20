@@ -6,9 +6,6 @@ import * as am4charts from '@amcharts/amcharts4/charts';
 import am4themes_animated from '@amcharts/amcharts4/themes/animated';
 import { AdminService } from '../services/admin.service';
 
-//gmaps imports
-import { MapsAPILoader, AgmMap, GoogleMapsAPIWrapper } from '@agm/core';
-
 import { map } from 'rxjs/operators';
 import { EventData } from '../models/eventdata.model';
 import { DashboardDistance } from '../models/dahboard.distance.model';
@@ -42,7 +39,6 @@ export class DashboardComponent implements OnInit {
     private zone: NgZone,
     private adminService: AdminService,
     public authService: AuthService,
-    private mapsApiLoader: MapsAPILoader,
     private formBuilder: FormBuilder) { }
 
   ngOnInit() {

@@ -1,9 +1,8 @@
 import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 import { EtatComponent } from './etat/etat.component';
-//import { DeauthGuard } from './guards/deauth.guard';
 import { PositionComponent } from './position/position.component';
 
-import { NgModule, Component } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { LoginComponent } from './login/login.component';
 import { AuthGuard } from './guards/auth.guard';
