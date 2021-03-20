@@ -23,7 +23,9 @@
                             class="fa fa-step-backward"></i></button>
                     <button class="btn btn-light mr-2" type="button" [disabled]="!canPlay" (click)="nextMarker()"><i
                             class="fa fa-step-forward"></i></button>
-                    <button class="btn btn-light mr-2" type="button" [disabled]="!canPlay" (click)="showPolyline()"><i class="fa fa-map-marker"></i></button>
+                    <button class="btn mr-2" type="button" [class.btn-light]="!polylineDisplayed"
+                        [class.btn-primary]="polylineDisplayed" [disabled]="!canPlay"
+                        (click)="setPolylineParams()"><i class="fa fa-map-marker"></i></button>
                 </section>
             </div>
             <div class="periodes-list">
