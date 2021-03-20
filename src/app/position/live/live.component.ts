@@ -34,7 +34,7 @@ export class LiveComponent implements OnInit, OnDestroy {
   timelines;
   playedDevice = true;
   markers: Marker[] = [];
-  indexOfCurrentMarker: number = 0;
+  indexOfCurrentMarker: number = -1;
   isPlaying: boolean = false;
   canPlay: boolean = false;
   polylinePoints: any[] = [];
@@ -55,6 +55,10 @@ export class LiveComponent implements OnInit, OnDestroy {
     this.initChart();
     this.timer = interval(60000).subscribe(() => {
       this.getDeviceEventData();
+    });
+    
+    this.polyline = new Polyline([], {
+      color: 'green',
     });
   }
 
@@ -193,7 +197,9 @@ export class LiveComponent implements OnInit, OnDestroy {
     if (this.markers.length != 0) {
       this.removeMarkers()
       this.markers = [];
-      this.indexOfCurrentMarker = 0;
+      this.indexOfCurrentMarker = -1;
+      this.initPolyline();
+      this.polyline.addTo(this.map);
     }
     this.points.forEach(point => {
       var marker = new Marker([point.latitude, point.longitude], {
@@ -212,9 +218,6 @@ export class LiveComponent implements OnInit, OnDestroy {
       marker.addTo(this.map);
     });
     this.canPlay = true;
-    this.polyline = new Polyline([], {
-      color: 'green',
-    });
     let latLngs = [this.markers[~~(this.markers.length / 2)].getLatLng()];
     let markerBounds = latLngBounds(latLngs);
     this.map.fitBounds(markerBounds, {
@@ -251,8 +254,8 @@ export class LiveComponent implements OnInit, OnDestroy {
     if (!this.isPlaying) {
       this.isPlaying = true;
       if (this.markers.length != 0) {
-        if (this.indexOfCurrentMarker == 0) {
-          this.removeMarkers()
+        if (this.indexOfCurrentMarker == -1) {
+          this.removeMarkers();
         }
         this.timer = interval(200).subscribe(() => {
           this.indexOfCurrentMarker++;
@@ -265,7 +268,7 @@ export class LiveComponent implements OnInit, OnDestroy {
           this.hand.showValue(this.points[this.indexOfCurrentMarker].speedKPH);
           this.polylinePoints.push([this.points[this.indexOfCurrentMarker].latitude, this.points[this.indexOfCurrentMarker].longitude]);
           if (this.polylineDisplayed) {
-            this.removeMarkers()
+            this.removeMarkers();
             this.polyline.setLatLngs(this.polylinePoints);
           }
           if (this.indexOfCurrentMarker + 1 == this.markers.length) {
@@ -279,7 +282,7 @@ export class LiveComponent implements OnInit, OnDestroy {
       }
       if (this.indexOfCurrentMarker == this.markers.length) {
         this.timer.unsubscribe();
-        this.indexOfCurrentMarker = 0;
+        this.indexOfCurrentMarker = -1;
       }
     }
   }
@@ -292,66 +295,73 @@ export class LiveComponent implements OnInit, OnDestroy {
   }
 
   initHistoryAnimation() {
+    this.indexOfCurrentMarker = -1;
     this.hand.showValue(0);
     this.isPlaying = false;
-    this.removeMarkers()
+    this.removeMarkers();
     this.timer?.unsubscribe();
-    this.indexOfCurrentMarker = 0;
-    this.polylinePoints = [];
-    this.polyline.setLatLngs(this.polylinePoints);
-    this.markers[this.indexOfCurrentMarker++].addTo(this.map);
+    this.initPolyline();
+    this.markers[0].addTo(this.map);
   }
 
   nextMarker() {
-    this.indexOfCurrentMarker++;
-    let latLng: LatLng = this.markers[this.indexOfCurrentMarker].getLatLng();
-    if (this.isPlaying) {
-      this.pause();
+    if (this.indexOfCurrentMarker < this.markers.length) {
+      this.indexOfCurrentMarker++;
+      let latLng: LatLng = this.markers[this.indexOfCurrentMarker].getLatLng();
+      if (this.isPlaying) {
+        this.pause();
+      }
+      this.polylinePoints.push([latLng.lat, latLng.lng]);
+      let latLngs = [latLng];
+      let markerBounds = latLngBounds(latLngs);
+      this.map.fitBounds(markerBounds, {
+        animate: true,
+        maxZoom: 15
+      });
+      if (this.indexOfCurrentMarker + 1 == this.markers.length) {
+        this.markers[this.indexOfCurrentMarker].setIcon(new Icon({
+          iconUrl: "../../assets/status/marker_blue_parking.png",
+          iconSize: [26, 30]
+        }));
+      }
+      if (this.polylineDisplayed) {
+        this.polyline.setLatLngs(this.polylinePoints);
+        this.removeMarkers();
+      }
+      this.markers[this.indexOfCurrentMarker].addTo(this.map);
     }
-    this.polylinePoints.push([latLng.lat, latLng.lng]);
-    let latLngs = [latLng];
-    let markerBounds = latLngBounds(latLngs);
-    this.map.fitBounds(markerBounds, {
-      animate: true,
-      maxZoom: 15
-    });
-    if (this.indexOfCurrentMarker + 1 == this.markers.length) {
-      this.markers[this.indexOfCurrentMarker].setIcon(new Icon({
-        iconUrl: "../../assets/status/marker_blue_parking.png",
-        iconSize: [26, 30]
-      }));
-    }
-    if (this.polylineDisplayed) {
-      this.polyline.setLatLngs(this.polylinePoints);
-      this.removeMarkers();
-    }
-    this.markers[this.indexOfCurrentMarker].addTo(this.map);
   }
 
   previousMarker() {
-    if (this.isPlaying) {
-      this.pause();
-    }
-    let latLngs = [this.markers[this.indexOfCurrentMarker].getLatLng()];
-    let markerBounds = latLngBounds(latLngs);
-    this.map.fitBounds(markerBounds, {
-      animate: true,
-      maxZoom: 15
-    });
-    this.markers[this.indexOfCurrentMarker--].remove();
-    this.polylinePoints.pop();
+    if (this.indexOfCurrentMarker >= 0) {
+      if (this.isPlaying) {
+        this.pause();
+      }
+      let latLngs = [this.markers[this.indexOfCurrentMarker].getLatLng()];
+      let markerBounds = latLngBounds(latLngs);
+      this.map.fitBounds(markerBounds, {
+        animate: true,
+        maxZoom: 15
+      });
+      this.markers[this.indexOfCurrentMarker--].remove();
+      this.polylinePoints.pop();
 
-    if (this.polylineDisplayed) {
-      this.polyline.setLatLngs(this.polylinePoints);
+      if (this.polylineDisplayed) {
+        this.polyline.setLatLngs(this.polylinePoints);
+      }
+      this.markers[this.indexOfCurrentMarker].addTo(this.map);
     }
-    this.markers[this.indexOfCurrentMarker].addTo(this.map);
   }
 
   setPolylineParams() {
     this.polylineDisplayed = !this.polylineDisplayed;
     if (this.polylineDisplayed) {
-      this.setPolyline();
+      this.polyline.setLatLngs(this.polylinePoints);
+      this.polyline.addTo(this.map);
       this.removeMarkers();
+      if (this.indexOfCurrentMarker > 0) {
+        this.markers[this.indexOfCurrentMarker].addTo(this.map);
+      }
     } else {
       this.polyline.remove();
       if (this.canPlay && this.indexOfCurrentMarker > 1) {
@@ -372,9 +382,12 @@ export class LiveComponent implements OnInit, OnDestroy {
     this.markers.forEach(marker => marker.remove());
   }
 
-  setPolyline() {
+  initPolyline() {
+    this.polylinePoints = [];
     this.polyline.setLatLngs(this.polylinePoints);
-    this.polyline.addTo(this.map);
+    if (!this.map.hasLayer(this.polyline)) {
+      this.polyline.addTo(this.map);
+    }
   }
 
 }
