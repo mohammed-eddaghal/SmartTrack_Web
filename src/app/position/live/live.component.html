@@ -10,12 +10,16 @@
             <hr>
             <span class="d-flex justify-content-center">AddressValue</span>
             <hr>
-            <button class="btn btn-primary" (click)="showHistoryParams = !showHistoryParams; goLive();">Historique</button>
+            <button class="btn btn-primary"
+                (click)="showHistoryParams = !showHistoryParams; goLive();">Historique</button>
             <div *ngIf="playedDevice" class="player-tracker">
                 <section layout="row" class="layout-align-center-center layout-row">
-                    <button class="btn btn-light mr-2" type="button" (click)="play()"><i class="fa fa-play"></i></button>
-                    <button class="btn btn-light mr-2" type="button"><i class="fa fa-pause"></i></button>
-                    <button class="btn btn-light mr-2" type="button"><i class="fa fa-stop"></i></button>
+                    <button class="btn btn-light mr-2" type="button" [disabled]="isPlaying" (click)="play()"><i
+                            class="fa fa-play"></i></button>
+                    <button class="btn btn-light mr-2" type="button" [disabled]="!isPlaying" (click)="pause()"><i
+                            class="fa fa-pause"></i></button>
+                    <button class="btn btn-light mr-2" type="button" (click)="initHistoryAnimation()"><i
+                            class="fa fa-stop"></i></button>
                     <button class="btn btn-light mr-2" type="button"><i class="fa fa-step-backward"></i></button>
                     <button class="btn btn-light mr-2" type="button"><i class="fa fa-step-forward"></i></button>
                     <button class="btn btn-light mr-2" type="button"><i class="fa fa-map-marker"></i></button>
@@ -60,6 +64,7 @@
                 </div>
                 <input type="button" value="Rechercher" class="btn btn-primary" (click)="byInterval()">
             </div>
+            <input type="button" value="Masquer" class="btn btn-danger w-100 mt-2" (click)="showHistoryParams = false">
         </div>
     </div>
 </div>

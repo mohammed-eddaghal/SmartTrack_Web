@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as am4core from "@amcharts/amcharts4/core";
 import * as am4charts from "@amcharts/amcharts4/charts";
 import am4themes_animated from "@amcharts/amcharts4/themes/animated";
-import { CircleMarker, Icon, Map, Marker } from 'leaflet';
+import { Icon, latLngBounds, Map, Marker } from 'leaflet';
 import { ActivatedRoute } from '@angular/router';
 import { interval, Subscription } from 'rxjs';
 import { AdminService } from 'src/app/services/admin.service';
@@ -33,7 +33,9 @@ export class LiveComponent implements OnInit, OnDestroy {
   endTime;
   timelines;
   playedDevice = true;
-  markers: CircleMarker[];
+  markers: Marker[] = [];
+  indexOfCurrentMarker: number = 0;
+  isPlaying: boolean = false;
 
   constructor(private route: ActivatedRoute, private adminService: AdminService, private _decimalPipe: DecimalPipe) { }
 
@@ -48,7 +50,6 @@ export class LiveComponent implements OnInit, OnDestroy {
     this.getDeviceEventData();
     this.initChart();
     this.timer = interval(60000).subscribe(() => {
-      // console.log('say hello baby');
       this.getDeviceEventData();
     });
   }
@@ -65,7 +66,6 @@ export class LiveComponent implements OnInit, OnDestroy {
           icon: new Icon({
             //TODO: add in api side activity_time to solo/eventdata
             iconUrl: this.device.icon(),
-            // iconUrl: "../../assets/status/marker_green.png",
             iconSize: [26, 30],
             iconAnchor: [14, 4],
           })
@@ -127,10 +127,6 @@ export class LiveComponent implements OnInit, OnDestroy {
     this.chart.logo.__disabled = true;
 
     this.hand = this.chart.hands.push(new am4charts.ClockHand());
-    // using chart.setTimeout method as the timeout will be disposed together with a chart
-    // setInterval(() => {
-    //   this.hand.showValue(Math.random() * 100, 1000, am4core.ease.cubicOut);
-    // }, 1000);
   }
 
   receiveMap(map: Map) {
@@ -161,20 +157,20 @@ export class LiveComponent implements OnInit, OnDestroy {
     this.adminService.getHistoryTimeLine(this.deviceID, startTime, endTime).subscribe(
       result => {
         this.timelines = result;
-        console.log(result);
       },
       err => null
     );
   }
 
   getHistory(startTime, endTime) {
-    this.markers = [];
     this.marker?.remove();
     this.timer.unsubscribe();
-    this.adminService.getHistory(this.deviceID, startTime, endTime)
+    this.isPlaying = false;
+    this.adminService.getHistory(this.deviceID, startTime, endTime).pipe(
+      map((data: EventData[]) => data.map((point: EventData) => new EventData().deserialize(point)))
+    )
       .subscribe(
-        (response: EventData[]) => {
-          console.log(response);
+        (response) => {
           this.points = response;
           this.showHistoryMarkers();
         },
@@ -183,18 +179,18 @@ export class LiveComponent implements OnInit, OnDestroy {
   }
 
   showHistoryMarkers() {
+    if (this.markers.length != 0) {
+      this.markers.forEach(marker => marker.remove());
+      this.markers = [];
+      this.indexOfCurrentMarker = 0;
+    }
     this.points.forEach(point => {
-      var marker: CircleMarker = new CircleMarker([point.latitude, point.longitude], {
-        // color: 'transparent',
-        // icon: new Icon({
-        //   //TODO: add in api side activity_time to solo/eventdata
-        //   iconUrl: point.icon(),
-        //   // iconUrl: "../../assets/status/marker_green.png",
-        //   iconSize: [26, 30],
-        //   iconAnchor: [14, 4],
-        // })
+      var marker = new Marker([point.latitude, point.longitude], {
+        icon: new Icon({
+          iconUrl: point.icon("History"),
+          iconSize: [26, 30],
+        })
       });
-      // marker.setStyle({ className: 'marker' });
       marker.bindPopup("<span style='color:#089200;font-weight:bold;'>" + point.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
         + "<span style=''>" + point.address + "</span>" + " <br/>"
         + "<span style=''>" + new DatePipe('en-US').transform(new Date(point.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
@@ -213,9 +209,50 @@ export class LiveComponent implements OnInit, OnDestroy {
   goLive() {
     if (!this.showHistoryParams) {
       this.timer = interval(60000).subscribe(() => {
-        // console.log('say hello baby');
         this.getDeviceEventData();
       });
     }
   }
+
+  play() {
+    if (!this.isPlaying) {
+      this.isPlaying = true;
+      if (this.markers.length != 0) {
+        if (this.indexOfCurrentMarker == 0 && this.map.hasLayer(this.markers[0])) {
+          this.markers.forEach(marker => marker.remove());
+        }
+        this.timer = interval(200).subscribe(() => {
+          let latLngs = [this.markers[this.indexOfCurrentMarker].getLatLng()];
+          let markerBounds = latLngBounds(latLngs);
+          this.map.fitBounds(markerBounds, {
+            animate: true,
+            maxZoom: 15
+          });
+          this.markers[this.indexOfCurrentMarker].addTo(this.map);
+          this.indexOfCurrentMarker++;
+        });
+      }
+      if (this.indexOfCurrentMarker == this.markers.length) {
+        this.timer.unsubscribe();
+        this.indexOfCurrentMarker = 0;
+      }
+    }
+  }
+
+  pause() {
+    if (this.isPlaying) {
+      this.isPlaying = false;
+      this.timer?.unsubscribe();
+    }
+  }
+
+  initHistoryAnimation() {
+    if (this.indexOfCurrentMarker != 0) {
+      this.isPlaying = false;
+      this.markers.forEach(marker => marker.remove());
+      this.timer?.unsubscribe();
+      this.indexOfCurrentMarker = 0;
+    }
+  }
+
 }
