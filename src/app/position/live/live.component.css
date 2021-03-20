@@ -104,3 +104,14 @@ button.btn.btn-primary {
   color: #3877c8;
   background-color: red;
 }
+
+.adress {
+  font-size: small;
+  font-family: monospace;
+  color: rgb(58, 143, 240);
+}
+
+.vehicle-details {
+  margin-top: -10%;
+  padding: 0;
+}

@@ -9,7 +9,8 @@ import { interval, Subscription } from 'rxjs';
 import { AdminService } from 'src/app/services/admin.service';
 import { EventData } from 'src/app/models/eventdata.model';
 import { map } from "rxjs/operators";
-import { DatePipe, DecimalPipe, getCurrencySymbol } from '@angular/common';
+import { DatePipe, DecimalPipe } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-live',
@@ -40,8 +41,8 @@ export class LiveComponent implements OnInit, OnDestroy {
   polylinePoints: any[] = [];
   polyline: Polyline;
   polylineDisplayed: boolean = false;
-
-  constructor(private route: ActivatedRoute, private adminService: AdminService, private _decimalPipe: DecimalPipe) { }
+  constructor(private route: ActivatedRoute, private adminService: AdminService,
+    private _decimalPipe: DecimalPipe, private http: HttpClient) { }
 
   ngOnDestroy(): void {
     this.timer.unsubscribe();
@@ -56,7 +57,7 @@ export class LiveComponent implements OnInit, OnDestroy {
     this.timer = interval(60000).subscribe(() => {
       this.getDeviceEventData();
     });
-    
+
     this.polyline = new Polyline([], {
       color: 'green',
     });
@@ -64,10 +65,15 @@ export class LiveComponent implements OnInit, OnDestroy {
 
   getDeviceEventData() {
     this.adminService.getDevicePosition(this.deviceID).pipe(
-      map((device: EventData) => new EventData().deserialize(device))
+      map((device: EventData) => new EventData(this.http).deserialize(device))
     ).subscribe(
       (response) => {
         this.device = response;
+        this.adminService.getAdress(this.device.latitude, this.device.longitude).subscribe(
+          // response => this.device.adress = response['display_name'],
+          response => console.log(response['display_name']),
+          // error => this.adress = ''
+        );
         this.hand.showValue(this.device.speedKPH);
         this.marker?.remove();
         this.marker = new Marker([this.device.latitude, this.device.longitude], {
@@ -79,12 +85,13 @@ export class LiveComponent implements OnInit, OnDestroy {
           })
         });
         this.marker.bindPopup("<span style='color:#089200;font-weight:bold;'>" + this.device.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
-          + "<span style=''>" + this.device.address + "</span>" + " <br/>"
+          + "<span style=''>" + this.device.adress + "</span>" + " <br/>"
           + "<span style=''>" + new DatePipe('en-US').transform(new Date(this.device.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
           + "<span style=''>" + this.transformDecimal(this.device.speedKPH) + " Km/h</span>" + " <br/>"
           + "<span style=''> état: " + (this.device.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"
           + "<span style=''>" + this.transformDecimal(this.device.odometerKM) + " KM</span>");
         this.marker.addTo(this.map);
+        // this.marker.addEventListener()
         let latLngs = [this.marker.getLatLng()];
         let markerBounds = latLngBounds(latLngs);
         this.map.fitBounds(markerBounds, {
@@ -209,7 +216,7 @@ export class LiveComponent implements OnInit, OnDestroy {
         })
       });
       marker.bindPopup("<span style='color:#089200;font-weight:bold;'>" + point.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
-        + "<span style=''>" + point.address + "</span>" + " <br/>"
+        + "<span style=''>" + point.adress + "</span>" + " <br/>"
         + "<span style=''>" + new DatePipe('en-US').transform(new Date(point.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
         + "<span style=''>" + this.transformDecimal(point.speedKPH) + " Km/h</span>" + " <br/>"
         + "<span style=''> état: " + (point.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"

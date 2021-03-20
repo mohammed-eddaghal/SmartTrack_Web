@@ -428,4 +428,8 @@ export class AdminService extends DataService {
   // deleteUser(body: any) {
   //   return this.deleteFnc(this.apiPath + "delete/user", body);
   // }
+
+  getAdress(lat: number, lng: number) {
+    return this.reverseGeocoder(lat, lng);
+  }
 }

@@ -10,7 +10,7 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class DataService {
-  
+
   // protected apiPath = 'https://geotech-gps.com:9090/api/';
   protected apiPath = 'https://smartrack-geotech.com:9090/api/';
   // protected apiPath = 'http://localhost:9090/api/';
@@ -49,6 +49,12 @@ export class DataService {
   deleteFnc(apiPath: string, itemID: any) {
     return this.http.delete(apiPath + itemID, this.httpOption).pipe(
       // "catchError" instead "catch"
+      catchError(this.handelErrors)
+    );
+  }
+
+  reverseGeocoder(lat: number, lng: number) {
+    return this.http.get("http://nominatim.openstreetmap.org/reverse?format=json&lat=" + lat + "&lon=" + lng).pipe(
       catchError(this.handelErrors)
     );
   }

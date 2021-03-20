@@ -67,7 +67,7 @@ export class PositionComponent implements OnInit, OnDestroy {
           }),
           "deviceID": device.deviceID,
           "popupText": "<span style='color:#089200;font-weight:bold;'>" + device.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
-            + "<span style=''>" + device.address + "</span>" + " <br/>"
+            + "<span style=''>" + device.adress + "</span>" + " <br/>"
             + "<span style=''>" + new DatePipe('en-US').transform(new Date(device.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
             + "<span style=''>" + this.transformDecimal(device.speedKPH) + " Km/h</span>" + " <br/>"
             + "<span style=''> état: " + device.activity_time.split(',')[1] + "</span>" + " <br/>"

@@ -15,20 +15,27 @@ export class EventData implements Deserializable {
     speedKPH: number;
     timestamp: number;
     vehicleModel: String;
-    private _address: string = "";
+    private _adress: string = "";
     private _status: number; // -2: unkown, -1: late, 0: parking, 1:running
 
     constructor(private http?: HttpClient) {
         this.http = http;
     };
 
-    get address(): string {
-        /*this.http?.get('https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=-34.44076&lon=-58.70521')
-        .subscribe(
-            (response) => this._address = response['display_name'] ?? '',
-            (error) => this._address = ''
-        );*/
-        return this._address;
+    get adress(): string {
+        // if (this._adress == "") {
+        //     this.http?.get("http://nominatim.openstreetmap.org/reverse?format=json&lat=" + this.latitude + "&lon=" + this.longitude)
+        //         .subscribe(
+        //             (response) => {
+        //                 this._adress = response['display_name'] ?? '';
+        //                 console.log(this._adress);
+        //             },
+        //             (error) => {
+        //                 this._adress = ''
+        //             }
+        //         );
+        // }
+        return this._adress;
     }
 
     get status() {

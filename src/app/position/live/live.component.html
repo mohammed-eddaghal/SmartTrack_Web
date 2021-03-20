@@ -1,6 +1,6 @@
 <div class="container-fluid">
     <div class="row">
-        <div class="col-3 mt-10 overflow-auto side">
+        <div class="col-3 p-2 mt-10 overflow-auto side">
             <div class="chart" id="speedometer"></div>
             <span class="d-flex justify-content-center">{{device?.vehicleModel}}</span><br>
             <span class="d-flex justify-content-center">{{device?.speedKPH | number:'1.0-2'}} KM/h</span><br>
@@ -8,7 +8,7 @@
             <span class="d-flex justify-content-center">{{device?.timestamp * 1000 | date: 'dd/MM/yyyy
                 HH:mm:ss'}}</span>
             <hr>
-            <span class="d-flex justify-content-center">AddressValue</span>
+            <span class="d-flex text-center adress">{{device?.adress}}</span>
             <hr>
             <button class="btn btn-primary" (click)="showHistoryParams = !showHistoryParams;">Historique</button>
             <div *ngIf="playedDevice" class="player-tracker">
@@ -51,7 +51,7 @@
                     <label for="day" class="mt-2">Par jour:</label>
                     <input type="date" name="day" id="day" class="form-control" (change)="day=$event.target.value">
                 </div>
-                <input type="button" value="Rechercher" class="btn btn-primary" (click)="byDay()">
+                <input type="button" value="Rechercher" class="btn btn-primary w-100" (click)="byDay()">
             </div>
             <div class="border border-primary mt-2 p-2 rounded">
                 <div class="mt-2 mb-2">Par date:</div>
@@ -65,7 +65,7 @@
                     <input type="datetime-local" name="endTime" id="endTime" class="form-control"
                         (change)="endTime=$event.target.value">
                 </div>
-                <input type="button" value="Rechercher" class="btn btn-primary" (click)="byInterval()">
+                <input type="button" value="Rechercher" class="btn btn-primary w-100" (click)="byInterval()">
             </div>
             <input type="button" value="Masquer" class="btn btn-danger w-100 mt-1" (click)="showHistoryParams = false">
             <input type="button" value="Voir position actuelle" class="btn btn-success w-100 mt-1" (click)="goLive()">
