@@ -228,6 +228,7 @@ export class LiveComponent implements OnInit, OnDestroy {
             animate: true,
             maxZoom: 15
           });
+          this.hand.showValue(this.points[this.indexOfCurrentMarker].speedKPH);
           this.markers[this.indexOfCurrentMarker].addTo(this.map);
           this.indexOfCurrentMarker++;
         });
@@ -248,6 +249,7 @@ export class LiveComponent implements OnInit, OnDestroy {
 
   initHistoryAnimation() {
     if (this.indexOfCurrentMarker != 0) {
+      this.hand.showValue(0);
       this.isPlaying = false;
       this.markers.forEach(marker => marker.remove());
       this.timer?.unsubscribe();
