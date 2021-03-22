@@ -23,18 +23,15 @@ export class EventData implements Deserializable {
     };
 
     get adress(): string {
-        // if (this._adress == "") {
-        //     this.http?.get("http://nominatim.openstreetmap.org/reverse?format=json&lat=" + this.latitude + "&lon=" + this.longitude)
-        //         .subscribe(
-        //             (response) => {
-        //                 this._adress = response['display_name'] ?? '';
-        //                 console.log(this._adress);
-        //             },
-        //             (error) => {
-        //                 this._adress = ''
-        //             }
-        //         );
-        // }
+        this.http?.get("http://nominatim.openstreetmap.org/reverse?format=json&lat=" + this.latitude + "&lon=" + this.longitude)
+            .subscribe(
+                (response) => {
+                    this._adress = response['display_name'];
+                },
+                (error) => {
+                    this._adress = ''
+                }
+            );
         return this._adress;
     }
 

@@ -41,6 +41,7 @@ export class LiveComponent implements OnInit, OnDestroy {
   polylinePoints: any[] = [];
   polyline: Polyline;
   polylineDisplayed: boolean = false;
+  adress: any;
   constructor(private route: ActivatedRoute, private adminService: AdminService,
     private _decimalPipe: DecimalPipe, private http: HttpClient) { }
 
@@ -70,9 +71,10 @@ export class LiveComponent implements OnInit, OnDestroy {
       (response) => {
         this.device = response;
         this.adminService.getAdress(this.device.latitude, this.device.longitude).subscribe(
-          // response => this.device.adress = response['display_name'],
-          response => console.log(response['display_name']),
-          // error => this.adress = ''
+          response => {
+            this.adress = response['display_name'] ?? '';
+          },
+          error => this.adress = ''
         );
         this.hand.showValue(this.device.speedKPH);
         this.marker?.remove();
@@ -90,9 +92,9 @@ export class LiveComponent implements OnInit, OnDestroy {
           + "<span style=''>" + this.transformDecimal(this.device.speedKPH) + " Km/h</span>" + " <br/>"
           + "<span style=''> état: " + (this.device.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"
           + "<span style=''>" + this.transformDecimal(this.device.odometerKM) + " KM</span>");
-        this.marker.addTo(this.map);
+        this.marker?.addTo(this.map);
         // this.marker.addEventListener()
-        let latLngs = [this.marker.getLatLng()];
+        let latLngs = [this.marker?.getLatLng()];
         let markerBounds = latLngBounds(latLngs);
         this.map.fitBounds(markerBounds, {
           animate: true,
@@ -206,7 +208,7 @@ export class LiveComponent implements OnInit, OnDestroy {
       this.markers = [];
       this.indexOfCurrentMarker = -1;
       this.initPolyline();
-      this.polyline.addTo(this.map);
+      this.polyline?.addTo(this.map);
     }
     this.points.forEach(point => {
       var marker = new Marker([point.latitude, point.longitude], {
@@ -222,12 +224,12 @@ export class LiveComponent implements OnInit, OnDestroy {
         + "<span style=''> état: " + (point.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"
         + "<span style=''>" + this.transformDecimal(point.odometerKM) + " KM</span>");
       this.markers?.push(marker);
-      marker.addTo(this.map);
+      marker?.addTo(this.map);
     });
     this.canPlay = true;
-    let latLngs = [this.markers[~~(this.markers.length / 2)].getLatLng()];
+    let latLngs = [this.markers[~~(this.markers.length / 2)]?.getLatLng()];
     let markerBounds = latLngBounds(latLngs);
-    this.map.fitBounds(markerBounds, {
+    this.map?.fitBounds(markerBounds, {
       animate: true,
       maxZoom: 5
     });
@@ -266,7 +268,7 @@ export class LiveComponent implements OnInit, OnDestroy {
         }
         this.timer = interval(200).subscribe(() => {
           this.indexOfCurrentMarker++;
-          let latLngs = [this.markers[this.indexOfCurrentMarker].getLatLng()];
+          let latLngs = [this.markers[this.indexOfCurrentMarker]?.getLatLng()];
           let markerBounds = latLngBounds(latLngs);
           this.map.fitBounds(markerBounds, {
             animate: true,
@@ -284,7 +286,7 @@ export class LiveComponent implements OnInit, OnDestroy {
               iconSize: [26, 30]
             }));
           }
-          this.markers[this.indexOfCurrentMarker].addTo(this.map);
+          this.markers[this.indexOfCurrentMarker]?.addTo(this.map);
         });
       }
       if (this.indexOfCurrentMarker == this.markers.length) {
@@ -308,13 +310,13 @@ export class LiveComponent implements OnInit, OnDestroy {
     this.removeMarkers();
     this.timer?.unsubscribe();
     this.initPolyline();
-    this.markers[0].addTo(this.map);
+    this.markers[0]?.addTo(this.map);
   }
 
   nextMarker() {
     if (this.indexOfCurrentMarker < this.markers.length) {
       this.indexOfCurrentMarker++;
-      let latLng: LatLng = this.markers[this.indexOfCurrentMarker].getLatLng();
+      let latLng: LatLng = this.markers[this.indexOfCurrentMarker]?.getLatLng();
       if (this.isPlaying) {
         this.pause();
       }
@@ -335,7 +337,7 @@ export class LiveComponent implements OnInit, OnDestroy {
         this.polyline.setLatLngs(this.polylinePoints);
         this.removeMarkers();
       }
-      this.markers[this.indexOfCurrentMarker].addTo(this.map);
+      this.markers[this.indexOfCurrentMarker]?.addTo(this.map);
     }
   }
 
@@ -344,7 +346,7 @@ export class LiveComponent implements OnInit, OnDestroy {
       if (this.isPlaying) {
         this.pause();
       }
-      let latLngs = [this.markers[this.indexOfCurrentMarker].getLatLng()];
+      let latLngs = [this.markers[this.indexOfCurrentMarker]?.getLatLng()];
       let markerBounds = latLngBounds(latLngs);
       this.map.fitBounds(markerBounds, {
         animate: true,
@@ -356,7 +358,7 @@ export class LiveComponent implements OnInit, OnDestroy {
       if (this.polylineDisplayed) {
         this.polyline.setLatLngs(this.polylinePoints);
       }
-      this.markers[this.indexOfCurrentMarker].addTo(this.map);
+      this.markers[this.indexOfCurrentMarker]?.addTo(this.map);
     }
   }
 
@@ -364,16 +366,16 @@ export class LiveComponent implements OnInit, OnDestroy {
     this.polylineDisplayed = !this.polylineDisplayed;
     if (this.polylineDisplayed) {
       this.polyline.setLatLngs(this.polylinePoints);
-      this.polyline.addTo(this.map);
+      this.polyline?.addTo(this.map);
       this.removeMarkers();
       if (this.indexOfCurrentMarker > 0) {
-        this.markers[this.indexOfCurrentMarker].addTo(this.map);
+        this.markers[this.indexOfCurrentMarker]?.addTo(this.map);
       }
     } else {
       this.polyline.remove();
       if (this.canPlay && this.indexOfCurrentMarker > 1) {
         for (let index = 0; index < this.indexOfCurrentMarker; index++) {
-          this.markers[index].addTo(this.map);
+          this.markers[index]?.addTo(this.map);
         }
       }
     }
@@ -381,7 +383,7 @@ export class LiveComponent implements OnInit, OnDestroy {
 
   addMarkers() {
     for (let index = 0; index < this.indexOfCurrentMarker; index++) {
-      this.markers[index].addTo(this.map);
+      this.markers[index]?.addTo(this.map);
     }
   }
 
@@ -393,7 +395,7 @@ export class LiveComponent implements OnInit, OnDestroy {
     this.polylinePoints = [];
     this.polyline.setLatLngs(this.polylinePoints);
     if (!this.map.hasLayer(this.polyline)) {
-      this.polyline.addTo(this.map);
+      this.polyline?.addTo(this.map);
     }
   }
 
