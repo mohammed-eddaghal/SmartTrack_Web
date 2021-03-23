@@ -65,7 +65,8 @@ export class LoginComponent implements OnInit {
       .subscribe(response => {
         //normalement x ghtafficta liha return d api
         this.x = response
-
+        this.authService.user.displayName = response['displayName'];
+        
         if (this.x.isActive) {
           this.authService.isLoggedIn = true;
           this.subUserService.getGroupID(this.subUser.userID.accountID, this.subUser.userID.userID).subscribe(
@@ -93,6 +94,7 @@ export class LoginComponent implements OnInit {
       .subscribe(response => {
         //normalement x ghtafficta liha return d api
         this.x = response
+        this.authService.user.displayName = response['displayName'];
 
         if (this.x.isActive) {
           this.authService.isLoggedIn = true;

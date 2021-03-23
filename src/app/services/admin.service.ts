@@ -402,6 +402,10 @@ export class AdminService extends DataService {
     return this.putFnc(this.apiPath + "update/user", body);
   }
 
+  updateProfile(body: any) {
+    return this.putFnc(this.apiPath + "update/profile", body);
+  }
+
   updateAccount(body: any) {
     return this.putFnc(this.apiPath + "update/account", body);
   }

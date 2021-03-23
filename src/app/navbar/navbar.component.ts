@@ -9,8 +9,12 @@ import { Component, OnInit } from '@angular/core';
 export class NavbarComponent implements OnInit {
 
   sysadmin: boolean = false
-  
+
   admin: boolean = false
+
+  displayName: string = "";
+
+  isAdmin: boolean = false;
 
   constructor(private authService: AuthService) { }
 
@@ -21,6 +25,8 @@ export class NavbarComponent implements OnInit {
   ngOnInit(): void {
     this.sysadmin = this.authService.User.accountID == 'sysadmin' ? true : false;
     this.admin = this.authService.isAdmin;
+    this.displayName = this.authService.User.displayName;
+    this.isAdmin = this.authService.isAdmin;
   }
 
   onIsShow() {

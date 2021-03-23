@@ -14,6 +14,7 @@ export class AuthService {
   user = {
     "accountID": "",
     "userID": "",
+    "displayName": "",
     "search": ""
   }
 
@@ -28,6 +29,7 @@ export class AuthService {
     if (newStatus) {
       localStorage.setItem('accountID', this.user.accountID);
       localStorage.setItem('userID', this.user.userID);
+      localStorage.setItem('displayName', this.user.displayName);
     }
   }
 
@@ -40,6 +42,11 @@ export class AuthService {
   set isAdmin(isAdmin: boolean) {
     localStorage.setItem('isAdmin', isAdmin.toString());
     this._isAdmin = isAdmin;
+  }
+
+  set displayName(displayName: string) {
+    localStorage.setItem('displayName', displayName);
+    this.user.displayName = displayName;
   }
 
   set groupID(groupID: string) {
@@ -55,6 +62,7 @@ export class AuthService {
   get User() {
     var userID;
     var accountID;
+    var displayName;
     if (localStorage.getItem('userID') != null) {
       userID = localStorage.getItem('userID');
     } else {
@@ -65,8 +73,14 @@ export class AuthService {
     } else {
       accountID = this.user.accountID;
     }
+    if (localStorage.getItem('displayName') != null) {
+      displayName = localStorage.getItem('displayName');
+    } else {
+      displayName = this.user.displayName;
+    }
     this.user.accountID = accountID;
     this.user.userID = userID;
+    this.user.displayName = displayName;
     return this.user;
   }
 

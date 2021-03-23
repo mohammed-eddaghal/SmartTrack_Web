@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import Swal from 'sweetalert2';
 import { AdminService } from '../services/admin.service';
 import { AuthService } from '../services/auth.service';
 
@@ -10,7 +11,10 @@ import { AuthService } from '../services/auth.service';
 export class ProfileComponent implements OnInit {
   data: Stats;
   showForm = false;
-  
+  displayName: string = "";
+  oldPassword: string = "";
+  newPassword: string = "";
+
   constructor(
     private adminService: AdminService,
     private authService: AuthService) { }
@@ -18,13 +22,30 @@ export class ProfileComponent implements OnInit {
   ngOnInit(): void {
     this.adminService.getStatsProfile(this.authService.User.accountID, this.authService.groupID)
       .subscribe(
-        (response : Stats) => {
+        (response: Stats) => {
           this.data = response;
           console.log(this.data);
         },
         error => {
         }
       );
+    this.displayName = this.authService.User.displayName;
+  }
+
+  update() {
+    this.adminService.updateProfile({
+      "accountID": this.authService.User.accountID,
+      "userID": this.authService.User.userID,
+      "displayName": this.displayName,
+      "oldPassword": this.oldPassword,
+      "password": this.newPassword,
+    }
+    ).subscribe(rep => {
+      Swal.fire('Succès', rep['message'], 'success');
+      this.authService.displayName = this.displayName;
+    }, error => {
+      Swal.fire('Erreur', error, 'error');
+    });
   }
 }
 interface Stats {
