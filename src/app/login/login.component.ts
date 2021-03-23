@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
     },
     "password": ""
   }
-  contructor() {}
+  contructor() { }
   constructor(private subUserService: SubUserService,
     private router: Router,
     private adminService: AdminService,
@@ -57,10 +57,10 @@ export class LoginComponent implements OnInit {
   signIn() {
     //ila kan is_subUser =true => rah subuser
     //sinon rah admin
-    this.subUser.userID.accountID = this.authService.User.accountID = this.userName;
-    this.subUser.userID.userID = this.authService.User.userID = this.subuser;
+    this.subUser.userID.accountID = this.authService.user.accountID = this.userName;
+    this.subUser.userID.userID = this.authService.user.userID = this.subuser;
     this.subUser.password = this.passowrd;
-    this.authService.isAdmin=false;
+    this.authService.isAdmin = false;
     this.subUserService.login(this.subUser)
       .subscribe(response => {
         //normalement x ghtafficta liha return d api
@@ -73,10 +73,10 @@ export class LoginComponent implements OnInit {
               this.authService.groupID = response['groupID']['groupID'];
               this.router.navigate(["position"]);
             }
-            
+
           )
         }
-        else { console.log("your account is deactivated") }
+        else { Swal.fire('Oops...', 'Ce compte est désactivé!', 'error'); }
       }, error => {
         // alert("erreur verifier les données inserer")
         Swal.fire('Oops...', 'Something went wrong!', 'error')
@@ -84,28 +84,30 @@ export class LoginComponent implements OnInit {
   }
 
   signInAsAdmin() {
-    console.log(this.passowrd, " / ", this.userName);
-    this.admin.accountID=this.authService.User.accountID = this.userName;
-    this.authService.User.userID = "";
+    this.authService.user.accountID = this.userName;
+    this.admin.accountID = this.userName;
+    this.authService.user.userID = "";
     this.admin.password = this.passowrd;
-    this.authService.isAdmin=true;
+    this.authService.isAdmin = true;
     this.adminService.login(this.admin)
       .subscribe(response => {
         //normalement x ghtafficta liha return d api
         this.x = response
-        console.log('response: ', this.x);
 
         if (this.x.isActive) {
           this.authService.isLoggedIn = true;
-          this.router.navigate(["position"]);
+          if (this.admin.accountID == "sysadmin") {
+            localStorage.setItem('loggedInAsSys', 'true');
+            localStorage.setItem('accountID', 'sysadmin');
+            localStorage.setItem('userID', '');
+            window.location.href = "http://smartrack-geotech.com/dash/";
+          }
         }
-        else { console.log("maakinch") }
-
+        this.router.navigate(["position"]);
       }, error => {
-        console.log('error: ', error);
         Swal.fire('Oops...', error, 'error');
         // alert("erreur verifier les données inserer")
-      })
+      });
   }
 
 
