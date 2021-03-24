@@ -17,9 +17,9 @@ export class AuthGuard implements CanActivate {
     if (!this.authService.isLoggedIn) {
       this.route.navigate(['/']);
       // alert("il faut s'identifier!!! wach nta 7ma9");
-    } else if (this.authService.User.accountID == "sysadmin") {
+    } /*else if (this.authService.User.accountID == "sysadmin") {
       window.location.href = "http://smartrack-geotech.com/dash/";
-    }
+    }*/
     return this.authService.isLoggedIn;
   }
 
