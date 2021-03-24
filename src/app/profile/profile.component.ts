@@ -14,6 +14,7 @@ export class ProfileComponent implements OnInit {
   displayName: string = "";
   oldPassword: string = "";
   newPassword: string = "";
+  changePass = false;
 
   constructor(
     private adminService: AdminService,
@@ -33,14 +34,23 @@ export class ProfileComponent implements OnInit {
   }
 
   update() {
-    this.adminService.updateProfile({
-      "accountID": this.authService.User.accountID,
-      "userID": this.authService.User.userID,
-      "displayName": this.displayName,
-      "oldPassword": this.oldPassword,
-      "password": this.newPassword,
+    var body;
+    if(this.changePass) {
+      body = {
+        "accountID": this.authService.User.accountID,
+        "userID": this.authService.User.userID,
+        "displayName": this.displayName,
+        "oldPassword": this.oldPassword,
+        "password": this.newPassword,
+      };
+    } else {
+      body = {
+        "accountID": this.authService.User.accountID,
+        "userID": this.authService.User.userID,
+        "displayName": this.displayName,
+      };
     }
-    ).subscribe(rep => {
+    this.adminService.updateProfile(body).subscribe(rep => {
       Swal.fire('Succès', rep['message'], 'success');
       this.authService.displayName = this.displayName;
     }, error => {
