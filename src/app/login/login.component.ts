@@ -102,7 +102,6 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('loggedInAsSys', 'true');
             localStorage.setItem('accountID', 'sysadmin');
             localStorage.setItem('userID', '');
-            window.location.href = "http://smartrack-geotech.com/dash/";
           }
         }
         this.router.navigate(["position"]);

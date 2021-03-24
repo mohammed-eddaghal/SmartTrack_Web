@@ -8,18 +8,19 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
-  constructor(private authService:AuthService,
-    private route: Router){}
-    
+  constructor(private authService: AuthService,
+    private route: Router) { }
+
   canActivate(
     next: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot): Observable<boolean > | Promise<boolean | UrlTree> | boolean | UrlTree {
-      if(!this.authService.isLoggedIn)
-      {
-        this.route.navigate(['/']);
-        // alert("il faut s'identifier!!! wach nta 7ma9");
-      }
+    state: RouterStateSnapshot): Observable<boolean> | Promise<boolean | UrlTree> | boolean | UrlTree {
+    if (!this.authService.isLoggedIn) {
+      this.route.navigate(['/']);
+      // alert("il faut s'identifier!!! wach nta 7ma9");
+    } else if (this.authService.User.accountID == "sysadmin") {
+      window.location.href = "http://smartrack-geotech.com/dash/";
+    }
     return this.authService.isLoggedIn;
   }
-  
+
 }
