@@ -18,10 +18,11 @@ export class MapComponent implements OnInit, OnDestroy {
     detectRetina: true,
     // attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   });
-  gMapLayer = tileLayer('https://mts1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}', {
+  gMapLayer = tileLayer('http://{s}.google.com/vt/lyrs=s,h&x={x}&y={y}&z={z}', {
     opacity: 1,
     maxZoom: 19,
     detectRetina: true,
+    subdomains:['mt0','mt1','mt2','mt3']
     // attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
   });
 
