@@ -1,5 +1,7 @@
 <div class="container-fluid report-container">
-    <form class="form-inline form-report ng-pristine ng-valid mt-2 shadow-sm" #form="ngForm"
+    <div class="row mt-2 shadow-sm">
+        <div class="col-10">
+            <form class="form-inline form-report" #form="ngForm"
         (ngSubmit)="onSubmit(form)">
         <div class="form-group ml-1 mb-2">
             <!-- <label for="deviceID">Vehicule </label> -->
@@ -31,12 +33,13 @@
                 id="report_date_end" placeholder="Date fin" ngModel>
         </div>
         <button type="submit" class="btn btn-sm btn-orange ml-2 mb-2">Actualiser</button>
-        <!-- <div [hidden]="dateErrorHidden">
-            <small class="text-danger">
-                date fin doit être supérieur à date début
-            </small>
-        </div> -->
     </form>
+        </div>
+    <div class="col-2">
+        <label for="export" class="ml-2 mb-2">Exporter: </label>
+        <button id="export" class="btn btn-sm btn-light m-1" [disabled]="!canExport" (click)="exportAsCSV(form)">EXCEL</button>
+    </div>
+    </div>
     <div class="row m-2">
         <ng-template></ng-template>
     </div>

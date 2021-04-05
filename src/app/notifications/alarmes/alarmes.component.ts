@@ -26,6 +26,7 @@ export class AlarmesComponent implements OnInit {
     ).subscribe(
       response => {
         this.vehicles = response;
+        console.log(response);
       },
       error => {
       }

@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { groupBy } from 'rxjs/operators';
 import { Alarm } from '../models/alarm.model';
@@ -87,7 +87,7 @@ export class AdminService extends DataService {
   }
 
 
-  getSummaryReport(accountID: string, userID: string, deviceID: string, startTime: number, endTime: number, web: string) {
+  getSummaryReport(accountID: string, userID: string, deviceID: string, startTime: number, endTime: number, web: string, page?: number) {
     var body = {
       "accountID": accountID,
       "userID": userID,
@@ -96,7 +96,30 @@ export class AdminService extends DataService {
       "endTime": endTime,
       "web": web
     };
+    if (page != null) {
+      body['page'] = page;
+    }
     return this.postFnc(this.apiPath + 'report/summary', body);
+  }
+
+
+  exportSummaryReport(accountID: string, userID: string, deviceID: string, startTime: number, endTime: number, web: string) {
+    var body = {
+      "accountID": accountID,
+      "userID": userID,
+      "deviceID": deviceID,
+      "startTime": startTime,
+      "endTime": endTime,
+      "web": web
+    };
+    this.httpOption.headers = new HttpHeaders({
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+    });
+
+    this.httpOption['responseType'] = 'text' as 'text';
+
+    return this.postFnc(this.apiPath + 'export/report/summary', body);
   }
 
   getSpeedReport(accountID: string, userID: string, startTime: number, endTime: number, deviceID?: string) {

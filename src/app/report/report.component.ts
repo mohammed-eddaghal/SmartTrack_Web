@@ -9,6 +9,8 @@ import { SpeedPercentReportComponent } from './speed-percent-report/speed-percen
 import { SpeedReportComponent } from './speed-report/speed-report.component';
 import { SummaryReportComponent } from './summary-report/summary-report.component';
 import { TemperatureReportComponent } from './temperature-report/temperature-report.component';
+import { saveAs } from 'file-saver';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-report',
@@ -29,6 +31,8 @@ export class ReportComponent implements OnInit {
 
   componentRef: ComponentRef<any>;
 
+  canExport = false;
+
   constructor(
     private adminService: AdminService,
     private authService: AuthService,
@@ -48,7 +52,26 @@ export class ReportComponent implements OnInit {
     );
   }
 
+  exportAsCSV(form: NgForm) {
+    if (form.value.filter == 0) {
+      this.adminService.exportSummaryReport(this.authService.User.accountID, this.authService.User.userID, form.value['deviceID'],
+        new Date(form.value['date_begin']).getTime() / 1000, new Date(form.value['date_end']).getTime() / 1000, 'true')
+        .subscribe(data => {
+          let fileName = "SummaryReport___";
+          fileName += this.authService.User.accountID + "___";
+          fileName += this.authService.User.userID ?? '' + "___";
+          fileName += new Date(form.value['date_begin']).toUTCString() + "___";
+          fileName += new Date(form.value['date_end']).toUTCString() + "___";
+          fileName += '.xlsx';
+          const blob1 = new Blob([<BlobPart>data], { type: 'text/csv' });
+          console.log(blob1);
+          saveAs(blob1, fileName);
+        }) ;
+    }
+  }
+
   onSubmit(form: NgForm) {
+    this.canExport = true;
     if (this?.oldestFormValue == form.value.filter) {
       this.componentRef.instance.deviceID = form.value['deviceID'];
       this.componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
