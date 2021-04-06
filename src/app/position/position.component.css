@@ -117,3 +117,7 @@ mat-form-field {
 .device::ng-deep {
   cursor: pointer;
 }
+
+.mat-tab-group {
+  height: 80vh;
+}

@@ -62,7 +62,7 @@ export class ReportComponent implements OnInit {
           fileName += this.authService.User.userID ?? '' + "___";
           fileName += new Date(form.value['date_begin']).toUTCString() + "___";
           fileName += new Date(form.value['date_end']).toUTCString() + "___";
-          fileName += '.xlsx';
+          fileName += '.csv';
           const blob1 = new Blob([<BlobPart>data], { type: 'text/csv' });
           console.log(blob1);
           saveAs(blob1, fileName);
