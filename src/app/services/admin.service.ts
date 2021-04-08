@@ -20,7 +20,7 @@ export class AdminService extends DataService {
   }
 
   login(body: any) {
-    return this.postFnc(this.apiPath + 'account/login', body);
+    return this.postFnc(this.apiPath + 'login', body);
   }
 
   getDevices(accountID: string, search: string, groupID?: string) {
@@ -48,7 +48,7 @@ export class AdminService extends DataService {
       "userID": userID,
       "search": search ?? ''
     };
-    return this.postFnc(this.apiPath + 'vehicles', body);
+    return this.postFnc(this.apiPath + 'short/vehicles', body);
   }
 
   getDevicesPosition(accountID: string, tabContent: String, search?: String, groupID?: string) {
@@ -441,7 +441,7 @@ export class AdminService extends DataService {
     return this.putFnc(this.apiPath + "update/device", body);
   }
   getVeiculs(body: any) {
-    return this.postFnc(this.apiPath + 'vehicles', body);
+    return this.postFnc(this.apiPath + 'short/vehicles', body);
   }
 
   // addUser(body: any) {

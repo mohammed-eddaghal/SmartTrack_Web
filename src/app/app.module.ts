@@ -16,7 +16,6 @@ import { PositionComponent } from './position/position.component';
 import { HttpClientModule } from '@angular/common/http';
 import { NavbarComponent } from './navbar/navbar.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
-import { EtatComponent } from './etat/etat.component';
 import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
 import { ChauffeurComponent } from './chauffeur/chauffeur.component';
 import { ReportComponent } from './report/report.component';
@@ -64,7 +63,6 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     PositionComponent,
     NavbarComponent,
     DashboardComponent,
-    EtatComponent,
     UtilisateursComponent,
     ChauffeurComponent,
     ReportComponent,

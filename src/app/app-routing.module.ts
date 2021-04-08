@@ -1,5 +1,5 @@
 import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
-import { EtatComponent } from './etat/etat.component';
+// import { EtatComponent } from './etat/etat.component';
 import { PositionComponent } from './position/position.component';
 
 import { NgModule } from '@angular/core';
@@ -22,11 +22,11 @@ import { AccountComponent } from './accounts/account/account.component';
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
-  {
-    path: "state",
-    component: EtatComponent,
-    canActivate: [AuthGuard]
-  },
+  // {
+  //   path: "state",
+  //   component: EtatComponent,
+  //   canActivate: [AuthGuard]
+  // },
   {
     path: "position",
     component: PositionComponent,

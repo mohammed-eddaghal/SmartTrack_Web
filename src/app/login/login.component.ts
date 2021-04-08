@@ -13,36 +13,20 @@ import Swal from 'sweetalert2';
 })
 export class LoginComponent implements OnInit {
 
-  //les variables li kijiw mn formulaire kit7ato f had les variables
   isAdmin: boolean = true;
-  userName: any;
-  subuser: any;
-  passowrd: any;
-
-  x: any;
-  checkuser: any;
 
   logoPath: any = "../../assets/logo_photoshop.png";
 
-  //var li katsifat l serveur bnsba l admin
-  admin: any = {
-    "accountID": "",
-    "password": ""
-  }
-
-  //var li katsift l serveur bnsba l sub user
-  subUser: any = {
-    "userID": {
-      "accountID": "",
-      "userID": ""
-    },
-    "password": ""
-  }
   contructor() { }
   constructor(private subUserService: SubUserService,
     private router: Router,
     private adminService: AdminService,
     private authService: AuthService) { }
+
+  account: string = "";
+  user: string = "";
+  password: string = "";
+  isUser = false;
 
 
   ngOnInit(): void {
@@ -53,57 +37,28 @@ export class LoginComponent implements OnInit {
     }
   }
 
-  //la function li katlensa mli katbrak 3la button sing in
   signIn() {
-    //ila kan is_subUser =true => rah subuser
-    //sinon rah admin
-    this.subUser.userID.accountID = this.authService.user.accountID = this.userName;
-    this.subUser.userID.userID = this.authService.user.userID = this.subuser;
-    this.subUser.password = this.passowrd;
-    this.authService.isAdmin = false;
-    this.subUserService.login(this.subUser)
+    var body = {
+      "accountID": this.account,
+      "password": this.password
+    };
+
+    if (this.isUser) {
+      body["userID"] = this.user;
+    }
+
+    this.adminService.login(body)
       .subscribe(response => {
-        //normalement x ghtafficta liha return d api
-        this.x = response
-        this.authService.user.displayName = response['displayName'];
-        
-        if (this.x.isActive) {
-          this.authService.isLoggedIn = true;
-          this.subUserService.getGroupID(this.subUser.userID.accountID, this.subUser.userID.userID).subscribe(
-            response => {
-              this.authService.groupID = response['groupID']['groupID'];
-              this.router.navigate(["position"]);
-            }
 
-          )
-        }
-        else { Swal.fire('Oops...', 'Ce compte est désactivé!', 'error'); }
-      }, error => {
-        // alert("erreur verifier les données inserer")
-        Swal.fire('Oops...', 'Something went wrong!', 'error')
-      })
-  }
+        console.log(response);
 
-  signInAsAdmin() {
-    this.authService.user.accountID = this.userName;
-    this.admin.accountID = this.userName;
-    this.authService.user.userID = "";
-    this.admin.password = this.passowrd;
-    this.authService.isAdmin = true;
-    this.adminService.login(this.admin)
-      .subscribe(response => {
-        //normalement x ghtafficta liha return d api
-        this.x = response
-        this.authService.user.displayName = response['displayName'];
+        this.authService.displayName = response['displayName'];
+        this.authService.user.accountID = body['accountID'];
+        this.authService.user.userID = body['userID'];
+        this.authService.groupID= body['userID'];
+        this.authService.isLoggedIn = true;
+        this.authService.isAdmin = !this.isUser;
 
-        if (this.x.isActive) {
-          this.authService.isLoggedIn = true;
-          if (this.admin.accountID == "sysadmin") {
-            localStorage.setItem('loggedInAsSys', 'true');
-            localStorage.setItem('accountID', 'sysadmin');
-            localStorage.setItem('userID', '');
-          }
-        }
         this.router.navigate(["position"]);
       }, error => {
         Swal.fire('Oops...', error, 'error');
