@@ -24,22 +24,23 @@ export class AdminService extends DataService {
   }
 
   getDevices(accountID: string, search: string, groupID?: string) {
-    var body, api;
+    var body;
     if (groupID != null && groupID != "") {
       body = {
         "accountID": accountID,
         "groupID": groupID,
         "search": search
       };
-      api = this.apiPath + 'user/devices';
+      // api = this.apiPath + 'user/devices';
     } else {
       body = {
         "accountID": accountID,
         "search": search
       };
-      api = this.apiPath + 'account/devices';
+      // api = this.apiPath + 'account/devices';
     }
-    return this.postFnc(api, body);
+    // return this.postFnc(api, body);
+    return this.postFnc(this.apiPath + 'devices', body);
   }
 
   getVehicles(accountID: string, groupID: string, search?: string) {
@@ -60,9 +61,11 @@ export class AdminService extends DataService {
         "search": search ?? ''
       };
       if (tabContent == '') {
-        var link = 'user/devices';
+        // var link = 'user/devices';
+        var link = 'devices';
       } else {
-        var link = 'user/' + tabContent + '/vehicles';
+        // var link = 'user/' + tabContent + '/vehicles';
+        var link = tabContent + '/vehicles';
       }
     } else {
       body = {
@@ -70,9 +73,11 @@ export class AdminService extends DataService {
         "search": search ?? ''
       };
       if (tabContent == '') {
-        var link = 'account/devices';
+        // var link = 'account/devices';
+        var link = 'devices';
       } else {
-        var link = 'account/' + tabContent + '/vehicles';
+        // var link = 'account/' + tabContent + '/vehicles';
+        var link = tabContent + '/vehicles';
       }
     }
     return this.postFnc(this.apiPath + link, body);
@@ -334,14 +339,15 @@ export class AdminService extends DataService {
       body = {
         "accountID": accountID
       }
-      return this.postFnc(this.apiPath + 'account/vehicles', body);
+      // return this.postFnc(this.apiPath + 'account/vehicles', body);
     } else {
       body = {
         "accountID": accountID,
         "groupID": groupID
       }
-      return this.postFnc(this.apiPath + 'user/vehicles', body);
+      // return this.postFnc(this.apiPath + 'user/vehicles', body);
     }
+    return this.postFnc(this.apiPath + 'vehicles', body);
   }
 
   /*addMaintenanceCartGrise(body:any){
