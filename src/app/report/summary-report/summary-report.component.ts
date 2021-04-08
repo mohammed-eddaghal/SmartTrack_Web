@@ -16,8 +16,8 @@ export class SummaryReportComponent implements OnInit {
   @Input() startTime: number;
   @Input() endTime: number;
 
-  data: AllSummaryReport[];
-  
+  data: AllSummaryReport[] = [];
+
   // pager object
   pager: Pager = {
     pageCount: 0,
@@ -40,8 +40,8 @@ export class SummaryReportComponent implements OnInit {
 
   loadData() {
     var web: string = 'false';
-    
-    if(this.deviceID == '0') {
+
+    if (this.deviceID == '0') {
       web = 'true';
     } else {
       web = 'false';
@@ -51,10 +51,13 @@ export class SummaryReportComponent implements OnInit {
       this.deviceID, this.startTime, this.endTime, web, this.pager.currentPage)
       .subscribe(
         response => {
-          this.data = response['content'];
-          this.pager.pageCount = response['totalPages'];
-          this.pager.pages = Array.from({ length: this.pager.pageCount }, (v, k) => k);
-          console.log(this.data);
+          if (web == 'true') {
+            this.data = response['content'];
+            this.pager.pageCount = response['totalPages'];
+            this.pager.pages = Array.from({ length: this.pager.pageCount }, (v, k) => k);
+          } else {
+            this.data = <AllSummaryReport[]> [response];
+          }
         },
         error => {
         }

@@ -42,10 +42,10 @@ export class AdminService extends DataService {
     return this.postFnc(api, body);
   }
 
-  getVehicles(accountID: string, userID: string, search?: string) {
+  getVehicles(accountID: string, groupID: string, search?: string) {
     var body = {
       "accountID": accountID,
-      "userID": userID,
+      "groupID": groupID,
       "search": search ?? ''
     };
     return this.postFnc(this.apiPath + 'short/vehicles', body);
@@ -94,8 +94,10 @@ export class AdminService extends DataService {
       "deviceID": deviceID,
       "startTime": startTime,
       "endTime": endTime,
-      "web": web
     };
+    if(web == 'true') {
+      body["web"] = web;
+    }
     if (page != null) {
       body['page'] = page;
     }
