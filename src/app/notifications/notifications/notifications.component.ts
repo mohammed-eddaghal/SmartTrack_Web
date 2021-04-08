@@ -89,7 +89,6 @@ export class NotificationsComponent implements OnInit {
       response => {
         this.vehicles = response;
         this.deviceIDs = this.vehicles.map(v => v.deviceID);
-        console.log(this.deviceIDs);
         this.getNotifications();
       },
       error => {
@@ -98,12 +97,7 @@ export class NotificationsComponent implements OnInit {
   }
 
   getNotifications() {
-    //1609459200 start
-    //1611568460 end
-    //"SP" filters
-    // var startTime = this.startTime != null ? this.startTime.mi : ~~(Date.now() / 1000) - 86400;
-    // var endTime = this.endTime != null ? : ~~(Date.now() / 1000);
-    this.adminService.getAllNotifications(this.user.accountID, this.user.userID,
+    this.adminService.getAllNotifications(this.user.accountID, this.user.groupID,
       this.deviceIDs, ~~(new Date(this.startTime).getTime() / 1000), ~~(new Date(this.endTime).getTime() / 1000),
       this.events, this.pager.currentPage + 1).pipe(
         map((data: any) => {
@@ -188,7 +182,7 @@ export class NotificationsComponent implements OnInit {
       this.notifications = [];
       this.pager = {
         pageCount: 0,
-        currentPage: 0,
+        currentPage: -1,
         size: 10,
         pages: []
       };

@@ -54,8 +54,8 @@ export class LoginComponent implements OnInit {
 
         this.authService.displayName = response['displayName'];
         this.authService.user.accountID = body['accountID'];
-        this.authService.user.userID = body['userID'];
-        this.authService.groupID= body['userID'];
+        this.authService.user.userID = body['userID'] ?? '';
+        this.authService.groupID= body['userID'] ?? '';
         this.authService.isLoggedIn = true;
         this.authService.isAdmin = !this.isUser;
 
