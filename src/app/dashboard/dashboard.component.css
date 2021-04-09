@@ -1,6 +1,6 @@
 .vehicle-list {
   height: 80vh;
-  overflow-y: scroll;
+  overflow-y: auto;
 }
 
 .panel-stats {
