@@ -97,7 +97,7 @@ export class NotificationsComponent implements OnInit {
   }
 
   getNotifications() {
-    this.adminService.getAllNotifications(this.user.accountID, this.user.groupID,
+    this.adminService.getAllNotifications(this.user.accountID, this.user.userID,
       this.deviceIDs, ~~(new Date(this.startTime).getTime() / 1000), ~~(new Date(this.endTime).getTime() / 1000),
       this.events, this.pager.currentPage + 1).pipe(
         map((data: any) => {
