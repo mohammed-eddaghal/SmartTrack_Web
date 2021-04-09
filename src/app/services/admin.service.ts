@@ -307,13 +307,14 @@ export class AdminService extends DataService {
     filters?: String[], page?: number) {
     var body = {
       "accountID": accountID,
-      "userID": userID,
       "deviceIDs": deviceIDs,
       "timestampStart": timestampStart,
       "timestampEnd": timestampEnd,
       "filters": filters,
       "page": page
     };
+
+    if(userID != null) body["userID"] = userID;
 
     return this.postFnc(this.apiPath + 'findall/notification', body);
   }
