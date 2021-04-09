@@ -11,28 +11,42 @@ export class EventData implements Deserializable {
     latitude: number;
     longitude: number;
     odometerKM: number;
+    rssi: number;
     simPhoneNumber: String;
     speedKPH: number;
     timestamp: number;
     vehicleModel: String;
-    private _adress: string = "";
+    adress: String;
     private _status: number; // -2: unkown, -1: late, 0: parking, 1:running
-
-    constructor(private http?: HttpClient) {
-        this.http = http;
-    };
-
-    get adress(): string {
-        this.http?.get("http://nominatim.openstreetmap.org/reverse?format=json&lat=" + this.latitude + "&lon=" + this.longitude)
-            .subscribe(
-                (response) => {
-                    this._adress = response['display_name'];
-                },
-                (error) => {
-                    this._adress = ''
-                }
-            );
-        return this._adress;
+    
+    getSignalString() {
+        if(this.rssi != null) {
+            switch(this.rssi) {
+                case 0 : return 'Très faible';
+                case 1 : return 'Faible';
+                case 2 : return 'Moyen';
+                case 3 : return 'Moyen';
+                case 4 : return 'Bon';
+                case 5 : return 'Très bon';
+            }
+        } else {
+            return 'Pas d\'information';
+        }
+    }
+    
+    getSignalIconPath() {
+        if(this.rssi != null) {
+            switch(this.rssi * 3) {
+                case 0 : return '../../assets/signal/signal-'+ this.rssi * 3 + '.png';
+                case 3 : return '../../assets/signal/signal-'+ this.rssi * 3 + '.png';
+                case 6 : return '../../assets/signal/signal-'+ this.rssi * 3 + '.png';
+                case 9 : return '../../assets/signal/signal-'+ this.rssi * 3 + '.png';
+                case 12 : return '../../assets/signal/signal-'+ this.rssi * 3 + '.png';
+                case 15 : return '../../assets/signal/signal-'+ 12 + '.png';
+            }
+        } else {
+            return '';
+        }
     }
 
     get status() {
@@ -50,9 +64,9 @@ export class EventData implements Deserializable {
 
     icon(option?) {
         if (option != null && option == "History") {
-            if (this.speedKPH < 3) {
+            if (this.speedKPH == 0) {
                 return "../../assets/status/stop_small.png";
-            } else if (this.speedKPH < 60) {
+            } else if (this.speedKPH <= 67) {
                 if (this.heading == 0)
                     return "../../assets/status/marker_green.png";
                 else if (this.heading < 90)
@@ -71,7 +85,7 @@ export class EventData implements Deserializable {
                     return "../../assets/status/marker_green_nw.png";
                 else
                     return "../../assets/status/marker_green_n.png";
-            } else if (this.speedKPH < 100) {
+            } else if (this.speedKPH <= 127) {
                 if (this.heading == 0)
                     return "../../assets/status/marker_grey.png";
                 else if (this.heading < 90)
@@ -120,9 +134,9 @@ export class EventData implements Deserializable {
                 } else if (activityTime == 'parked') {
                     return "../../assets/status/marker_blue_parking.png";
                 } else {
-                    if (this.speedKPH < 3) {
+                    if (this.speedKPH == 0) {
                         return "../../assets/status/stop_small.png";
-                    } else if (this.speedKPH < 60) {
+                    } else if (this.speedKPH <= 67) {
                         if (this.heading == 0)
                             return "../../assets/status/marker_green.png";
                         else if (this.heading < 90)
@@ -141,7 +155,7 @@ export class EventData implements Deserializable {
                             return "../../assets/status/marker_green_nw.png";
                         else
                             return "../../assets/status/marker_green_n.png";
-                    } else if (this.speedKPH < 100) {
+                    } else if (this.speedKPH <= 127) {
                         if (this.heading == 0)
                             return "../../assets/status/marker_grey.png";
                         else if (this.heading < 90)

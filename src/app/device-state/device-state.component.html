@@ -1,0 +1,73 @@
+<div class="card m-5">
+    <div class="card-body">
+        <div class="container">
+            <div class="row">
+                <div class="col-8"></div>
+                <div class="col-4 form-group">
+                    <input type="text" #query class="form-control" (keyup)="onSearsh(query.value.toLowerCase())"
+                        aria-describedby="helpId" placeholder="cherche ...">
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <table class="table table-bordered table-stats flex-100" flex="100">
+                    <thead>
+                        <tr>
+                            <th>Balise / Vehicule</th>
+                            <th>Dernière position</th>
+                            <th>Date</th>
+                            <th>Signale</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stats-lines">
+
+                        <tr class="line-stats" *ngFor="let device of devices">
+                            <td>
+                                <img class="img-car" src="../../assets/vehicle/car.png"><b>{{device.vehicleModel}}</b><br>{{device.deviceID}}
+                            </td>
+                            <td>
+                                <a [routerLink]="['/live', device.deviceID, device.vehicleModel]"><b>{{device.latitude}},{{device.longitude}}</b><br>
+                                    <span>{{device.address}}</span>
+                                </a>
+                            </td>
+                            <td>
+                                {{device.timestamp * 1000 | date:
+                                    'dd/MM/yyyy
+                                    HH:mm:ss'}}
+                            </td>
+                            <td>
+                                <img [src]="device.getSignalIconPath()"
+                                    style="float: left; margin-right: 5px;">
+                                <div>Signale <br><b>{{device.getSignalString()}}</b></div>
+                            </td>
+                            <td>
+                                <img class="img-state"
+                                    [src]="device.icon()">Vitesse <br>{{device.speedKPH | number:'1.0-2'}}<b>
+                                    Km/h</b>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container">
+    <div>
+        <nav aria-label="Page navigation example">
+            <ul *ngIf="pager.pages && pager.pages.length" class="pagination justify-content-center">
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === 0}">
+                    <a class="page-link btn-sm" (click)="setPage(pager.currentPage - 1)">Précedent</a>
+                </li>
+                <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                    <a class="page-link btn-sm" (click)="setPage(page)">{{page+1}}</a>
+                </li>
+                <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.pageCount - 1}">
+                    <a class="page-link btn-sm" (click)="setPage(pager.currentPage + 1)">Suivant</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</div>

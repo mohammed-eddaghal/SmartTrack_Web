@@ -52,6 +52,20 @@ export class AdminService extends DataService {
     return this.postFnc(this.apiPath + 'short/vehicles', body);
   }
 
+  //used by state component
+  getDevicesState(accountID: string, page : number, search?: String, groupID?: string) {
+    var body = {
+      "accountID": accountID,
+      "page": page,
+      "search": search ?? ''
+    };
+
+    if (groupID != null && groupID != '') {
+      body["groupID"] = groupID;
+    }
+    return this.postFnc(this.apiPath + 'devices', body);
+  }
+
   getDevicesPosition(accountID: string, tabContent: String, search?: String, groupID?: string) {
     var body;
     if (groupID != null && groupID != '') {

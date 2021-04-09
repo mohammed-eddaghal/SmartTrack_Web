@@ -1,5 +1,4 @@
 import { UtilisateursComponent } from './utilisateurs/utilisateurs.component';
-// import { EtatComponent } from './etat/etat.component';
 import { PositionComponent } from './position/position.component';
 
 import { NgModule } from '@angular/core';
@@ -18,15 +17,16 @@ import { NotificationsComponent } from './notifications/notifications/notificati
 import { AlarmesComponent } from './notifications/alarmes/alarmes.component';
 import { ProfileComponent } from './profile/profile.component';
 import { AccountComponent } from './accounts/account/account.component';
+import { DeviceStateComponent } from './device-state/device-state.component';
 
 
 const routes: Routes = [
   { path: "", component: LoginComponent },
-  // {
-  //   path: "state",
-  //   component: EtatComponent,
-  //   canActivate: [AuthGuard]
-  // },
+  {
+    path: "state",
+    component: DeviceStateComponent,
+    canActivate: [AuthGuard]
+  },
   {
     path: "position",
     component: PositionComponent,

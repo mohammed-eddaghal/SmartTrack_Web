@@ -48,6 +48,7 @@ import { NgMultiSelectDropDownModule } from 'ng-multiselect-dropdown';
 import { ProfileComponent } from './profile/profile.component';
 import { AccountComponent } from './accounts/account/account.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
+import { DeviceStateComponent } from './device-state/device-state.component';
 // import { registerLocaleData } from '@angular/common';
 // import localeFr from '@angular/common/locales/fr';
 
@@ -79,6 +80,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     NotificationsComponent,
     ProfileComponent,
     AccountComponent,
+    DeviceStateComponent,
   ],
   imports: [
     NgMultiSelectDropDownModule.forRoot(),

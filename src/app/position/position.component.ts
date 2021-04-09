@@ -48,7 +48,7 @@ export class PositionComponent implements OnInit, OnDestroy {
 
   transformDecimal(num) {
     return this._decimalPipe.transform(num, '1.2-2');
-   }
+  }
 
   setMarkers() {
     if (this.markers.length != 0) {
@@ -87,7 +87,10 @@ export class PositionComponent implements OnInit, OnDestroy {
 
   updateDevices() {
     this.adminService.getDevicesPosition(this.authService.User.accountID, this.tabContent, this.searchWord, this.authService.groupID).pipe(
-      map((data: EventData[]) => data.map(device => new EventData(this.http).deserialize(device)))
+      map((data: any) => {
+        return data['content'].map(ed => new EventData().deserialize(ed));
+      },
+      )
     ).subscribe(
       (response) => {
         if (this.devices.length == 0) {
@@ -142,6 +145,10 @@ export class PositionComponent implements OnInit, OnDestroy {
 
   doSomething() {
     alert('hello');
+  }
+
+  onElementScroll(event) {
+    console.log('scrolled');
   }
 }
 
