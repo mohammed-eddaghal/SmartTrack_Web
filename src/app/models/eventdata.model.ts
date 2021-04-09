@@ -16,7 +16,7 @@ export class EventData implements Deserializable {
     speedKPH: number;
     timestamp: number;
     vehicleModel: String;
-    adress: String;
+    address: String;
     private _status: number; // -2: unkown, -1: late, 0: parking, 1:running
     
     getSignalString() {

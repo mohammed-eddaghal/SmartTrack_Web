@@ -86,7 +86,7 @@ export class LiveComponent implements OnInit, OnDestroy {
           })
         });
         this.marker.bindPopup("<span style='color:#089200;font-weight:bold;'>" + this.device.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
-          + "<span style=''>" + this.device.adress + "</span>" + " <br/>"
+          + "<span style=''>" + this.device.address + "</span>" + " <br/>"
           + "<span style=''>" + new DatePipe('en-US').transform(new Date(this.device.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
           + "<span style=''>" + this.transformDecimal(this.device.speedKPH) + " Km/h</span>" + " <br/>"
           + "<span style=''> état: " + (this.device.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"
@@ -217,7 +217,7 @@ export class LiveComponent implements OnInit, OnDestroy {
         })
       });
       marker.bindPopup("<span style='color:#089200;font-weight:bold;'>" + point.vehicleModel + "</span>" + '<hr style="height:2px;border-width:0;color:gray;background-color:gray;padding:0;margin:0">'
-        + "<span style=''>" + point.adress + "</span>" + " <br/>"
+        + "<span style=''>" + point.address + "</span>" + " <br/>"
         + "<span style=''>" + new DatePipe('en-US').transform(new Date(point.timestamp * 1000), 'yyyy-MM-dd HH:mm') + "</span>" + " <br/>"
         + "<span style=''>" + this.transformDecimal(point.speedKPH) + " Km/h</span>" + " <br/>"
         + "<span style=''> état: " + (point.speedKPH > 3 ? 'en marche' : 'en parking') + "</span>" + " <br/>"
