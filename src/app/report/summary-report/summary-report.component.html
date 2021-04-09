@@ -37,7 +37,7 @@
                     <a class="page-link btn-sm" (click)="setPage(pager.currentPage - 1)">Précedent</a>
                 </li>
                 <li class="page-item" *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-                    <a class="page-link btn-sm" (click)="setPage(page)">{{page}}</a>
+                    <a class="page-link btn-sm" (click)="setPage(page)">{{page+1}}</a>
                 </li>
                 <li class="page-item" [ngClass]="{disabled:pager.currentPage === pager.pageCount - 1}">
                     <a class="page-link btn-sm" (click)="setPage(pager.currentPage + 1)">Suivant</a>
