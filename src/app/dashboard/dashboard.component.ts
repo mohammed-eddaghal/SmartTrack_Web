@@ -45,7 +45,10 @@ export class DashboardComponent implements OnInit {
     this.chart = am4core.create("odometerChart", am4charts.XYChart);
 
     this.adminService.getDevices(this.authService.User.accountID, this.authService.User.search, this.authService.groupID).pipe(
-      map((data: EventData[]) => data.map(device => new EventData().deserialize(device)))
+      map((data: any) => {
+        return data['content'].map(ed => new EventData().deserialize(ed));
+      },
+      )
     ).subscribe(
       response => {
         this.devices = response;

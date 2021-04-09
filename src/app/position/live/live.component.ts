@@ -10,7 +10,6 @@ import { AdminService } from 'src/app/services/admin.service';
 import { EventData } from 'src/app/models/eventdata.model';
 import { map } from "rxjs/operators";
 import { DatePipe, DecimalPipe } from '@angular/common';
-import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-live',
@@ -43,7 +42,7 @@ export class LiveComponent implements OnInit, OnDestroy {
   polylineDisplayed: boolean = false;
   adress: any;
   constructor(private route: ActivatedRoute, private adminService: AdminService,
-    private _decimalPipe: DecimalPipe, private http: HttpClient) { }
+    private _decimalPipe: DecimalPipe) { }
 
   ngOnDestroy(): void {
     this.timer.unsubscribe();
@@ -66,7 +65,7 @@ export class LiveComponent implements OnInit, OnDestroy {
 
   getDeviceEventData() {
     this.adminService.getDevicePosition(this.deviceID).pipe(
-      map((device: EventData) => new EventData(this.http).deserialize(device))
+      map((device: EventData) => new EventData().deserialize(device))
     ).subscribe(
       (response) => {
         this.device = response;
