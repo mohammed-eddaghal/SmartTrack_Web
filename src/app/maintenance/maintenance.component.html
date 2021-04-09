@@ -83,7 +83,7 @@
                         <div class="form-group" *ngIf="maintenance.maintenance_Type == 'Draining'">
                             <label for="kmStart">Km début</label>
                             <input type="number" [(ngModel)]="maintenance.kmStart" name="kmStart" id="kmStart"
-                                class="form-control" placeholder="Prix..." #kmStart="ngModel" min="0" required
+                                class="form-control" placeholder="Km début" #kmStart="ngModel" min="0" required
                                 alt="Km début">
                             <div *ngIf="kmStart.invalid && (kmStart.dirty || kmStart.touched)">
                                 <div *ngIf="kmStart.errors.required" class="error-msg">
@@ -94,7 +94,7 @@
                         <div class="form-group" *ngIf="maintenance.maintenance_Type == 'Draining'">
                             <label for="kmEnd">Km fin</label>
                             <input type="number" [(ngModel)]="maintenance.kmEnd" name="kmEnd" id="kmEnd"
-                                class="form-control" placeholder="Prix..." #kmEnd="ngModel" min="0" required
+                                class="form-control" placeholder="Km fin" #kmEnd="ngModel" min="0" required
                                 alt="Km fin">
                             <div *ngIf="kmEnd.invalid && (kmEnd.dirty || kmEnd.touched)">
                                 <div *ngIf="kmEnd.errors.required" class="error-msg">
