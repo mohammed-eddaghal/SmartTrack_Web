@@ -40,7 +40,6 @@ export class LiveComponent implements OnInit, OnDestroy {
   polylinePoints: any[] = [];
   polyline: Polyline;
   polylineDisplayed: boolean = false;
-  adress: any;
   constructor(private route: ActivatedRoute, private adminService: AdminService,
     private _decimalPipe: DecimalPipe) { }
 
@@ -69,12 +68,6 @@ export class LiveComponent implements OnInit, OnDestroy {
     ).subscribe(
       (response) => {
         this.device = response;
-        this.adminService.getAdress(this.device.latitude, this.device.longitude).subscribe(
-          response => {
-            this.adress = response['display_name'] ?? '';
-          },
-          error => this.adress = ''
-        );
         this.hand.showValue(this.device.speedKPH);
         this.marker?.remove();
         this.marker = new Marker([this.device.latitude, this.device.longitude], {
