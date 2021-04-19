@@ -11,6 +11,7 @@ import { SummaryReportComponent } from './summary-report/summary-report.componen
 import { TemperatureReportComponent } from './temperature-report/temperature-report.component';
 import { saveAs } from 'file-saver';
 import { HttpResponse } from '@angular/common/http';
+import { ActivityReportComponent } from './activity-report/activity-report.component';
 
 @Component({
   selector: 'app-report',
@@ -81,6 +82,12 @@ export class ReportComponent implements OnInit {
       if (form.value.filter == 0) {
         this.cvref.clear();
         this.componentRef = this.cvref.createComponent(this.resolver.resolveComponentFactory(SummaryReportComponent));
+        this.componentRef.instance.deviceID = form.value['deviceID'];
+        this.componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
+        this.componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
+      } else if (form.value.filter == 2) {
+        this.cvref.clear();
+        this.componentRef = this.cvref.createComponent(this.resolver.resolveComponentFactory(ActivityReportComponent));
         this.componentRef.instance.deviceID = form.value['deviceID'];
         this.componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
         this.componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
