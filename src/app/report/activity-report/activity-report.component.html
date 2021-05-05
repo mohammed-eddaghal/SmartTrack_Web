@@ -15,17 +15,19 @@
     </thead>
     <tbody>
 
-        <tr>
-            <td width="30"><img src="../assets/vehicle/moving.png" width="30"></td>
-            <td>on</td>
-            <td>15/04/2021 08:48:13</td>
-            <td>15/04/2021 08:48:13</td>
-            <td>0 min</td>
-            <td>35457.0 km</td>
-            <td>35457.0 km</td>
-            <td>0.0 km</td>
-            <td>5.0 km/h</td>
-            <td>5.0 km/h</td>
+        <tr *ngFor="let activity of activities">
+            <td width="30">
+                <img [src]="activity.status == 1 ? '../assets/vehicle/moving.png' : '../assets/vehicle/parked.png'" width="30">
+            </td>
+            <td>{{ activity.status == 1 ? "En marche" : "En parking" }}</td>
+            <td>{{ activity.startTime * 1000 | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+            <td>{{ activity.endTime * 1000 | date: 'dd/MM/yyyy HH:mm:ss' }}</td>
+            <td>{{ (activity.endTime - activity.startTime) / 60 | number:'1.0-2' }} Minutes</td>
+            <td>{{ activity.minOdo | number:'1.0-2' }} km</td>
+            <td>{{ activity.maxOdo | number:'1.0-2' }} km</td>
+            <td>{{ activity.distanceKM | number:'1.0-2' }} km</td>
+            <td>{{ activity.avgSpeed | number:'1.0-2' }} km/h</td>
+            <td>{{ activity.maxSpeed | number:'1.0-2' }} km/h</td>
         </tr>
     </tbody>
 </table>

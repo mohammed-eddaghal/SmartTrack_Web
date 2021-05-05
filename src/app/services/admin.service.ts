@@ -106,6 +106,16 @@ export class AdminService extends DataService {
   }
 
 
+  getActivityReport(deviceID: string, startTime: number, endTime: number) {
+    var body = {
+      "deviceID": deviceID,
+      "startTime": startTime,
+      "endTime": endTime,
+    };
+    return this.postFnc(this.apiPath + 'report/activity', body);
+  }
+
+
   getSummaryReport(accountID: string, userID: string, deviceID: string, startTime: number, endTime: number, web: string, page?: number) {
     var body = {
       "accountID": accountID,
