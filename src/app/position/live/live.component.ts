@@ -172,6 +172,7 @@ export class LiveComponent implements OnInit, OnDestroy {
     this.adminService.getHistoryTimeLine(this.deviceID, startTime, endTime).subscribe(
       result => {
         this.timelines = result;
+        
       },
       err => null
     );

@@ -34,12 +34,12 @@
             </div>
             <div class="periodes-list">
                 <div class="periode-group" *ngFor="let timeline of timelines">
-                    <a class="periode-line" (click)="playHistory(timeline['engineOnTime'], timeline['engineOffTime'])">
-                        <span>{{timeline['engineOnTime'] * 1000 | date: 'dd/MM/yyyy'}}</span>
-                        <b>{{timeline['engineOnTime'] * 1000 | date: 'HH:mm:ss'}} - {{timeline['engineOffTime'] * 1000 |
+                    <a class="periode-line" (click)="playHistory(timeline['startTime'], timeline['endTime'])" *ngIf="timeline.status">
+                        <span>{{timeline['startTime'] * 1000 | date: 'dd/MM/yyyy'}}</span>
+                        <b>{{timeline['startTime'] * 1000 | date: 'HH:mm:ss'}} - {{timeline['endTime'] * 1000 |
                             date: 'HH:mm:ss'}}</b>
                     </a>
-                    <span class="distance">{{timeline['distanceKM'] | number:'1.0-2'}} - km</span>
+                    <span class="distance" *ngIf="timeline.status">{{timeline['distanceKM'] | number:'1.0-2'}} - km</span>
                 </div>
             </div>
         </div>
