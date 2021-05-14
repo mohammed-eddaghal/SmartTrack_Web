@@ -134,6 +134,17 @@ export class AdminService extends DataService {
   }
 
 
+  getMaintenanceReport(accountID: string, userID: string, startTime: number, endTime: number) {
+    var body = {
+      "accountID": accountID,
+      "userID": userID,
+      "startTime": startTime,
+      "endTime": endTime,
+      "web": true
+    };
+    return this.postFnc(this.apiPath + 'report/maintenance', body);
+  }
+
   exportSummaryReport(accountID: string, userID: string, deviceID: string, startTime: number, endTime: number, web: string) {
     var body = {
       "accountID": accountID,
@@ -151,6 +162,40 @@ export class AdminService extends DataService {
     this.httpOption['responseType'] = 'text' as 'text';
 
     return this.postFnc(this.apiPath + 'export/report/summary', body);
+  }
+
+  exportMaintenanceReport(accountID: string, userID: string, startTime: number, endTime: number) {
+    var body = {
+      "accountID": accountID,
+      "userID": userID,
+      "startTime": startTime,
+      "endTime": endTime,
+      "web": true
+    };
+    this.httpOption.headers = new HttpHeaders({
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+    });
+
+    this.httpOption['responseType'] = 'text' as 'text';
+
+    return this.postFnc(this.apiPath + 'export/report/maintenance', body);
+  }
+
+  exportActivityReport(deviceID: string, startTime: number, endTime: number) {
+    var body = {
+      "deviceID": deviceID,
+      "startTime": startTime,
+      "endTime": endTime
+    };
+    this.httpOption.headers = new HttpHeaders({
+      'Access-Control-Allow-Origin': '*',
+      'Content-Type': 'application/json',
+    });
+
+    this.httpOption['responseType'] = 'text' as 'text';
+
+    return this.postFnc(this.apiPath + 'export/report/activity', body);
   }
 
   getSpeedReport(accountID: string, userID: string, startTime: number, endTime: number, deviceID?: string) {

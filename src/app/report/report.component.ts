@@ -12,6 +12,7 @@ import { TemperatureReportComponent } from './temperature-report/temperature-rep
 import { saveAs } from 'file-saver';
 import { HttpResponse } from '@angular/common/http';
 import { ActivityReportComponent } from './activity-report/activity-report.component';
+import { MaintenanceReportComponent } from './maintenance-report/maintenance-report.component';
 
 @Component({
   selector: 'app-report',
@@ -67,7 +68,34 @@ export class ReportComponent implements OnInit {
           const blob1 = new Blob([<BlobPart>data], { type: 'text/csv' });
           console.log(blob1);
           saveAs(blob1, fileName);
-        }) ;
+        });
+    } else if (form.value.filter == 6) {
+      this.adminService.exportMaintenanceReport(this.authService.User.accountID, this.authService.User.userID,
+        new Date(form.value['date_begin']).getTime() / 1000, new Date(form.value['date_end']).getTime() / 1000)
+        .subscribe(data => {
+          let fileName = "MaintenanceReport___";
+          fileName += this.authService.User.accountID + "___";
+          fileName += this.authService.User.userID ?? '' + "___";
+          fileName += new Date(form.value['date_begin']).toUTCString() + "___";
+          fileName += new Date(form.value['date_end']).toUTCString() + "___";
+          fileName += '.csv';
+          const blob1 = new Blob([<BlobPart>data], { type: 'text/csv' });
+          console.log(blob1);
+          saveAs(blob1, fileName);
+        });
+    } else if (form.value.filter == 2) {
+      this.adminService.exportActivityReport(form.value['deviceID'], new Date(form.value['date_begin']).getTime() / 1000, new Date(form.value['date_end']).getTime() / 1000)
+        .subscribe(data => {
+          let fileName = "ActivityReport___";
+          fileName += this.authService.User.accountID + "___";
+          fileName += this.authService.User.userID ?? '' + "___";
+          fileName += new Date(form.value['date_begin']).toUTCString() + "___";
+          fileName += new Date(form.value['date_end']).toUTCString() + "___";
+          fileName += '.csv';
+          const blob1 = new Blob([<BlobPart>data], { type: 'text/csv' });
+          console.log(blob1);
+          saveAs(blob1, fileName);
+        });
     }
   }
 
@@ -107,6 +135,11 @@ export class ReportComponent implements OnInit {
         this.cvref.clear();
         this.componentRef = this.cvref.createComponent(this.resolver.resolveComponentFactory(SpeedPercentReportComponent));
         this.componentRef.instance.deviceID = form.value['deviceID'];
+        this.componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
+        this.componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
+      } else if (form.value.filter == 6) {
+        this.cvref.clear();
+        this.componentRef = this.cvref.createComponent(this.resolver.resolveComponentFactory(MaintenanceReportComponent));
         this.componentRef.instance.startTime = new Date(form.value['date_begin']).getTime() / 1000;
         this.componentRef.instance.endTime = new Date(form.value['date_end']).getTime() / 1000;
       }

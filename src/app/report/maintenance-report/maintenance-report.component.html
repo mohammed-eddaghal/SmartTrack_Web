@@ -1,0 +1,34 @@
+<ngx-spinner bdColor="rgba(255,255,255,0.8)" size="medium" color="#fd4e02" type="ball-scale-pulse" [fullScreen]="false">
+    <p style="color: black"> Loading... </p>
+</ngx-spinner>
+<table class="table table-bordered table-hover table-xs">
+    <thead>
+        <tr>
+            <th>Balise</th>
+            <th>Nbr Vidanges</th>
+            <th>Prix Vidanges</th>
+            <th>Nbr Entretiens</th>
+            <th>Prix Entretiens</th>
+            <th>Nbr Visites Technique</th>
+            <th>Prix Visites Technique</th>
+            <th>Nbr Assurances</th>
+            <th>Prix Assurances</th>
+            <th>Prix total (DH)</th>
+        </tr>
+    </thead>
+    <tbody>
+
+        <tr *ngFor="let item of data | keyvalue">
+            <td>{{ item.value?.vehicleModel }}</td>
+            <td>{{ item.value?.sumOfDraining}}</td>
+            <td>{{ item.value?.priceOfDraining}}</td>
+            <td>{{ item.value?.sumOfEntretien}}</td>
+            <td>{{ item.value?.priceOfEntretien}}</td>
+            <td>{{ item.value?.sumOfTechnicalVisit}}</td>
+            <td>{{ item.value?.priceOfTechnicalVisit}}</td>
+            <td>{{ item.value?.sumOfInsurance}}</td>
+            <td>{{ item.value?.priceOfInsurance}}</td>
+            <td>{{ item.value?.totalPrice}}</td>
+        </tr>
+    </tbody>
+</table>
